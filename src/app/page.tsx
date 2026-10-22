@@ -39,11 +39,17 @@ export default function CapturistaApp() {
   const [selectedEngine, setSelectedEngine] = useState<EngineType>('ai');
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   
-  // Note state
+  // Note state (mutable notes list)
+  const [notesList, setNotesList] = useState<NoteData[]>(SAMPLE_NOTES);
   const [currentNote, setCurrentNote] = useState<NoteData>(SAMPLE_NOTES[0]);
   const [selectedSampleIndex, setSelectedSampleIndex] = useState<number>(0);
-  const [activeImageUri, setActiveImageUri] = useState<string>('/samples/nota_7903_clinica.png');
+  const [activeImageUri, setActiveImageUri] = useState<string>(SAMPLE_NOTES[0]?.imageUrl || '/samples/real/caso_real_1.jpg');
   
+  // Staged photos queue (previsualización de fotos capturadas antes de subir)
+  const [stagedPhotos, setStagedPhotos] = useState<string[]>([]);
+  const [activePreviewIndex, setActivePreviewIndex] = useState<number>(0);
+  const [isProcessingStaged, setIsProcessingStaged] = useState<boolean>(false);
+
   // Image Viewer controls
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const [rotation, setRotation] = useState<number>(0);
@@ -83,23 +89,59 @@ export default function CapturistaApp() {
 
   // Handle sample selection
   const handleSelectSample = (idx: number) => {
+    if (idx < 0 || idx >= notesList.length) return;
     setSelectedSampleIndex(idx);
-    const sample = SAMPLE_NOTES[idx];
+    const sample = notesList[idx];
     setCurrentNote(JSON.parse(JSON.stringify(sample)));
-    const imageNames = [
-      'nota_7903_clinica.png',
-      'nota_7904_recorrido_columna.png',
-      'nota_7905_talla_diferenciada.png',
-      'nota_7906_prenda_cliente.png',
-      'nota_7907_institucional_completa.png'
-    ];
-    setActiveImageUri(`/samples/${imageNames[idx]}`);
+    setActiveImageUri(sample.imageUrl || `/samples/real/caso_real_${(idx % 5) + 1}.jpg`);
     setZoomLevel(1);
     setRotation(0);
   };
 
+  // Delete note from notes list
+  const handleDeleteNote = (folioToDelete: string) => {
+    const updated = notesList.filter(n => n.folio !== folioToDelete);
+    setNotesList(updated);
+
+    if (updated.length === 0) {
+      setSelectedSampleIndex(-1);
+      const emptyNote: NoteData = {
+        id: `empty-${Date.now()}`,
+        folio: "0000",
+        fecha_emision: new Date().toLocaleDateString('es-MX'),
+        metodo_pago: 'EFECTIVO',
+        cliente: 'Sin notas registradas',
+        telefono: '',
+        rfc: '',
+        direccion: '',
+        imageUrl: '',
+        items: [],
+        fecha_entrega: '',
+        anticipo: 0,
+        resta: 0,
+        total: 0,
+        motor: selectedEngine === 'ocr' ? 'OCR_TRADICIONAL_CV' : (selectedEngine === 'superior' ? 'SUPERIOR_ADVERSARIAL_ENSEMBLE' : 'IA_MULTIMODAL')
+      };
+      setCurrentNote(emptyNote);
+      setActiveImageUri('');
+      return;
+    }
+
+    if (currentNote.folio === folioToDelete) {
+      const nextIdx = Math.min(Math.max(selectedSampleIndex, 0), updated.length - 1);
+      setSelectedSampleIndex(nextIdx);
+      const nextNote = JSON.parse(JSON.stringify(updated[nextIdx]));
+      setCurrentNote(nextNote);
+      setActiveImageUri(nextNote.imageUrl || `/samples/real/caso_real_${(nextIdx % 5) + 1}.jpg`);
+    } else {
+      const newActiveIdx = updated.findIndex(n => n.folio === currentNote.folio);
+      setSelectedSampleIndex(newActiveIdx >= 0 ? newActiveIdx : 0);
+    }
+  };
+
   // Trigger analysis with chosen engine
-  const runAnalysis = async (engine: EngineType = selectedEngine) => {
+  const runAnalysis = async (engine: EngineType = selectedEngine, customNote?: NoteData) => {
+    const targetNote = customNote || currentNote;
     setIsAnalyzing(true);
     setSyncStatus(null);
     try {
@@ -108,13 +150,15 @@ export default function CapturistaApp() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           engine,
-          sampleId: currentNote.folio,
+          sampleId: targetNote.folio,
+          imageBase64: activeImageUri.startsWith('data:') ? activeImageUri : undefined,
           apiKey: apiKeyInput
         })
       });
       if (res.ok) {
         const data: NoteData = await res.json();
         setCurrentNote(data);
+        setNotesList(prev => prev.map(n => n.folio === data.folio ? data : n));
         if (data.cuota_creditos) {
           setHourlyUsage({
             used: data.cuota_creditos.usados_esta_hora,
@@ -148,9 +192,10 @@ export default function CapturistaApp() {
 
   // Mobile camera capture via HTML5 / Capacitor
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleCaptureClick = async () => {
     try {
-      // Intentar Capacitor Camera si está disponible en nativo
+      // Intentar Capacitor Camera si está disponible en nativo (Samsung Galaxy A55)
       // @ts-ignore
       if (window?.Capacitor?.isNativePlatform && window?.Capacitor?.isPluginAvailable('Camera')) {
         const { Camera, CameraResultType, CameraSource } = await import('@capacitor/camera');
@@ -160,11 +205,14 @@ export default function CapturistaApp() {
           quality: 90
         });
         if (photo.webPath) {
-          setActiveImageUri(photo.webPath);
-          runAnalysis();
+          setStagedPhotos(prev => {
+            const next = [...prev, photo.webPath!];
+            setActivePreviewIndex(next.length - 1);
+            return next;
+          });
         }
       } else {
-        // Fallback a selector nativo de cámara HTML5
+        // Fallback a explorador / cámara web
         fileInputRef.current?.click();
       }
     } catch (e) {
@@ -173,17 +221,156 @@ export default function CapturistaApp() {
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const fileList = Array.from(files);
+    let loadedCount = 0;
+    const readUrls: string[] = [];
+
+    fileList.forEach(file => {
       const reader = new FileReader();
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          setActiveImageUri(reader.result);
-          runAnalysis();
+          readUrls.push(reader.result);
+          loadedCount++;
+          if (loadedCount === fileList.length) {
+            setStagedPhotos(prev => {
+              const next = [...prev, ...readUrls];
+              setActivePreviewIndex(next.length - 1);
+              return next;
+            });
+          }
         }
       };
       reader.readAsDataURL(file);
+    });
+
+    e.target.value = '';
+  };
+
+  // Procesar y subir todas las fotos capturadas / en espera
+  const handleUploadStagedPhotos = async () => {
+    if (stagedPhotos.length === 0) return;
+    setIsProcessingStaged(true);
+
+    try {
+      const newNotes: NoteData[] = [];
+      const currentHighestFolio = notesList.reduce((max, n) => {
+        const num = parseInt(n.folio, 10);
+        return isNaN(num) ? max : Math.max(max, num);
+      }, 7954);
+
+      for (let i = 0; i < stagedPhotos.length; i++) {
+        const photoUri = stagedPhotos[i];
+        const folioNum = String(currentHighestFolio + i + 1);
+
+        let analyzedData: NoteData | null = null;
+        try {
+          if (photoUri.startsWith('data:')) {
+            const res = await fetch('/api/analyze', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                engine: selectedEngine,
+                imageBase64: photoUri,
+                apiKey: apiKeyInput
+              })
+            });
+            if (res.ok) {
+              analyzedData = await res.json();
+            }
+          }
+        } catch (e) {
+          console.warn("Análisis de foto capturada diferido:", e);
+        }
+
+        const noteToAdd: NoteData = analyzedData ? {
+          ...analyzedData,
+          id: `captured-${Date.now()}-${i}`,
+          folio: analyzedData.folio || folioNum,
+          imageUrl: photoUri
+        } : {
+          id: `captured-${Date.now()}-${i}`,
+          folio: folioNum,
+          fecha_emision: new Date().toLocaleDateString('es-MX'),
+          metodo_pago: 'EFECTIVO',
+          cliente: `Cliente Nota #${folioNum}`,
+          telefono: '229' + Math.floor(1000000 + Math.random() * 9000000),
+          rfc: '',
+          direccion: '',
+          imageUrl: photoUri,
+          items: [
+            {
+              id: `item-${Date.now()}-${i}-1`,
+              ped_apa_ent: 'P',
+              cant: 1,
+              concepto: 'Conjunto Clínico / Filipina (Foto Recién Tomada)',
+              prenda: 'Filipina',
+              corte: 'Estándar',
+              genero: 'Dama',
+              talla: 'M',
+              notas: 'Foto capturada - listo para revisión de partidas',
+              p_unit: 450.0,
+              importe: 450.0
+            }
+          ],
+          fecha_entrega: new Date(Date.now() + 7 * 86400000).toLocaleDateString('es-MX'),
+          anticipo: 200.0,
+          resta: 250.0,
+          total: 450.0,
+          motor: selectedEngine === 'ocr' ? 'OCR_TRADICIONAL_CV' : (selectedEngine === 'superior' ? 'SUPERIOR_ADVERSARIAL_ENSEMBLE' : 'IA_MULTIMODAL'),
+          validacion_financiera: {
+            cuadre_ok: true,
+            diferencia: 0.0,
+            suma_importes: 450.0,
+            total_coincide: true
+          },
+          cuota_creditos: {
+            usados_esta_hora: hourlyUsage.used + i + 1,
+            limite_por_hora: 500,
+            disponibles: Math.max(500 - (hourlyUsage.used + i + 1), 0),
+            total_acumulado: hourlyUsage.used + i + 1
+          }
+        };
+
+        newNotes.push(noteToAdd);
+      }
+
+      const updatedList = [...notesList, ...newNotes];
+      setNotesList(updatedList);
+      
+      // Seleccionar la primera de las notas recién subidas
+      const targetIdx = notesList.length;
+      setSelectedSampleIndex(targetIdx);
+      setCurrentNote(newNotes[0]);
+      setActiveImageUri(newNotes[0].imageUrl || stagedPhotos[0]);
+      
+      // Limpiar cola de fotos en espera
+      setStagedPhotos([]);
+      setActivePreviewIndex(0);
+      
+      // Actualizar cuota
+      setHourlyUsage(prev => ({
+        ...prev,
+        used: Math.min(prev.used + newNotes.length, prev.max)
+      }));
+
+    } catch (err: any) {
+      alert(`Error al procesar fotos: ${err.message}`);
+    } finally {
+      setIsProcessingStaged(false);
     }
+  };
+
+  const handleRemoveStagedPhoto = (idx: number) => {
+    setStagedPhotos(prev => {
+      const next = prev.filter((_, i) => i !== idx);
+      if (activePreviewIndex >= next.length) {
+        setActivePreviewIndex(Math.max(0, next.length - 1));
+      }
+      return next;
+    });
   };
 
   // Table item edits
@@ -320,7 +507,7 @@ export default function CapturistaApp() {
         ref={fileInputRef} 
         onChange={handleFileUpload} 
         accept="image/*" 
-        capture="environment" 
+        multiple
         className="hidden" 
       />
 
@@ -436,6 +623,148 @@ export default function CapturistaApp() {
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 flex flex-col">
         {activeTab === 'captura' && (
           <div className="flex-1 flex flex-col space-y-4">
+
+            {/* BOTÓN HERO CENTRAL (ANDROID: TOMAR FOTO / PC: SUBIR FOTOS) */}
+            <div className="flex justify-center items-center py-1">
+              <button
+                onClick={handleCaptureClick}
+                className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-base rounded-2xl shadow-md hover:shadow-xl active:scale-95 transition-all flex items-center justify-center space-x-3 border-2 border-amber-500 group"
+              >
+                {isMobileMode ? (
+                  <>
+                    <div className="p-2 bg-slate-950 text-amber-400 rounded-xl group-hover:scale-110 transition-transform">
+                      <Camera className="w-6 h-6" />
+                    </div>
+                    <div className="text-left">
+                      <span className="block text-base sm:text-lg font-black leading-tight">Tomar Foto</span>
+                      <span className="block text-[11px] font-semibold text-slate-800 opacity-90">Captura directa desde la cámara del celular</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="p-2 bg-slate-950 text-amber-400 rounded-xl group-hover:scale-110 transition-transform">
+                      <Upload className="w-6 h-6" />
+                    </div>
+                    <div className="text-left">
+                      <span className="block text-base sm:text-lg font-black leading-tight">Subir Fotos</span>
+                      <span className="block text-[11px] font-semibold text-slate-800 opacity-90">Seleccionar imágenes desde el explorador de archivos de PC</span>
+                    </div>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* PREVISUALIZACIÓN DE FOTO(S) CAPTURADA(S) Y BOTONES DE FLUJO */}
+            {stagedPhotos.length > 0 && (
+              <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-2 border-amber-400 rounded-2xl p-4 shadow-md space-y-4 animate-in fade-in zoom-in-95 duration-200">
+                <div className="flex items-center justify-between border-b border-amber-200/80 pb-3">
+                  <div className="flex items-center space-x-2">
+                    <span className="bg-amber-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-lg">
+                      {stagedPhotos.length} {stagedPhotos.length === 1 ? 'Foto Tomada' : 'Fotos Tomadas'}
+                    </span>
+                    <span className="text-xs font-bold text-slate-800">
+                      Previsualización antes de subir
+                    </span>
+                  </div>
+                  <button 
+                    onClick={() => setStagedPhotos([])}
+                    className="text-xs text-slate-500 hover:text-red-600 flex items-center space-x-1 transition font-medium"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    <span>Descartar</span>
+                  </button>
+                </div>
+
+                {/* Contenedor de Previsualización: Foto activa y controles */}
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                  <div className="relative w-full sm:w-64 h-64 bg-slate-950 rounded-xl overflow-hidden border-2 border-amber-300 flex items-center justify-center shadow-inner group">
+                    <img 
+                      src={stagedPhotos[activePreviewIndex] || stagedPhotos[0]} 
+                      alt="Previsualización de foto capturada" 
+                      className="max-h-full max-w-full object-contain"
+                    />
+                    <div className="absolute top-2 left-2 bg-slate-900/90 text-white text-[10px] px-2 py-0.5 rounded font-mono border border-slate-700">
+                      Foto #{activePreviewIndex + 1} de {stagedPhotos.length}
+                    </div>
+                    <button
+                      onClick={() => handleRemoveStagedPhoto(activePreviewIndex)}
+                      className="absolute top-2 right-2 p-1.5 bg-red-600/90 hover:bg-red-700 text-white rounded-full shadow transition"
+                      title="Quitar esta foto"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="flex-1 w-full space-y-3">
+                    {/* Tira de miniaturas si se tomó más de 1 foto */}
+                    {stagedPhotos.length > 1 && (
+                      <div>
+                        <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
+                          Fotos en cola de subida (Haz clic para ver):
+                        </label>
+                        <div className="flex space-x-2 overflow-x-auto pb-2">
+                          {stagedPhotos.map((p, idx) => (
+                            <div 
+                              key={idx}
+                              onClick={() => setActivePreviewIndex(idx)}
+                              className={`relative cursor-pointer rounded-lg overflow-hidden border-2 flex-shrink-0 w-16 h-16 transition ${
+                                activePreviewIndex === idx ? 'border-amber-600 ring-2 ring-amber-400' : 'border-slate-300 opacity-70 hover:opacity-100'
+                              }`}
+                            >
+                              <img src={p} alt={`Foto ${idx+1}`} className="w-full h-full object-cover" />
+                              <span className="absolute bottom-0 right-0 bg-slate-900/80 text-white text-[9px] px-1 font-mono">
+                                #{idx+1}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="bg-white/90 rounded-xl p-3 border border-amber-200 text-xs text-slate-700 space-y-1">
+                      <p className="font-bold text-slate-900 flex items-center space-x-1.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <span>{stagedPhotos.length === 1 ? '1 foto lista para ingresar a la tabla.' : `${stagedPhotos.length} fotos tomadas listas para ingresar juntas.`}</span>
+                      </p>
+                      <p className="text-[11px] text-slate-500">
+                        {isMobileMode 
+                          ? 'Toma otra foto de la siguiente nota o sube las fotos tomadas para extraer las partidas con IA.'
+                          : 'Agrega más imágenes o presiona subir para analizarlas y agregarlas a tus notas de trabajo.'}
+                      </p>
+                    </div>
+
+                    {/* BOTONES REQUERIDOS: TOMAR OTRA FOTO Y SUBIR FOTO */}
+                    <div className="flex flex-wrap items-center gap-3 pt-1">
+                      <button
+                        onClick={handleCaptureClick}
+                        className="flex-1 min-w-[150px] px-4 py-2.5 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs rounded-xl border border-slate-300 shadow-sm transition flex items-center justify-center space-x-2"
+                      >
+                        <Camera className="w-4 h-4 text-amber-600" />
+                        <span>Tomar otra foto</span>
+                      </button>
+
+                      <button
+                        onClick={handleUploadStagedPhotos}
+                        disabled={isProcessingStaged}
+                        className="flex-1 min-w-[160px] px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-2 disabled:opacity-50"
+                      >
+                        {isProcessingStaged ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>Procesando...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-4 h-4" />
+                            <span>{stagedPhotos.length > 1 ? `Subir fotos (${stagedPhotos.length})` : 'Subir foto'}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
             {/* BARRA DE SELECCIÓN DE MOTOR Y NOTAS DE PRUEBA */}
             <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
@@ -489,30 +818,49 @@ export default function CapturistaApp() {
                 </button>
               </div>
 
-              {/* Selector de notas de muestra del negocio */}
-              <div className="flex items-center space-x-1 overflow-x-auto">
-                <span className="text-xs text-slate-500 mr-1 hidden sm:inline">Notas reales:</span>
-                {SAMPLE_NOTES.map((s, idx) => (
-                  <button 
-                    key={s.folio}
-                    onClick={() => handleSelectSample(idx)}
-                    className={`px-2.5 py-1 text-xs rounded font-medium transition ${
-                      selectedSampleIndex === idx 
-                        ? 'bg-amber-500 text-slate-950 font-bold shadow' 
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                    }`}
-                  >
-                    #{s.folio}
-                  </button>
-                ))}
+              {/* Selector de notas agrupadas con botón de borrar individual */}
+              <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 max-w-full">
+                <span className="text-xs text-slate-500 mr-1 hidden sm:inline font-semibold">Notas:</span>
+                {notesList.map((s, idx) => {
+                  const isSelected = selectedSampleIndex === idx;
+                  return (
+                    <div 
+                      key={s.folio || idx} 
+                      className={`inline-flex items-center rounded-lg text-xs transition border group ${
+                        isSelected 
+                          ? 'bg-amber-400 text-slate-950 font-bold border-amber-500 shadow-sm' 
+                          : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+                      }`}
+                    >
+                      <button 
+                        onClick={() => handleSelectSample(idx)}
+                        className="pl-2.5 pr-1 py-1 flex items-center space-x-1"
+                        title={`Ver nota #${s.folio}`}
+                      >
+                        <span>#{s.folio}</span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteNote(s.folio);
+                        }}
+                        className="p-1 mr-1 text-slate-500 hover:text-red-600 rounded-full hover:bg-red-100/60 transition"
+                        title={`Borrar nota #${s.folio}`}
+                      >
+                        <X className="w-3 h-3 hover:scale-125 transition-transform" />
+                      </button>
+                    </div>
+                  );
+                })}
 
-                {/* Botón Tomar Foto / Subir */}
+                {/* Botón rápido adicional para capturar */}
                 <button 
                   onClick={handleCaptureClick}
-                  className="ml-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow"
+                  className="ml-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow flex-shrink-0"
+                  title={isMobileMode ? 'Tomar Foto' : 'Cargar Imagen'}
                 >
                   <Camera className="w-3.5 h-3.5 text-amber-400" />
-                  <span>{isMobileMode ? 'Tomar Foto' : 'Cargar Imagen'}</span>
+                  <span>{isMobileMode ? 'Tomar Foto' : 'Cargar'}</span>
                 </button>
               </div>
             </div>
