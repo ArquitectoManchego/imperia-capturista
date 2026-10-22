@@ -1,0 +1,53 @@
+{
+  "id": 2,
+  "name": "nota_7904_recorrido_columna",
+  "ink_color": [
+    28,
+    28,
+    30,
+    240
+  ],
+  "folio": "7904",
+  "date_d": "22",
+  "date_m": "10",
+  "date_y": "2026",
+  "payment_method": "TRANSFERENCIA",
+  "cliente": "Dr. Roberto Alcocer",
+  "tel": "2299012345",
+  "rfc": "AOSR800101",
+  "direccion": "Hospital Beneficencia Espanola",
+  "items": [
+    {
+      "row_idx": 0,
+      "ped_apa_ent": "P",
+      "cant": 3,
+      "clave": "3",
+      "concepto": "Bata Medica Manga Larga Caballero Blanca T-40",
+      "prenda": "Bata",
+      "corte": "Manga Larga",
+      "genero": "Caballero",
+      "talla": "40",
+      "notas": "",
+      "p_unit": 420.0,
+      "importe": 1260.0
+    },
+    {
+      "row_idx": 1,
+      "ped_apa_ent": "B",
+      "cant": 3,
+      "clave": "3",
+      "concepto": "Bordado escudo Hospital y nombre Dr. Alcocer",
+      "prenda": "Bordado",
+      "corte": "",
+      "genero": "",
+      "talla": "",
+      "notas": "escudo Hospital y nombre Dr. Alcocer",
+      "p_unit": 60.0,
+      "importe": 180.0
+    }
+  ],
+  "fecha_entrega": "30/10/2026",
+  "anticipo": 1000.0,
+  "resta": 440.0,
+  "total": 1440.0
+}

@@ -1,0 +1,15 @@
+{
+  "appId": "com.imperia.capturista",
+  "appName": "Imperia Capturista",
+  "webDir": "out",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "plugins": {
+    "Camera": {
+      "permissions": ["camera", "photos"]
+    }
+  }
+}

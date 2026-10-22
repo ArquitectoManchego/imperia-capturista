@@ -1,0 +1,39 @@
+{
+  "id": 4,
+  "name": "nota_7906_prenda_cliente",
+  "ink_color": [
+    25,
+    25,
+    25,
+    240
+  ],
+  "folio": "7906",
+  "date_d": "23",
+  "date_m": "10",
+  "date_y": "2026",
+  "payment_method": "EFECTIVO",
+  "cliente": "Clinica Dental Sonrisas (Dra. Arantza)",
+  "tel": "2297788990",
+  "rfc": "",
+  "direccion": "Paseo Jardin 45",
+  "items": [
+    {
+      "row_idx": 0,
+      "ped_apa_ent": "B",
+      "cant": 4,
+      "clave": "",
+      "concepto": "Prenda de cliente - dejo 4 filipinas bordar logo pecho izq",
+      "prenda": "Bordado",
+      "corte": "",
+      "genero": "",
+      "talla": "",
+      "notas": "Prenda de cliente - dejo 4 filipinas bordar logo pecho izq",
+      "p_unit": 65.0,
+      "importe": 260.0
+    }
+  ],
+  "fecha_entrega": "25/10/2026 5:00 pm",
+  "anticipo": 260.0,
+  "resta": 0.0,
+  "total": 260.0
+}

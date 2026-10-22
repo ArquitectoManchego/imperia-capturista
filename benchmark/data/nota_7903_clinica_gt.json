@@ -1,0 +1,67 @@
+{
+  "id": 1,
+  "name": "nota_7903_clinica",
+  "ink_color": [
+    22,
+    59,
+    112,
+    235
+  ],
+  "folio": "7903",
+  "date_d": "22",
+  "date_m": "10",
+  "date_y": "2026",
+  "payment_method": "EFECTIVO",
+  "cliente": "Dra. Claudia Mendoza Morales",
+  "tel": "2291456789",
+  "rfc": "MEMC850412",
+  "direccion": "Av. Colon 1204, Reforma",
+  "items": [
+    {
+      "row_idx": 0,
+      "ped_apa_ent": "P",
+      "cant": 2,
+      "clave": "",
+      "concepto": "Filipina Quirurgica Cuello V Dama Azul Marino T-34 c/bordado logo IMSS",
+      "prenda": "Filipina",
+      "corte": "Cuello V",
+      "genero": "Dama",
+      "talla": "34",
+      "notas": "c/bordado logo IMSS",
+      "p_unit": 350.0,
+      "importe": 700.0
+    },
+    {
+      "row_idx": 1,
+      "ped_apa_ent": "P",
+      "cant": 2,
+      "clave": "",
+      "concepto": "Pantalon Quirurgico Dama Azul Marino T-34",
+      "prenda": "Pantalon",
+      "corte": "Quirurgico",
+      "genero": "Dama",
+      "talla": "34",
+      "notas": "",
+      "p_unit": 280.0,
+      "importe": 560.0
+    },
+    {
+      "row_idx": 2,
+      "ped_apa_ent": "B",
+      "cant": 2,
+      "clave": "",
+      "concepto": "Bordado Nombre Dra. Claudia Mendoza",
+      "prenda": "Bordado",
+      "corte": "",
+      "genero": "",
+      "talla": "",
+      "notas": "Dra. Claudia Mendoza",
+      "p_unit": 50.0,
+      "importe": 100.0
+    }
+  ],
+  "fecha_entrega": "29/10/2026",
+  "anticipo": 800.0,
+  "resta": 560.0,
+  "total": 1360.0
+}

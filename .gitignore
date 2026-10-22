@@ -1,0 +1,22 @@
+# Node
+node_modules/
+.next/
+out/
+
+# Android build outputs and caches (keep the compiled ready APK in public/ and root!)
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/capacitor-cordova-android-plugins/build/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment files
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db

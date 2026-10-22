@@ -1,0 +1,56 @@
+{
+  "id": 3,
+  "name": "nota_7905_talla_diferenciada",
+  "ink_color": [
+    15,
+    38,
+    75,
+    230
+  ],
+  "folio": "7905",
+  "date_d": "23",
+  "date_m": "10",
+  "date_y": "2026",
+  "payment_method": "TARJETA_DEBITO",
+  "cliente": "Lic. Sofia Valenzuela",
+  "tel": "2293334455",
+  "rfc": "VASS920718",
+  "direccion": "Privada Jacarandas 12 Boca del Rio",
+  "items": [
+    {
+      "row_idx": 0,
+      "ped_apa_ent": "P",
+      "cant": 1,
+      "clave": "",
+      "concepto": "Conjunto Quirurgico Dama F-M P-G Verde Quirurgico",
+      "prenda": "Quirurgico",
+      "corte": "Conjunto",
+      "genero": "Dama",
+      "talla_filipina": "M",
+      "talla_pantalon": "G",
+      "notas": "Verde Quirurgico",
+      "p_unit": 650.0,
+      "importe": 650.0,
+      "handwritten_punit_blank": true
+    },
+    {
+      "row_idx": 1,
+      "ped_apa_ent": "A",
+      "cant": 1,
+      "clave": "",
+      "concepto": "Filipina Medica Estampada Pediatria T-M",
+      "prenda": "Filipina",
+      "corte": "Estampada Pediatria",
+      "genero": "Dama",
+      "talla": "M",
+      "notas": "",
+      "p_unit": 380.0,
+      "importe": 380.0,
+      "handwritten_punit_blank": false
+    }
+  ],
+  "fecha_entrega": "26/10/2026",
+  "anticipo": 500.0,
+  "resta": 530.0,
+  "total": 1030.0
+}

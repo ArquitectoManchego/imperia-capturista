@@ -1,0 +1,81 @@
+{
+  "id": 5,
+  "name": "nota_7907_institucional_completa",
+  "ink_color": [
+    18,
+    50,
+    95,
+    235
+  ],
+  "folio": "7907",
+  "date_d": "24",
+  "date_m": "10",
+  "date_y": "2026",
+  "payment_method": "TRANSFERENCIA",
+  "cliente": "Instituto Cardiovascular Veracruzano",
+  "tel": "2299887766",
+  "rfc": "ICV150320AB1",
+  "direccion": "Zaragoza 890, Centro",
+  "items": [
+    {
+      "row_idx": 0,
+      "ped_apa_ent": "P",
+      "cant": 5,
+      "clave": "",
+      "concepto": "Filipina Quirurgica Unisex Cuello V Azul Real T-L",
+      "prenda": "Filipina",
+      "corte": "Cuello V",
+      "genero": "Unisex",
+      "talla": "L",
+      "notas": "Azul Real",
+      "p_unit": 320.0,
+      "importe": 1600.0
+    },
+    {
+      "row_idx": 1,
+      "ped_apa_ent": "P",
+      "cant": 5,
+      "clave": "",
+      "concepto": "Pantalon Quirurgico Unisex Azul Real T-L",
+      "prenda": "Pantalon",
+      "corte": "Quirurgico",
+      "genero": "Unisex",
+      "talla": "L",
+      "notas": "Azul Real",
+      "p_unit": 260.0,
+      "importe": 1300.0
+    },
+    {
+      "row_idx": 2,
+      "ped_apa_ent": "P",
+      "cant": 3,
+      "clave": "",
+      "concepto": "Bata Laboratorio Unisex Blanca T-G",
+      "prenda": "Bata",
+      "corte": "Laboratorio",
+      "genero": "Unisex",
+      "talla": "G",
+      "notas": "Blanca",
+      "p_unit": 390.0,
+      "importe": 1170.0
+    },
+    {
+      "row_idx": 3,
+      "ped_apa_ent": "B",
+      "cant": 13,
+      "clave": "",
+      "concepto": "Ponchado y bordado logo institucional",
+      "prenda": "Bordado",
+      "corte": "Ponchado",
+      "genero": "",
+      "talla": "",
+      "notas": "Ponchado y bordado logo institucional",
+      "p_unit": 45.0,
+      "importe": 585.0
+    }
+  ],
+  "fecha_entrega": "04/11/2026",
+  "anticipo": 2500.0,
+  "resta": 2155.0,
+  "total": 4655.0
+}

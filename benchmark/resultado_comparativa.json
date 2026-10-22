@@ -1,0 +1,287 @@
+{
+  "resumen_general": {
+    "criterio_ganador": "Menor tasa de errores (Liston Cero-Errores)",
+    "ocr_tradicional": {
+      "precision_global_pct": 43.18,
+      "tasa_error_pct": 56.82,
+      "total_errores": 50,
+      "campos_evaluados": 88,
+      "costo_creditos": 0,
+      "consumo_recursos": "CPU local, 0 costo API"
+    },
+    "ia_multimodal_vision": {
+      "precision_global_pct": 100.0,
+      "tasa_error_pct": 0.0,
+      "total_errores": 0,
+      "campos_evaluados": 88,
+      "costo_creditos": "Bajo (~$0.00015 / nota)",
+      "limite_cuota": "500 hojas/hora protegido",
+      "ganador_etapa_1": true
+    },
+    "sistema_superior_adversarial": {
+      "precision_global_pct": 100.0,
+      "tasa_error_pct": 0.0,
+      "total_errores": 0,
+      "campos_evaluados": 88,
+      "pruebas_ejecutadas": 5,
+      "limite_max_pruebas": 5,
+      "consumo_recursos": "Alto (2-3 llamadas de verificación cruzada con CoVe)",
+      "encuentra_errores_en_inferior": true,
+      "requiere_autorizacion": true
+    }
+  },
+  "detalle_por_caso": {
+    "ocr": [
+      {
+        "total_fields": 19,
+        "correct_fields": 6,
+        "error_count": 13,
+        "accuracy_pct": 31.58,
+        "error_rate_pct": 68.42,
+        "errors": [
+          "metodo_pago: pred='TRANSFERENCIA' != gt='EFECTIVO'",
+          "cliente: pred='vra. claudia mendoza morales' != gt='dra. claudia mendoza morales'",
+          "rfc: pred='WEWC850412' != gt='MEMC850412'",
+          "total: pred=41360.0 != gt=1360.0",
+          "anticipo: pred=0.0 != gt=800.0",
+          "item[0].cant: pred=0 != gt=2",
+          "item[0].importe: pred=7.0 != gt=700.0",
+          "item[1].cant: pred=0 != gt=2",
+          "item[1].prenda: pred='quirurgico' != gt='pantalon'",
+          "item[2].cant: pred=0 != gt=2",
+          "item[2].importe: pred=1.0 != gt=100.0",
+          "item[2].prenda: pred='' != gt='bordado'",
+          "cuadre_financiero: 41360.0 - 0.0 != 560.0"
+        ],
+        "tiempo_seg": 3.31,
+        "caso": "nota_7903_clinica"
+      },
+      {
+        "total_fields": 16,
+        "correct_fields": 7,
+        "error_count": 9,
+        "accuracy_pct": 43.75,
+        "error_rate_pct": 56.25,
+        "errors": [
+          "cliente: pred='vr poberto alcucer' != gt='dr. roberto alcocer'",
+          "rfc: pred='AOSP8DD1D1' != gt='AOSR800101'",
+          "total: pred=41440.0 != gt=1440.0",
+          "anticipo: pred=0.0 != gt=1000.0",
+          "resta: pred=4440.0 != gt=440.0",
+          "item[0].cant: pred=0 != gt=3",
+          "item[1].cant: pred=1 != gt=3",
+          "item[1].prenda: pred='' != gt='bordado'",
+          "cuadre_financiero: 41440.0 - 0.0 != 4440.0"
+        ],
+        "tiempo_seg": 2.42,
+        "caso": "nota_7904_recorrido_columna"
+      },
+      {
+        "total_fields": 18,
+        "correct_fields": 9,
+        "error_count": 9,
+        "accuracy_pct": 50.0,
+        "error_rate_pct": 50.0,
+        "errors": [
+          "metodo_pago: pred='TRANSFERENCIA' != gt='TARJETA_DEBITO'",
+          "rfc: pred='V4SS920718' != gt='VASS920718'",
+          "total: pred=41030.0 != gt=1030.0",
+          "anticipo: pred=4500.0 != gt=500.0",
+          "resta: pred=4530.0 != gt=530.0",
+          "item[0].talla_filipina: pred='' != gt='M'",
+          "item[0].talla_pantalon: pred='' != gt='G'",
+          "item[1].cant: pred=0 != gt=1",
+          "cuadre_financiero: 41030.0 - 4500.0 != 4530.0"
+        ],
+        "tiempo_seg": 2.64,
+        "caso": "nota_7905_talla_diferenciada"
+      },
+      {
+        "total_fields": 13,
+        "correct_fields": 6,
+        "error_count": 7,
+        "accuracy_pct": 46.15,
+        "error_rate_pct": 53.85,
+        "errors": [
+          "metodo_pago: pred='TRANSFERENCIA' != gt='EFECTIVO'",
+          "cliente: pred='cliuica vental sonrisas vra: arantza)' != gt='clinica dental sonrisas (dra. arantza)'",
+          "total: pred=4260.0 != gt=260.0",
+          "anticipo: pred=0.0 != gt=260.0",
+          "item[0].cant: pred=0 != gt=4",
+          "item[0].prenda: pred='' != gt='bordado'",
+          "cuadre_financiero: 4260.0 - 0.0 != 0.0"
+        ],
+        "tiempo_seg": 2.3,
+        "caso": "nota_7906_prenda_cliente"
+      },
+      {
+        "total_fields": 22,
+        "correct_fields": 10,
+        "error_count": 12,
+        "accuracy_pct": 45.45,
+        "error_rate_pct": 54.55,
+        "errors": [
+          "cliente: pred='iustituto cardiovascular veracruzano' != gt='instituto cardiovascular veracruzano'",
+          "rfc: pred='ICV15032DAB1' != gt='ICV150320AB1'",
+          "total: pred=44655.0 != gt=4655.0",
+          "anticipo: pred=4250.0 != gt=2500.0",
+          "resta: pred=42155.0 != gt=2155.0",
+          "item[0].cant: pred=0 != gt=5",
+          "item[1].cant: pred=0 != gt=5",
+          "item[1].importe: pred=13.0 != gt=1300.0",
+          "item[1].prenda: pred='quirurgico' != gt='pantalon'",
+          "item[2].cant: pred=0 != gt=3",
+          "item[2].prenda: pred='' != gt='bata'",
+          "cuadre_financiero: 44655.0 - 4250.0 != 42155.0"
+        ],
+        "tiempo_seg": 3.14,
+        "caso": "nota_7907_institucional_completa"
+      }
+    ],
+    "ia": [
+      {
+        "total_fields": 19,
+        "correct_fields": 19,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7903_clinica"
+      },
+      {
+        "total_fields": 16,
+        "correct_fields": 16,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7904_recorrido_columna"
+      },
+      {
+        "total_fields": 18,
+        "correct_fields": 18,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7905_talla_diferenciada"
+      },
+      {
+        "total_fields": 13,
+        "correct_fields": 13,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7906_prenda_cliente"
+      },
+      {
+        "total_fields": 22,
+        "correct_fields": 22,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7907_institucional_completa"
+      }
+    ],
+    "superior": [
+      {
+        "total_fields": 19,
+        "correct_fields": 19,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7903_clinica",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 1,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 16,
+        "correct_fields": 16,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7904_recorrido_columna",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 2,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 18,
+        "correct_fields": 18,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7905_talla_diferenciada",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 3,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 13,
+        "correct_fields": 13,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7906_prenda_cliente",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 1,
+          "registro_correcciones": [
+            {
+              "tipo": "BANDERA_PRENDA_CLIENTE",
+              "fila": 0,
+              "detalle": "Fila 1: Marcada explícitamente como Prenda de Cliente"
+            }
+          ],
+          "numero_prueba": 4,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 22,
+        "correct_fields": 22,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "nota_7907_institucional_completa",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 5,
+          "limite_pruebas": 5
+        }
+      }
+    ]
+  }
+}
