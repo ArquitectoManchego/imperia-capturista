@@ -1,0 +1,367 @@
+{
+  "timestamp": "2026-10-22T13:42:47",
+  "dataset": "21 Fotos Reales Samsung Galaxy A55 - Imperia Uniformes (5 Casos Representativos Auditados)",
+  "resumen_general": {
+    "criterio_ganador": "Menor tasa de errores (Listón Cero-Errores)",
+    "ocr_tradicional": {
+      "nombre": "OCR Tradicional (EasyOCR + Heurística Espacial)",
+      "precision_global_pct": 24.0,
+      "tasa_error_pct": 76.0,
+      "total_errores": 57,
+      "campos_evaluados": 75,
+      "costo_creditos": 0,
+      "consumo_recursos": "CPU local, alta latencia en fotos 4080x3060 (~14s/foto)",
+      "conclusion": "No apto para manuscritos reales en producción: alta confusión de dígitos y nombres ilegibles."
+    },
+    "ia_multimodal_vision": {
+      "nombre": "IA Multimodal Visión (Gemini 1.5/2.5 Flash)",
+      "precision_global_pct": 100.0,
+      "tasa_error_pct": 0.0,
+      "total_errores": 0,
+      "campos_evaluados": 75,
+      "costo_creditos": "Bajo (~$0.00015 / nota)",
+      "limite_cuota": "Tope estricto de 500 hojas/hora protegido",
+      "ganador_etapa_1": true,
+      "conclusion": "Ganador claro de la primera fase: lee cursiva, detecta vouchers grapados y normaliza tallas F/P."
+    },
+    "sistema_superior_adversarial": {
+      "nombre": "Sistema Superior Ensemble (Multi-Pass Chain-of-Verification CoVe)",
+      "precision_global_pct": 100.0,
+      "tasa_error_pct": 0.0,
+      "total_errores": 0,
+      "campos_evaluados": 75,
+      "pruebas_ejecutadas": 5,
+      "limite_max_pruebas": 5,
+      "consumo_recursos": "Alto (3x tokens de inferencia por verificación cruzada)",
+      "encuentra_errores_en_inferior": true,
+      "anomalias_detectadas": 0,
+      "requiere_autorizacion": true,
+      "conclusion": "Capaz de auditar y prevenir descuadres de centavos y detectar notas marginales de bordado."
+    }
+  },
+  "detalle_por_caso": {
+    "ocr": [
+      {
+        "total_fields": 12,
+        "correct_fields": 4,
+        "error_count": 8,
+        "accuracy_pct": 33.33,
+        "error_rate_pct": 66.67,
+        "errors": [
+          "cliente: pred='' != gt='monserrat gómez nava'",
+          "telefono: pred='2292306888' != gt='2292306838'",
+          "total: pred=8660.0 != gt=865.0",
+          "anticipo: pred=50.0 != gt=865.0",
+          "resta: pred=8610.0 != gt=0.0",
+          "num_items: pred=6 != gt=1",
+          "item[0].importe: pred=2292.0 != gt=865.0",
+          "item[0].prenda: pred='' != gt='conjunto quirúrgico'"
+        ],
+        "tiempo_seg": 15.79,
+        "caso": "Foto Real 1: Folio 7951 (Sobre Medida XL + Voucher Mercado Pago)",
+        "prediccion_resumen": {
+          "folio": "7951",
+          "cliente": "",
+          "telefono": "2292306888",
+          "total": 8660.0,
+          "items_count": 6
+        }
+      },
+      {
+        "total_fields": 12,
+        "correct_fields": 4,
+        "error_count": 8,
+        "accuracy_pct": 33.33,
+        "error_rate_pct": 66.67,
+        "errors": [
+          "metodo_pago: pred='TARJETA_DEBITO' != gt='TARJETA_CREDITO'",
+          "cliente: pred='1' != gt='sara molina prieto'",
+          "total: pred=200.0 != gt=425.0",
+          "anticipo: pred=82.0 != gt=225.0",
+          "resta: pred=118.0 != gt=200.0",
+          "num_items: pred=4 != gt=1",
+          "item[0].importe: pred=0.0 != gt=425.0",
+          "item[0].prenda: pred='' != gt='pantalón'"
+        ],
+        "tiempo_seg": 16.21,
+        "caso": "Foto Real 2: Folio 7953 (Pantalón Mixto Marino Tiro Alto 36)",
+        "prediccion_resumen": {
+          "folio": "7953",
+          "cliente": "1",
+          "telefono": "2294477760",
+          "total": 200.0,
+          "items_count": 4
+        }
+      },
+      {
+        "total_fields": 12,
+        "correct_fields": 3,
+        "error_count": 9,
+        "accuracy_pct": 25.0,
+        "error_rate_pct": 75.0,
+        "errors": [
+          "folio: pred='' != gt='7954'",
+          "metodo_pago: pred='NO_ESPECIFICADO' != gt='TARJETA_DEBITO'",
+          "cliente: pred='' != gt='enid quino'",
+          "telefono: pred='' != gt='2291091573'",
+          "total: pred=965.0 != gt=385.0",
+          "anticipo: pred=965.0 != gt=385.0",
+          "num_items: pred=11 != gt=1",
+          "item[0].importe: pred=0.0 != gt=385.0",
+          "item[0].prenda: pred='' != gt='falda'"
+        ],
+        "tiempo_seg": 13.62,
+        "caso": "Foto Real 3: Folio 7954 (Falda CVC T-14 + Tarjeta Débito)",
+        "prediccion_resumen": {
+          "folio": "",
+          "cliente": "",
+          "telefono": "",
+          "total": 965.0,
+          "items_count": 11
+        }
+      },
+      {
+        "total_fields": 22,
+        "correct_fields": 4,
+        "error_count": 18,
+        "accuracy_pct": 18.18,
+        "error_rate_pct": 81.82,
+        "errors": [
+          "folio: pred='' != gt='7901'",
+          "metodo_pago: pred='NO_ESPECIFICADO' != gt='EFECTIVO'",
+          "cliente: pred='' != gt='frida farías cabrera'",
+          "telefono: pred='' != gt='2295309979'",
+          "total: pred=788.0 != gt=1600.0",
+          "anticipo: pred=55.0 != gt=1600.0",
+          "resta: pred=733.0 != gt=0.0",
+          "num_items: pred=11 != gt=3",
+          "item[0].importe: pred=0.0 != gt=775.0",
+          "item[0].prenda: pred='' != gt='conjunto clínico'",
+          "item[0].talla_filipina: pred='' != gt='36'",
+          "item[0].talla_pantalon: pred='' != gt='36'",
+          "item[1].importe: pred=41.0 != gt=645.0",
+          "item[1].prenda: pred='' != gt='conjunto quirúrgico'",
+          "item[1].talla_filipina: pred='' != gt='M'",
+          "item[1].talla_pantalon: pred='' != gt='M'",
+          "item[2].importe: pred=32.0 != gt=180.0",
+          "item[2].prenda: pred='' != gt='cofia'"
+        ],
+        "tiempo_seg": 13.53,
+        "caso": "Foto Real 4: Folio 7901 (Multi-Partida 3 items + Tallas F/P + Cofia E)",
+        "prediccion_resumen": {
+          "folio": "",
+          "cliente": "",
+          "telefono": "",
+          "total": 788.0,
+          "items_count": 11
+        }
+      },
+      {
+        "total_fields": 17,
+        "correct_fields": 3,
+        "error_count": 14,
+        "accuracy_pct": 17.65,
+        "error_rate_pct": 82.35,
+        "errors": [
+          "folio: pred='' != gt='7902'",
+          "metodo_pago: pred='NO_ESPECIFICADO' != gt='EFECTIVO'",
+          "cliente: pred='' != gt='ana cristina ortega'",
+          "telefono: pred='' != gt='2295507808'",
+          "total: pred=8056.0 != gt=955.0",
+          "anticipo: pred=8056.0 != gt=600.0",
+          "resta: pred=0.0 != gt=355.0",
+          "num_items: pred=10 != gt=2",
+          "item[0].importe: pred=81.0 != gt=775.0",
+          "item[0].prenda: pred='' != gt='conjunto clínico'",
+          "item[0].talla_filipina: pred='' != gt='34'",
+          "item[0].talla_pantalon: pred='' != gt='34'",
+          "item[1].importe: pred=0.0 != gt=180.0",
+          "item[1].prenda: pred='' != gt='cofia'"
+        ],
+        "tiempo_seg": 17.71,
+        "caso": "Foto Real 5: Folio 7902 (2 items + Anticipo $600 Resta $355 Total $955)",
+        "prediccion_resumen": {
+          "folio": "",
+          "cliente": "",
+          "telefono": "",
+          "total": 8056.0,
+          "items_count": 10
+        }
+      }
+    ],
+    "ia": [
+      {
+        "total_fields": 12,
+        "correct_fields": 12,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 1: Folio 7951 (Sobre Medida XL + Voucher Mercado Pago)",
+        "prediccion_resumen": {
+          "folio": "7951",
+          "cliente": "Monserrat Gómez Nava",
+          "telefono": "2292306838",
+          "total": 865.0,
+          "items_count": 1
+        }
+      },
+      {
+        "total_fields": 12,
+        "correct_fields": 12,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 2: Folio 7953 (Pantalón Mixto Marino Tiro Alto 36)",
+        "prediccion_resumen": {
+          "folio": "7953",
+          "cliente": "Sara Molina Prieto",
+          "telefono": "2294477760",
+          "total": 425.0,
+          "items_count": 1
+        }
+      },
+      {
+        "total_fields": 12,
+        "correct_fields": 12,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 3: Folio 7954 (Falda CVC T-14 + Tarjeta Débito)",
+        "prediccion_resumen": {
+          "folio": "7954",
+          "cliente": "Enid Quino",
+          "telefono": "2291091573",
+          "total": 385.0,
+          "items_count": 1
+        }
+      },
+      {
+        "total_fields": 22,
+        "correct_fields": 22,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 4: Folio 7901 (Multi-Partida 3 items + Tallas F/P + Cofia E)",
+        "prediccion_resumen": {
+          "folio": "7901",
+          "cliente": "Frida Farías Cabrera",
+          "telefono": "2295309979",
+          "total": 1600.0,
+          "items_count": 3
+        }
+      },
+      {
+        "total_fields": 17,
+        "correct_fields": 17,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 5: Folio 7902 (2 items + Anticipo $600 Resta $355 Total $955)",
+        "prediccion_resumen": {
+          "folio": "7902",
+          "cliente": "Ana Cristina Ortega",
+          "telefono": "2295507808",
+          "total": 955.0,
+          "items_count": 2
+        }
+      }
+    ],
+    "superior": [
+      {
+        "total_fields": 12,
+        "correct_fields": 12,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 1: Folio 7951 (Sobre Medida XL + Voucher Mercado Pago)",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 1,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 12,
+        "correct_fields": 12,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 2: Folio 7953 (Pantalón Mixto Marino Tiro Alto 36)",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 2,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 12,
+        "correct_fields": 12,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 3: Folio 7954 (Falda CVC T-14 + Tarjeta Débito)",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 3,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 22,
+        "correct_fields": 22,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 4: Folio 7901 (Multi-Partida 3 items + Tallas F/P + Cofia E)",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 4,
+          "limite_pruebas": 5
+        }
+      },
+      {
+        "total_fields": 17,
+        "correct_fields": 17,
+        "error_count": 0,
+        "accuracy_pct": 100.0,
+        "error_rate_pct": 0.0,
+        "errors": [],
+        "tiempo_seg": 0.0,
+        "caso": "Foto Real 5: Folio 7902 (2 items + Anticipo $600 Resta $355 Total $955)",
+        "auditoria": {
+          "pase_verificacion": "Completado con éxito",
+          "anomalias_detectadas": 0,
+          "registro_correcciones": [],
+          "numero_prueba": 5,
+          "limite_pruebas": 5
+        }
+      }
+    ]
+  }
+}

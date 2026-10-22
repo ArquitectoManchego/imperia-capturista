@@ -1,0 +1,34 @@
+{
+  "id": "real_foto_7953",
+  "file": "20260903_173915.jpg",
+  "name": "Foto Real 2: Folio 7953 (Pantalón Mixto Marino Tiro Alto 36)",
+  "folio": "7953",
+  "date_d": "02",
+  "date_m": "09",
+  "date_y": "2026",
+  "payment_method": "TARJETA_CREDITO",
+  "cliente": "Sara Molina Prieto",
+  "tel": "2294477760",
+  "rfc": "",
+  "direccion": "",
+  "items": [
+    {
+      "ped_apa_ent": "P",
+      "cant": 1,
+      "concepto": "Pantalón mixto marino, tiro alto sobre medida ~ 36",
+      "prenda": "Pantalón",
+      "corte": "Tiro alto sobre medida",
+      "genero": "Dama",
+      "talla": "36",
+      "talla_filipina": "",
+      "talla_pantalon": "",
+      "notas": "Marino, tiro alto sobre medida ~ 36",
+      "p_unit": 425.0,
+      "importe": 425.0
+    }
+  ],
+  "fecha_entrega": "23/09/2026",
+  "anticipo": 225.0,
+  "resta": 200.0,
+  "total": 425.0
+}

@@ -1,0 +1,34 @@
+{
+  "id": "real_foto_7954",
+  "file": "20260903_173925.jpg",
+  "name": "Foto Real 3: Folio 7954 (Falda CVC T-14 + Tarjeta Débito)",
+  "folio": "7954",
+  "date_d": "02",
+  "date_m": "09",
+  "date_y": "2026",
+  "payment_method": "TARJETA_DEBITO",
+  "cliente": "Enid Quino",
+  "tel": "2291091573",
+  "rfc": "",
+  "direccion": "",
+  "items": [
+    {
+      "ped_apa_ent": "P",
+      "cant": 1,
+      "concepto": "Falda CVC T-14",
+      "prenda": "Falda",
+      "corte": "CVC",
+      "genero": "Dama",
+      "talla": "14",
+      "talla_filipina": "",
+      "talla_pantalon": "",
+      "notas": "Pagado",
+      "p_unit": 385.0,
+      "importe": 385.0
+    }
+  ],
+  "fecha_entrega": "23/09/2026",
+  "anticipo": 385.0,
+  "resta": 0.0,
+  "total": 385.0
+}

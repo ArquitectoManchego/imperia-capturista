@@ -1,0 +1,62 @@
+{
+  "id": "real_foto_7901",
+  "file": "20260903_173946.jpg",
+  "name": "Foto Real 4: Folio 7901 (Multi-Partida 3 items + Tallas F/P + Cofia E)",
+  "folio": "7901",
+  "date_d": "06",
+  "date_m": "07",
+  "date_y": "2026",
+  "payment_method": "EFECTIVO",
+  "cliente": "Frida Farías Cabrera",
+  "tel": "2295309979",
+  "rfc": "",
+  "direccion": "",
+  "items": [
+    {
+      "ped_apa_ent": "P",
+      "cant": 1,
+      "concepto": "Conjunto Clínico CV Enfra dama F: ~36 P: ~36",
+      "prenda": "Conjunto Clínico",
+      "corte": "Cuello V",
+      "genero": "Dama",
+      "talla": "",
+      "talla_filipina": "36",
+      "talla_pantalon": "36",
+      "notas": "Enfra dama",
+      "p_unit": 775.0,
+      "importe": 775.0
+    },
+    {
+      "ped_apa_ent": "P",
+      "cant": 1,
+      "concepto": "Conjunto Qx. CV Enfra dama F: ~M P: ~M",
+      "prenda": "Conjunto Quirúrgico",
+      "corte": "Cuello V",
+      "genero": "Dama",
+      "talla": "",
+      "talla_filipina": "M",
+      "talla_pantalon": "M",
+      "notas": "Enfra dama",
+      "p_unit": 645.0,
+      "importe": 645.0
+    },
+    {
+      "ped_apa_ent": "E",
+      "cant": 1,
+      "concepto": "Cofia lisa M",
+      "prenda": "Cofia",
+      "corte": "Lisa",
+      "genero": "Unisex",
+      "talla": "M",
+      "talla_filipina": "",
+      "talla_pantalon": "",
+      "notas": "Entregado",
+      "p_unit": 180.0,
+      "importe": 180.0
+    }
+  ],
+  "fecha_entrega": "20/07/2026",
+  "anticipo": 1600.0,
+  "resta": 0.0,
+  "total": 1600.0
+}

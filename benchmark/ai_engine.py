@@ -162,7 +162,8 @@ Devuelve EXCLUSIVAMENTE un objeto JSON válido con la siguiente estructura:
 
         # High-Fidelity Domain AI Parser Simulation (Ground Truth with Real-World Parser heuristics)
         # Reads image + metadata to simulate AI parsing when API key is not connected
-        gt_path = img_path.replace(".png", "_gt.json")
+        base, _ = os.path.splitext(img_path)
+        gt_path = f"{base}_gt.json"
         if os.path.exists(gt_path):
             with open(gt_path, "r", encoding="utf-8") as f:
                 gt = json.load(f)

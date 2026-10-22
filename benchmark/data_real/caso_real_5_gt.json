@@ -1,0 +1,48 @@
+{
+  "id": "real_foto_7902",
+  "file": "20260903_173951.jpg",
+  "name": "Foto Real 5: Folio 7902 (2 items + Anticipo $600 Resta $355 Total $955)",
+  "folio": "7902",
+  "date_d": "07",
+  "date_m": "07",
+  "date_y": "2026",
+  "payment_method": "EFECTIVO",
+  "cliente": "Ana Cristina Ortega",
+  "tel": "2295507808",
+  "rfc": "",
+  "direccion": "",
+  "items": [
+    {
+      "ped_apa_ent": "P",
+      "cant": 1,
+      "concepto": "Conjunto Clínico CV Enfra dama F: ~34 P: ~34",
+      "prenda": "Conjunto Clínico",
+      "corte": "Cuello V",
+      "genero": "Dama",
+      "talla": "",
+      "talla_filipina": "34",
+      "talla_pantalon": "34",
+      "notas": "Enfra dama",
+      "p_unit": 775.0,
+      "importe": 775.0
+    },
+    {
+      "ped_apa_ent": "E",
+      "cant": 1,
+      "concepto": "Cofia lisa M",
+      "prenda": "Cofia",
+      "corte": "Lisa",
+      "genero": "Unisex",
+      "talla": "M",
+      "talla_filipina": "",
+      "talla_pantalon": "",
+      "notas": "Entregado",
+      "p_unit": 180.0,
+      "importe": 180.0
+    }
+  ],
+  "fecha_entrega": "15/07/2026",
+  "anticipo": 600.0,
+  "resta": 355.0,
+  "total": 955.0
+}
