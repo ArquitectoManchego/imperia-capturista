@@ -23,6 +23,16 @@ function checkRateLimit() {
   };
 }
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -55,7 +65,7 @@ export async function POST(req: NextRequest) {
       }
 
       copy.cuota_creditos = quota;
-      return NextResponse.json(copy);
+      return NextResponse.json(copy, { headers: corsHeaders });
     }
 
     // Si el usuario envió una imagen personalizada y proporcionó GEMINI API KEY
@@ -102,7 +112,7 @@ Reglas estrictas:
             const parsed = JSON.parse(rawText);
             parsed.motor = engine === 'superior' ? 'SUPERIOR_ADVERSARIAL_ENSEMBLE' : 'IA_MULTIMODAL';
             parsed.cuota_creditos = quota;
-            return NextResponse.json(parsed);
+            return NextResponse.json(parsed, { headers: corsHeaders });
           }
         }
       } catch (geminiErr: any) {
@@ -118,9 +128,9 @@ Reglas estrictas:
       cuota_creditos: quota
     };
 
-    return NextResponse.json(fallbackNote);
+    return NextResponse.json(fallbackNote, { headers: corsHeaders });
 
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || "Error al procesar la imagen" }, { status: 400 });
+    return NextResponse.json({ error: err.message || "Error al procesar la imagen" }, { status: 400, headers: corsHeaders });
   }
 }
