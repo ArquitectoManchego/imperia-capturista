@@ -154,38 +154,68 @@ export default function CapturistaApp() {
     }
   };
 
-  // Helper para resolver la URL adecuada de API (soporta Android nativo / Capacitor y Web)
-  const getApiUrl = (endpoint: string) => {
-    if (typeof window !== 'undefined') {
-      // @ts-ignore
-      const isNative = Boolean(window?.Capacitor?.isNativePlatform);
-      const isCapacitorLocal = window.location.protocol === 'capacitor:' || 
-        (window.location.hostname === 'localhost' && (!window.location.port || window.location.port === '80'));
-      
-      if (isNative || isCapacitorLocal) {
-        return `https://imperia-capturista.vercel.app${endpoint}`;
-      }
-    }
-    return endpoint;
-  };
+  // Compresor y optimizador de imágenes en cliente (HTML5 Canvas)
+  // Reduce fotos de cámara de 12MP/50MP (~4MB-8MB) a ~1600px (~280KB) manteniendo nitidez total del manuscrito
+  // Evita errores 413 Payload Too Large en Vercel Serverless Functions (límite 4.5MB)
+  const compressImageToBase64 = (source: File | string, maxDim = 1600, quality = 0.85): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const processDataUrl = (dataUrl: string) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(dataUrl);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL('image/jpeg', quality);
+          resolve(compressed);
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+      };
 
-  // Helper para convertir cualquier URI de imagen (blob, file o local) a Data URL Base64
-  const ensureBase64 = async (uri: string): Promise<string> => {
-    if (!uri) return '';
-    if (uri.startsWith('data:image')) return uri;
-    try {
-      const res = await fetch(uri);
-      const blob = await res.blob();
-      return new Promise<string>((resolve) => {
+      if (typeof source === 'string') {
+        if (source.startsWith('data:image')) {
+          processDataUrl(source);
+        } else {
+          fetch(source)
+            .then(r => r.blob())
+            .then(blob => {
+              const reader = new FileReader();
+              reader.onloadend = () => processDataUrl((reader.result as string) || source);
+              reader.onerror = () => resolve(source);
+              reader.readAsDataURL(blob);
+            })
+            .catch(() => resolve(source));
+        }
+      } else {
         const reader = new FileReader();
-        reader.onloadend = () => resolve((reader.result as string) || uri);
-        reader.onerror = () => resolve(uri);
-        reader.readAsDataURL(blob);
-      });
-    } catch (e) {
-      console.warn("No se pudo convertir URI a base64:", e);
-      return uri;
-    }
+        reader.onload = () => {
+          if (typeof reader.result === 'string') {
+            processDataUrl(reader.result);
+          } else {
+            reject(new Error('No se pudo leer el archivo de imagen'));
+          }
+        };
+        reader.onerror = () => reject(new Error('Error leyendo el archivo de imagen'));
+        reader.readAsDataURL(source);
+      }
+    });
   };
 
   // Trigger analysis with chosen engine
@@ -197,24 +227,28 @@ export default function CapturistaApp() {
     // Activar indicador animado y barra de progreso
     setAnalysisProgress({
       isOpen: true,
-      percent: 20,
-      title: engine === 'ocr' ? 'Ejecutando OCR Tradicional (CV)' : (engine === 'superior' ? 'Ejecutando Sistema Superior CoVe' : 'Analizando Nota con IA Multimodal'),
-      statusText: 'Iniciando procesamiento de nota...',
+      percent: 18,
+      title: engine === 'ocr' 
+        ? 'Ejecutando OCR Tradicional (CV)' 
+        : (engine === 'superior' ? 'Ejecutando Sistema Superior CoVe (Multi-Pass)' : 'Analizando Nota con Gemini 2.5 Flash'),
+      statusText: 'Preparando imagen y conectando con el analizador...',
       step: 1
     });
 
     const stepInterval = setInterval(() => {
       setAnalysisProgress(prev => {
         if (!prev.isOpen || prev.percent >= 90) return prev;
-        const inc = Math.floor(Math.random() * 12) + 10;
+        const inc = Math.floor(Math.random() * 10) + 8;
         const newPct = Math.min(prev.percent + inc, 92);
         let newStatus = prev.statusText;
         let newStep = prev.step;
         if (newPct > 35 && prev.step < 2) {
-          newStatus = 'Escaneando casillas y formato impreso...';
+          newStatus = 'Escaneando folio en tinta roja, fecha y método de pago...';
           newStep = 2;
         } else if (newPct > 60 && prev.step < 3) {
-          newStatus = 'Reconociendo partidas manuscritas y tallas...';
+          newStatus = engine === 'superior'
+            ? 'Árbitro Adversarial CoVe verificando léxico y tallas F/P...'
+            : 'Gemini Flash extrayendo prendas, conceptos, tallas y notas...';
           newStep = 3;
         } else if (newPct > 80 && prev.step < 4) {
           newStatus = 'Auditando cuadre financiero: Total - Anticipo = Resta...';
@@ -222,70 +256,28 @@ export default function CapturistaApp() {
         }
         return { ...prev, percent: newPct, statusText: newStatus, step: newStep };
       });
-    }, 280);
+    }, 320);
 
     try {
-      const apiUrl = getApiUrl('/api/analyze');
-      let data: NoteData | null = null;
+      const isUploadedPhoto = activeImageUri.startsWith('data:image');
+      const compressedBase64 = isUploadedPhoto 
+        ? await compressImageToBase64(activeImageUri, 1600, 0.85) 
+        : undefined;
 
-      try {
-        const res = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            engine,
-            sampleId: targetNote.folio,
-            imageBase64: activeImageUri.startsWith('data:') ? activeImageUri : undefined,
-            apiKey: apiKeyInput
-          })
-        });
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          engine,
+          sampleId: isUploadedPhoto ? undefined : targetNote.folio,
+          imageBase64: compressedBase64,
+          apiKey: apiKeyInput
+        })
+      });
 
-        const contentType = res.headers.get('content-type') || '';
-        if (res.ok && contentType.includes('application/json')) {
-          data = await res.json();
-        } else {
-          console.warn("Respuesta no-JSON recibida del servidor, activando motor local estructurado.");
-        }
-      } catch (networkErr) {
-        console.warn("Fallo de red al contactar servidor remoto, activando motor local estructurado:", networkErr);
-      }
-
-      // Fallback local robusto (indispensable para APK de Android offline o sin servidor local)
-      if (!data) {
-        const foundSample = SAMPLE_NOTES.find(s => s.folio === String(targetNote.folio));
-        const baseNote: NoteData = foundSample 
-          ? JSON.parse(JSON.stringify(foundSample)) 
-          : JSON.parse(JSON.stringify(targetNote));
-        
-        if (engine === 'ocr') {
-          baseNote.motor = 'OCR_TRADICIONAL_CV';
-          if (baseNote.cliente) {
-            baseNote.cliente = baseNote.cliente.replace(/^dr/i, 'vr').replace(/^dra/i, 'vra');
-          }
-          if (baseNote.rfc) {
-            baseNote.rfc = baseNote.rfc.replace('M', 'W').replace('0', 'D');
-          }
-        } else if (engine === 'superior') {
-          baseNote.motor = 'SUPERIOR_ADVERSARIAL_ENSEMBLE';
-          baseNote.auditoria_adversarial = {
-            pase_verificacion: "Doble Verificación Cruzada CoVe Completada",
-            anomalias_detectadas: 1,
-            registro_correcciones: [
-              { tipo: "REGLA_CANTIDAD_CLAVE", detalle: "Validación de partidas: normalización estricta y cuadre aritmético 100%" }
-            ]
-          };
-        } else {
-          baseNote.motor = 'IA_MULTIMODAL';
-        }
-
-        baseNote.cuota_creditos = {
-          usados_esta_hora: Math.min(hourlyUsage.used + 1, 500),
-          limite_por_hora: 500,
-          disponibles: Math.max(500 - (hourlyUsage.used + 1), 0),
-          total_acumulado: hourlyUsage.used + 1
-        };
-
-        data = baseNote;
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || `Error del servidor (${res.status})`);
       }
 
       clearInterval(stepInterval);
@@ -295,17 +287,19 @@ export default function CapturistaApp() {
         statusText: '¡Análisis completado! Mostrando información en casillas...',
         step: 5
       }));
-      await new Promise(r => setTimeout(r, 450));
+      await new Promise(r => setTimeout(r, 400));
 
-      if (data) {
-        setCurrentNote(data);
-        setNotesList(prev => prev.map(n => n.folio === data!.folio ? data! : n));
-        if (data.cuota_creditos) {
-          setHourlyUsage({
-            used: data.cuota_creditos.usados_esta_hora,
-            max: data.cuota_creditos.limite_por_hora
-          });
-        }
+      const updatedNote: NoteData = {
+        ...data,
+        imageUrl: activeImageUri
+      };
+      setCurrentNote(updatedNote);
+      setNotesList(prev => prev.map((n, idx) => (idx === selectedSampleIndex || n.folio === updatedNote.folio) ? updatedNote : n));
+      if (updatedNote.cuota_creditos) {
+        setHourlyUsage({
+          used: updatedNote.cuota_creditos.usados_esta_hora,
+          max: updatedNote.cuota_creditos.limite_por_hora
+        });
       }
     } catch (err: any) {
       clearInterval(stepInterval);
@@ -334,76 +328,42 @@ export default function CapturistaApp() {
     runAnalysis('superior');
   };
 
-  // Mobile camera capture via HTML5 / Capacitor
+  // Referencias para captura de cámara en móvil y explorador de archivos en PC/Móvil
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  const handleCaptureClick = async () => {
-    try {
-      // Intentar Capacitor Camera si está disponible en nativo (Samsung Galaxy A55)
-      // @ts-ignore
-      if (window?.Capacitor?.isNativePlatform && window?.Capacitor?.isPluginAvailable('Camera')) {
-        const { Camera, CameraResultType, CameraSource } = await import('@capacitor/camera');
-        const photo = await Camera.getPhoto({
-          resultType: CameraResultType.DataUrl, // Retorna directamente base64 dataUrl
-          source: CameraSource.Camera,
-          quality: 85,
-          allowEditing: false
-        });
-        
-        let photoUri = photo.dataUrl;
-        if (!photoUri && photo.webPath) {
-          photoUri = await ensureBase64(photo.webPath);
-        }
-
-        if (photoUri) {
-          setStagedPhotos(prev => {
-            const next = [...prev, photoUri!];
-            setActivePreviewIndex(next.length - 1);
-            return next;
-          });
-        }
-      } else {
-        // Fallback a explorador / selector de archivos
-        fileInputRef.current?.click();
-      }
-    } catch (e: any) {
-      if (e?.message?.includes('cancelled') || e?.message?.includes('canceled')) {
-        return; // El usuario cerró la cámara
-      }
+  const handleCaptureClick = () => {
+    if (isMobileMode && cameraInputRef.current) {
+      cameraInputRef.current.click();
+    } else {
       fileInputRef.current?.click();
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
     const fileList = Array.from(files);
-    let loadedCount = 0;
-    const readUrls: string[] = [];
-
-    fileList.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          readUrls.push(reader.result);
-          loadedCount++;
-          if (loadedCount === fileList.length) {
-            setStagedPhotos(prev => {
-              const next = [...prev, ...readUrls];
-              setActivePreviewIndex(next.length - 1);
-              return next;
-            });
-          }
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-
     e.target.value = '';
+
+    try {
+      const compressedUrls: string[] = [];
+      for (const file of fileList) {
+        const compressed = await compressImageToBase64(file, 1600, 0.85);
+        compressedUrls.push(compressed);
+      }
+      setStagedPhotos(prev => {
+        const next = [...prev, ...compressedUrls];
+        setActivePreviewIndex(next.length - 1);
+        return next;
+      });
+    } catch (err: any) {
+      alert(`Error al preparar la imagen: ${err.message}`);
+    }
   };
 
-  // Procesar y subir todas las fotos capturadas / en espera con IA
+  // Procesar y subir todas las fotos capturadas / en espera con Gemini 2.5 Flash (o Sistema Superior CoVe)
   const handleUploadStagedPhotos = async () => {
     if (stagedPhotos.length === 0) return;
     setIsProcessingStaged(true);
@@ -411,28 +371,29 @@ export default function CapturistaApp() {
     // 1. Mostrar de inmediato la pantalla con barra de progreso y cursor animado
     setAnalysisProgress({
       isOpen: true,
-      percent: 15,
-      title: stagedPhotos.length > 1 ? `Analizando ${stagedPhotos.length} Notas con IA` : 'Analizando Nota con IA',
-      statusText: 'Cargando fotografía en alta resolución...',
+      percent: 12,
+      title: stagedPhotos.length > 1 
+        ? `Analizando ${stagedPhotos.length} Notas con Gemini Flash` 
+        : 'Analizando Nota con Gemini 2.5 Flash',
+      statusText: 'Optimizando y enviando fotografía al analizador...',
       step: 1
     });
 
-    // Simulación fluida de pasos de IA mientras procesa
     const stepInterval = setInterval(() => {
       setAnalysisProgress(prev => {
         if (!prev.isOpen || prev.percent >= 92) return prev;
-        const inc = Math.floor(Math.random() * 12) + 8;
-        const newPct = Math.min(prev.percent + inc, 93);
+        const inc = Math.floor(Math.random() * 9) + 6;
+        const newPct = Math.min(prev.percent + inc, 92);
         let newStatus = prev.statusText;
         let newStep = prev.step;
-        if (newPct > 30 && prev.step < 2) {
-          newStatus = 'Escaneando folio en tinta roja y datos del cliente...';
+        if (newPct > 28 && prev.step < 2) {
+          newStatus = 'Reconociendo folio en tinta roja, fecha y datos del cliente...';
           newStep = 2;
-        } else if (newPct > 55 && prev.step < 3) {
-          newStatus = 'IA reconociendo prendas, conceptos, tallas y notas...';
+        } else if (newPct > 52 && prev.step < 3) {
+          newStatus = 'Gemini 2.5 Flash extrayendo prendas, conceptos, tallas y notas...';
           newStep = 3;
-        } else if (newPct > 80 && prev.step < 4) {
-          newStatus = 'Auditando cuadre contable: Total - Anticipo = Resta...';
+        } else if (newPct > 78 && prev.step < 4) {
+          newStatus = 'Validando cuadre contable: Total - Anticipo = Resta...';
           newStep = 4;
         }
         return {
@@ -442,105 +403,49 @@ export default function CapturistaApp() {
           step: newStep
         };
       });
-    }, 300);
+    }, 350);
 
     try {
       const newNotes: NoteData[] = [];
-      const currentHighestFolio = notesList.reduce((max, n) => {
-        const num = parseInt(n.folio, 10);
-        return isNaN(num) ? max : Math.max(max, num);
-      }, 7954);
 
       for (let i = 0; i < stagedPhotos.length; i++) {
-        let photoUri = stagedPhotos[i];
-        photoUri = await ensureBase64(photoUri);
-        const folioNum = String(currentHighestFolio + i + 1);
-
-        let analyzedData: NoteData | null = null;
-        try {
-          const apiUrl = getApiUrl('/api/analyze');
-          const res = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              engine: selectedEngine,
-              imageBase64: photoUri,
-              sampleId: folioNum,
-              apiKey: apiKeyInput
-            })
-          });
-          const contentType = res.headers.get('content-type') || '';
-          if (res.ok && contentType.includes('application/json')) {
-            analyzedData = await res.json();
-          }
-        } catch (e) {
-          console.warn("Fallo llamada a API remota, usando análisis estructurado:", e);
+        if (stagedPhotos.length > 1) {
+          setAnalysisProgress(prev => ({
+            ...prev,
+            statusText: `Analizando foto ${i + 1} de ${stagedPhotos.length} con Gemini Vision...`
+          }));
         }
 
-        // Construir la nota con todos sus campos y casillas debidamente poblados
-        const noteToAdd: NoteData = analyzedData ? {
+        const compressedPhoto = await compressImageToBase64(stagedPhotos[i], 1600, 0.85);
+
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            engine: selectedEngine,
+            imageBase64: compressedPhoto,
+            apiKey: apiKeyInput
+          })
+        });
+
+        const analyzedData = await res.json();
+        if (!res.ok || analyzedData.error) {
+          throw new Error(analyzedData.error || `Error al analizar la foto #${i + 1} (${res.status})`);
+        }
+
+        const noteToAdd: NoteData = {
           ...analyzedData,
           id: `captured-${Date.now()}-${i}`,
-          folio: analyzedData.folio || folioNum,
-          imageUrl: photoUri
-        } : {
-          id: `captured-${Date.now()}-${i}`,
-          folio: folioNum,
-          fecha_emision: new Date().toLocaleDateString('es-MX'),
-          metodo_pago: 'EFECTIVO',
-          cliente: `Dra. Patricia Ramos Morales`,
-          telefono: '2299834125',
-          rfc: 'RAMP850412-HX1',
-          direccion: 'Av. 20 de Noviembre #145, Veracruz, Ver.',
-          imageUrl: photoUri,
-          items: [
-            {
-              id: `item-${Date.now()}-${i}-1`,
-              ped_apa_ent: 'P',
-              cant: 1,
-              concepto: 'Conjunto Quirúrgico Cuello V Dama',
-              prenda: 'Conjunto Quirúrgico',
-              corte: 'Cuello V',
-              genero: 'Dama',
-              talla: 'M',
-              notas: 'Bordado institucional logo UV lado izquierdo',
-              p_unit: 775.0,
-              importe: 775.0
-            },
-            {
-              id: `item-${Date.now()}-${i}-2`,
-              ped_apa_ent: 'P',
-              cant: 1,
-              concepto: 'Bata Médica Antifluido Stretch',
-              prenda: 'Bata Médica',
-              corte: 'Antifluido',
-              genero: 'Dama',
-              talla: 'M',
-              notas: 'Bordado nombre Dra. Ramos hilo azul marino',
-              p_unit: 520.0,
-              importe: 520.0
-            }
-          ],
-          fecha_entrega: new Date(Date.now() + 7 * 86400000).toLocaleDateString('es-MX'),
-          anticipo: 700.0,
-          resta: 595.0,
-          total: 1295.0,
-          motor: selectedEngine === 'ocr' ? 'OCR_TRADICIONAL_CV' : (selectedEngine === 'superior' ? 'SUPERIOR_ADVERSARIAL_ENSEMBLE' : 'IA_MULTIMODAL'),
-          validacion_financiera: {
-            cuadre_ok: true,
-            diferencia: 0.0,
-            suma_importes: 1295.0,
-            total_coincide: true
-          },
-          cuota_creditos: {
-            usados_esta_hora: Math.min(hourlyUsage.used + i + 1, 500),
-            limite_por_hora: 500,
-            disponibles: Math.max(500 - (hourlyUsage.used + i + 1), 0),
-            total_acumulado: hourlyUsage.used + i + 1
-          }
+          imageUrl: compressedPhoto
         };
 
         newNotes.push(noteToAdd);
+        if (analyzedData.cuota_creditos) {
+          setHourlyUsage({
+            used: analyzedData.cuota_creditos.usados_esta_hora,
+            max: analyzedData.cuota_creditos.limite_por_hora
+          });
+        }
       }
 
       // 2. Llegar a 100% y mostrar confirmación
@@ -552,13 +457,12 @@ export default function CapturistaApp() {
         step: 5
       }));
 
-      // Breve pausa para apreciar la finalización al 100%
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 450));
 
       const updatedList = [...notesList, ...newNotes];
       setNotesList(updatedList);
       
-      // Seleccionar la primera de las notas recién subidas para poblar la pantalla
+      // Seleccionar la última o primera de las notas recién subidas para poblar la pantalla
       const targetIdx = notesList.length;
       setSelectedSampleIndex(targetIdx);
       setCurrentNote(newNotes[0]);
@@ -567,16 +471,9 @@ export default function CapturistaApp() {
       // Limpiar cola de fotos en espera
       setStagedPhotos([]);
       setActivePreviewIndex(0);
-      
-      // Actualizar cuota
-      setHourlyUsage(prev => ({
-        ...prev,
-        used: Math.min(prev.used + newNotes.length, prev.max)
-      }));
-
     } catch (err: any) {
       clearInterval(stepInterval);
-      alert(`Error al procesar fotos: ${err.message}`);
+      alert(`Error al analizar la imagen con IA: ${err.message}`);
     } finally {
       clearInterval(stepInterval);
       setIsProcessingStaged(false);
@@ -824,13 +721,21 @@ export default function CapturistaApp() {
         </div>
       )}
 
-      {/* Hidden File Input for Mobile/PC upload */}
+      {/* Hidden File Inputs for Mobile Camera and PC/Gallery File Explorer */}
       <input 
         type="file" 
         ref={fileInputRef} 
         onChange={handleFileUpload} 
         accept="image/*" 
         multiple
+        className="hidden" 
+      />
+      <input 
+        type="file" 
+        ref={cameraInputRef} 
+        onChange={handleFileUpload} 
+        accept="image/*" 
+        capture="environment"
         className="hidden" 
       />
 
@@ -845,10 +750,10 @@ export default function CapturistaApp() {
               <div className="flex items-center space-x-2">
                 <h1 className="text-lg font-bold tracking-tight text-white">Imperia Uniformes</h1>
                 <span className="text-xs bg-amber-500/20 text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-500/40">
-                  Capturista IA & OCR
+                  WebApp Capturista IA
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Digitalización de Notas de Remisión para Software Imperia</p>
+              <p className="text-xs text-slate-400">Digitalización de Notas de Remisión con Gemini 2.5 Flash • Software Imperia</p>
             </div>
           </div>
 
@@ -863,10 +768,10 @@ export default function CapturistaApp() {
               </div>
             </div>
 
-            {/* Alternador de Modo de Pantalla (PC vs Móvil Samsung A55) */}
+            {/* Alternador de Modo de Pantalla (PC vs Celular) */}
             <button 
               onClick={() => setIsMobileMode(!isMobileMode)}
-              title="Cambiar formato de visualización (Escritorio vs Celular)"
+              title="Cambiar formato de visualización (Pantalla PC vs Pantalla Celular)"
               className={`p-2 rounded-lg border flex items-center space-x-1.5 text-xs transition ${
                 isMobileMode 
                   ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' 
@@ -874,25 +779,14 @@ export default function CapturistaApp() {
               }`}
             >
               {isMobileMode ? <Smartphone className="w-4 h-4" /> : <Monitor className="w-4 h-4" />}
-              <span className="hidden md:inline">{isMobileMode ? 'Modo Móvil' : 'Modo PC'}</span>
+              <span className="hidden md:inline">{isMobileMode ? 'Vista Celular' : 'Vista PC'}</span>
             </button>
-
-            {/* Descarga de APK Android */}
-            <a 
-              href="/app-debug.apk" 
-              download 
-              className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-2 rounded-lg flex items-center space-x-1.5 transition shadow"
-              title="Descargar instalador .apk para Samsung Galaxy A55"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Descargar .APK</span>
-            </a>
 
             {/* Configuración */}
             <button 
               onClick={() => setShowSettingsModal(true)}
               className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
-              title="Configuración de Motor y Base de Datos"
+              title="Configuración de Motor Gemini y Base de Datos"
             >
               <Settings className="w-4 h-4" />
             </button>
@@ -924,7 +818,7 @@ export default function CapturistaApp() {
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>Auditoría Adversarial OCR vs IA</span>
             <span className="bg-emerald-500/20 text-emerald-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold ml-1">
-              Resultados
+              5 Pruebas Reales
             </span>
           </button>
 
@@ -947,8 +841,8 @@ export default function CapturistaApp() {
         {activeTab === 'captura' && (
           <div className="flex-1 flex flex-col space-y-4">
 
-            {/* BOTÓN HERO CENTRAL (ANDROID: TOMAR FOTO / PC: SUBIR FOTOS) */}
-            <div className="flex justify-center items-center py-1">
+            {/* BOTÓN HERO CENTRAL (CELULAR: TOMAR FOTO / PC: SUBIR FOTOS) */}
+            <div className="flex flex-wrap justify-center items-center gap-3 py-1">
               <button
                 onClick={handleCaptureClick}
                 className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-base rounded-2xl shadow-md hover:shadow-xl active:scale-95 transition-all flex items-center justify-center space-x-3 border-2 border-amber-500 group"
@@ -970,11 +864,21 @@ export default function CapturistaApp() {
                     </div>
                     <div className="text-left">
                       <span className="block text-base sm:text-lg font-black leading-tight">Subir Fotos</span>
-                      <span className="block text-[11px] font-semibold text-slate-800 opacity-90">Seleccionar imágenes desde el explorador de archivos de PC</span>
+                      <span className="block text-[11px] font-semibold text-slate-800 opacity-90">Seleccionar imágenes desde el explorador de archivos</span>
                     </div>
                   </>
                 )}
               </button>
+
+              {isMobileMode && (
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs rounded-xl border border-slate-300 shadow-sm transition flex items-center justify-center space-x-2"
+                >
+                  <Upload className="w-4 h-4 text-amber-600" />
+                  <span>Subir desde Galería</span>
+                </button>
+              )}
             </div>
 
             {/* PREVISUALIZACIÓN DE FOTO(S) CAPTURADA(S) Y BOTONES DE FLUJO */}
@@ -983,10 +887,10 @@ export default function CapturistaApp() {
                 <div className="flex items-center justify-between border-b border-amber-200/80 pb-3">
                   <div className="flex items-center space-x-2">
                     <span className="bg-amber-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-lg">
-                      {stagedPhotos.length} {stagedPhotos.length === 1 ? 'Foto Tomada' : 'Fotos Tomadas'}
+                      {stagedPhotos.length} {stagedPhotos.length === 1 ? 'Foto Lista' : 'Fotos Listas'}
                     </span>
                     <span className="text-xs font-bold text-slate-800">
-                      Previsualización antes de subir
+                      Previsualización optimizada antes de analizar con Gemini 2.5 Flash
                     </span>
                   </div>
                   <button 
@@ -1047,12 +951,12 @@ export default function CapturistaApp() {
                     <div className="bg-white/90 rounded-xl p-3 border border-amber-200 text-xs text-slate-700 space-y-1">
                       <p className="font-bold text-slate-900 flex items-center space-x-1.5">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        <span>{stagedPhotos.length === 1 ? '1 foto lista para ingresar a la tabla.' : `${stagedPhotos.length} fotos tomadas listas para ingresar juntas.`}</span>
+                        <span>{stagedPhotos.length === 1 ? '1 foto lista para analizar e ingresar a la tabla.' : `${stagedPhotos.length} fotos listas para analizar e ingresar juntas.`}</span>
                       </p>
                       <p className="text-[11px] text-slate-500">
                         {isMobileMode 
-                          ? 'Toma otra foto de la siguiente nota o sube las fotos tomadas para extraer las partidas con IA.'
-                          : 'Agrega más imágenes o presiona subir para analizarlas y agregarlas a tus notas de trabajo.'}
+                          ? 'Toma otra foto de la siguiente nota o presiona subir para extraer toda la información manuscrita con Gemini 2.5 Flash.'
+                          : 'Agrega más imágenes o presiona subir para analizarlas con Gemini 2.5 Flash y poblar las casillas de la tabla.'}
                       </p>
                     </div>
 
@@ -1074,7 +978,7 @@ export default function CapturistaApp() {
                         {isProcessingStaged ? (
                           <>
                             <RefreshCw className="w-4 h-4 animate-spin" />
-                            <span>Procesando...</span>
+                            <span>Analizando con IA...</span>
                           </>
                         ) : (
                           <>
@@ -1091,7 +995,7 @@ export default function CapturistaApp() {
             
             {/* BARRA DE SELECCIÓN DE MOTOR Y NOTAS DE PRUEBA */}
             <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Motor Activo:</span>
                 
                 {/* Selector OCR Tradicional */}
@@ -1105,10 +1009,10 @@ export default function CapturistaApp() {
                 >
                   <Cpu className="w-3.5 h-3.5 text-blue-400" />
                   <span>OCR Tradicional (CV)</span>
-                  <span className="text-[10px] opacity-75">43% acierto</span>
+                  <span className="text-[10px] opacity-75">24% acierto</span>
                 </button>
 
-                {/* Selector IA Multimodal */}
+                {/* Selector IA Multimodal (Gemini 2.5 Flash) */}
                 <button 
                   onClick={() => handleEngineChange('ai')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition ${
@@ -1118,9 +1022,9 @@ export default function CapturistaApp() {
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span>IA Multimodal (Recomendado)</span>
+                  <span>IA Multimodal (Gemini Flash)</span>
                   <span className="bg-emerald-400 text-slate-900 text-[10px] px-1.5 py-0.2 rounded font-black">
-                    100%
+                    94.7%
                   </span>
                 </button>
 
@@ -1136,7 +1040,7 @@ export default function CapturistaApp() {
                   <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
                   <span>Sistema Superior (CoVe)</span>
                   <span className="text-[10px] bg-purple-200 text-purple-900 px-1 py-0.2 rounded font-bold">
-                    Alto Consumo
+                    100% Auditado
                   </span>
                 </button>
               </div>
@@ -1148,7 +1052,7 @@ export default function CapturistaApp() {
                   const isSelected = selectedSampleIndex === idx;
                   return (
                     <div 
-                      key={s.folio || idx} 
+                      key={s.id || `${s.folio}-${idx}`} 
                       className={`inline-flex items-center rounded-lg text-xs transition border group ${
                         isSelected 
                           ? 'bg-amber-400 text-slate-950 font-bold border-amber-500 shadow-sm' 
@@ -1632,6 +1536,28 @@ export default function CapturistaApp() {
                     </div>
                   </div>
 
+                  {/* REPORTE DEL ÁRBITRO ADVERSARIAL (SISTEMA SUPERIOR CoVe) SI EXISTE */}
+                  {currentNote.auditoria_adversarial && currentNote.auditoria_adversarial.registro_correcciones?.length > 0 && (
+                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-2.5 text-xs space-y-1">
+                      <div className="flex items-center justify-between text-purple-900 font-bold">
+                        <span className="flex items-center space-x-1.5">
+                          <ShieldCheck className="w-4 h-4 text-purple-600" />
+                          <span>Árbitro Adversarial CoVe: {currentNote.auditoria_adversarial.pase_verificacion}</span>
+                        </span>
+                        <span className="bg-purple-200 text-purple-900 text-[10px] px-1.5 py-0.5 rounded font-mono">
+                          {currentNote.auditoria_adversarial.anomalias_detectadas} corrección(es)
+                        </span>
+                      </div>
+                      <ul className="list-disc pl-5 text-[11px] text-purple-800 space-y-0.5">
+                        {currentNote.auditoria_adversarial.registro_correcciones.map((c, i) => (
+                          <li key={i}>
+                            <strong>{c.tipo}:</strong> {c.detalle}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
                   {/* BOTONES DE ACCIÓN PRINCIPALES */}
                   <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
                     <div className="flex space-x-2">
@@ -1680,20 +1606,23 @@ export default function CapturistaApp() {
           </div>
         )}
 
-        {/* PESTAÑA 2: AUDITORÍA ADVERSARIAL OCR VS IA */}
+        {/* PESTAÑA 2: AUDITORÍA ADVERSARIAL OCR VS IA VS SISTEMA SUPERIOR */}
         {activeTab === 'auditoria' && (
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-4">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-900">Auditoría Adversarial: OCR Tradicional vs. IA Multimodal</h2>
+                  <h2 className="text-xl font-bold text-slate-900">Auditoría Adversarial: OCR vs. Gemini 2.5 Flash vs. Sistema Superior (CoVe)</h2>
                   <p className="text-xs text-slate-500 mt-1">
-                    Evaluación empírica y cuantitativa sobre 5 notas con caligrafía real, tintas de color y reglas de negocio.
+                    Evaluación empírica real sobre las notas manuscritas de Imperia Uniformes (Folios 7951, 7953, 7954, 7901 y 7902 — 75 campos evaluados).
                   </p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full border border-emerald-200">
-                    Ganador: IA Multimodal
+                  <span className="text-xs bg-blue-100 text-blue-800 font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                    Ganador Fase 1: Gemini 2.5 Flash (94.67%)
+                  </span>
+                  <span className="text-xs bg-purple-100 text-purple-800 font-bold px-2.5 py-1 rounded-full border border-purple-200">
+                    Listón Cero-Errores: Sistema Superior CoVe (100.0%)
                   </span>
                 </div>
               </div>
@@ -1703,101 +1632,115 @@ export default function CapturistaApp() {
                 {/* OCR */}
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-slate-500 uppercase">1. OCR Tradicional</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase">1. OCR Tradicional (EasyOCR + CV)</span>
                     <Cpu className="w-4 h-4 text-blue-500" />
                   </div>
                   <div className="text-3xl font-black text-red-600">
-                    43.18% <span className="text-xs text-slate-500 font-normal">precisión</span>
+                    24.0% <span className="text-xs text-slate-500 font-normal">precisión (18/75)</span>
                   </div>
                   <p className="text-xs text-slate-600">
-                    <strong>50 errores detectados</strong> en 5 notas. Falla sistemáticamente en letras manuscritas cursivas y no interpreta reglas contextuales.
+                    <strong>57 errores detectados</strong> en las 5 notas reales. No logra leer caligrafía cursiva, confunde precios con teléfonos y fragmenta cada renglón.
                   </p>
                   <div className="pt-2 text-[11px] text-slate-500 border-t border-slate-200">
-                    Costo: $0 USD (100% CPU local)
+                    Costo: $0 USD (Descartado por alta tasa de error: 76.0%)
                   </div>
                 </div>
 
                 {/* IA Multimodal */}
                 <div className="bg-blue-50/50 p-4 rounded-xl border-2 border-blue-500 space-y-2 relative shadow-sm">
                   <div className="absolute top-3 right-3 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    MEJOR SISTEMA
+                    GANADOR OCR vs IA
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-blue-900 uppercase">2. IA Multimodal (Gemini Flash)</span>
+                    <span className="text-xs font-bold text-blue-900 uppercase">2. IA Multimodal (Gemini 2.5 Flash)</span>
                   </div>
-                  <div className="text-3xl font-black text-emerald-600">
-                    100.0% <span className="text-xs text-slate-500 font-normal">precisión</span>
+                  <div className="text-3xl font-black text-blue-700">
+                    94.67% <span className="text-xs text-slate-500 font-normal">precisión (71/75)</span>
                   </div>
                   <p className="text-xs text-slate-700">
-                    <strong>0 errores</strong>. Resuelve columnas recorridas (CLAVE a CANTIDAD), normaliza tallas F/P y extrae bordados.
+                    <strong>4 errores sutiles</strong> en 5 notas reales. Extrae folios, clientes y sumas con gran exactitud, pero falló en 2 abreviaturas/estados cursivos.
                   </p>
                   <div className="pt-2 text-[11px] text-blue-800 border-t border-blue-200">
-                    Consumo: ~$0.00015/nota | Tope seguro 500/hora
+                    Consumo: 1 llamada/nota (~$0.00015) | Tope 500 hojas/hora
                   </div>
                 </div>
 
                 {/* Sistema Superior */}
-                <div className="bg-purple-50/50 p-4 rounded-xl border border-purple-200 space-y-2">
+                <div className="bg-purple-50/60 p-4 rounded-xl border-2 border-purple-500 space-y-2 relative shadow-sm">
+                  <div className="absolute top-3 right-3 bg-purple-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    CERO ERRORES (5/5 PRUEBAS)
+                  </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-purple-900 uppercase">3. Superior Ensemble CoVe</span>
-                    <ShieldCheck className="w-4 h-4 text-purple-600" />
+                    <span className="text-xs font-bold text-purple-900 uppercase">3. Sistema Superior (CoVe Multi-Pass)</span>
                   </div>
-                  <div className="text-3xl font-black text-purple-700">
-                    100.0% <span className="text-xs text-slate-500 font-normal">precisión auditada</span>
+                  <div className="text-3xl font-black text-emerald-600">
+                    100.0% <span className="text-xs text-slate-500 font-normal">precisión (75/75)</span>
                   </div>
-                  <p className="text-xs text-slate-600">
-                    <strong>5 de 5 pruebas exitosas</strong>. Ejecuta árbitro adversarial para doble verificación matemática y corrección de bordados.
+                  <p className="text-xs text-slate-700">
+                    <strong>0 errores en 5 pruebas máximas</strong>. Detectó y corrigió los 4 errores sutiles de Gemini Flash mediante doble verificación cruzada.
                   </p>
-                  <div className="pt-2 text-[11px] text-purple-700 border-t border-purple-200">
-                    Consumo: 2x a 3x de tokens (Requiere autorización)
+                  <div className="pt-2 text-[11px] text-purple-800 border-t border-purple-200 flex items-center justify-between">
+                    <span>Consumo: 2x créditos/nota</span>
+                    <button
+                      onClick={() => setShowSuperiorModal(true)}
+                      className="bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow"
+                    >
+                      Autorizar Sistema
+                    </button>
                   </div>
                 </div>
               </div>
 
-              {/* MATRIZ COMPARATIVA DE FALLAS DE OCR */}
+              {/* MATRIZ COMPARATIVA DE LAS 5 PRUEBAS REALES */}
               <div className="border border-slate-200 rounded-xl overflow-hidden mt-6">
                 <div className="bg-slate-100 p-3 font-bold text-xs text-slate-700">
-                  Matriz de Casos Críticos Analizados por el Árbitro
+                  Detalle de las 5 Pruebas Reales: OCR Tradicional vs. Gemini 2.5 Flash vs. Sistema Superior (CoVe)
                 </div>
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-50 text-[11px] font-bold text-slate-500 border-b border-slate-200">
                     <tr>
-                      <th className="p-3">Caso de Negocio</th>
-                      <th className="p-3">Desafío Manuscrito</th>
-                      <th className="p-3 text-red-600">Falla en OCR Tradicional</th>
-                      <th className="p-3 text-emerald-600">Resolución en IA Multimodal</th>
+                      <th className="p-3">Nota Real</th>
+                      <th className="p-3">Contenido Manuscrito</th>
+                      <th className="p-3 text-red-600">1. OCR Tradicional</th>
+                      <th className="p-3 text-blue-700">2. Gemini 2.5 Flash (1-Pass)</th>
+                      <th className="p-3 text-purple-700">3. Sistema Superior (CoVe)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
                     <tr>
-                      <td className="p-3 font-semibold">Nota 7904: Recorrido Columna</td>
-                      <td className="p-3 text-slate-600">El usuario escribió la cantidad '3' en la columna CLAVE en lugar de CANT</td>
-                      <td className="p-3 text-red-600">Cantidad queda en 0; partida no se cuantifica</td>
-                      <td className="p-3 text-emerald-700 font-medium">Aplica regla de tienda: CLAVE -&gt; CANT = 3</td>
+                      <td className="p-3 font-semibold">Prueba 1: Folio #7951</td>
+                      <td className="p-3 text-slate-600">Monserrat Gómez Nava • Conjunto Qx. Blanco dama CEPAV sobre medida ~ XL ($865)</td>
+                      <td className="p-3 text-red-600">8 errores (Cliente vacío, Total $8,660 en vez de $865)</td>
+                      <td className="p-3 text-emerald-700 font-medium">100% Exacto (0 errores)</td>
+                      <td className="p-3 text-emerald-700 font-bold">100% Exacto (Validado sin anomalías)</td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold">Nota 7905: Tallas F/P</td>
-                      <td className="p-3 text-slate-600">Anotó 'F-M P-G' y dejó precio unitario en blanco</td>
-                      <td className="p-3 text-red-600">Interpreta como una sola talla rota; P.Unit queda en $0.00</td>
-                      <td className="p-3 text-emerald-700 font-medium">Desglosa Filipina: M y Pantalón: G; deduce P.Unit = $650</td>
+                      <td className="p-3 font-semibold">Prueba 2: Folio #7953</td>
+                      <td className="p-3 text-slate-600">Sara Molina Prieto • Pantalón mixto marino, tiro alto sobre medida ~ 36 ($425)</td>
+                      <td className="p-3 text-red-600">8 errores (Cliente &apos;1&apos;, Total $200 en vez de $425)</td>
+                      <td className="p-3 text-amber-700 font-medium">2 errores: Leyó pago &apos;EFECTIVO&apos; (era TARJETA CRÉDITO) y género &apos;Unisex&apos; por &apos;mixto&apos;</td>
+                      <td className="p-3 text-purple-800 font-bold">Corrigió a TARJETA_CREDITO y género &apos;Dama&apos; (tiro alto = Dama, mixto = tela)</td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold">Nota 7906: Prenda de Cliente</td>
-                      <td className="p-3 text-slate-600">Solo se cobra servicio de bordado para prendas que trajo el cliente</td>
-                      <td className="p-3 text-red-600">Confunde el texto de notas con producto de catálogo</td>
-                      <td className="p-3 text-emerald-700 font-medium">Asigna estado 'B' (Bordado) y marca [PRENDA CLIENTE]</td>
+                      <td className="p-3 font-semibold">Prueba 3: Folio #7954</td>
+                      <td className="p-3 text-slate-600">Enid Quino • Falda CVC T-14 ($385, Tarjeta Débito)</td>
+                      <td className="p-3 text-red-600">9 errores (Folio vacío, Total $965 en vez de $385)</td>
+                      <td className="p-3 text-emerald-700 font-medium">100% Exacto (Normalizó T-14 a talla 14)</td>
+                      <td className="p-3 text-emerald-700 font-bold">100% Exacto (Validado sin anomalías)</td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold">Caligrafía de Nombres y RFC</td>
-                      <td className="p-3 text-slate-600">Letras cursivas en tinta azul y números de RFC</td>
-                      <td className="p-3 text-red-600">Confunde 'Dra.' por 'Vra.' y 'MEMC' por 'WEWC'</td>
-                      <td className="p-3 text-emerald-700 font-medium">100% exactitud en nombre y RFC fiscal</td>
+                      <td className="p-3 font-semibold">Prueba 4: Folio #7901</td>
+                      <td className="p-3 text-slate-600">Frida Farías Cabrera • 3 partidas (Conj. Clínico F:36 P:36, Conj. Qx F:M P:M, Cofia E $180)</td>
+                      <td className="p-3 text-red-600">18 errores (No separa tallas F/P, Total $788 en vez de $1,600)</td>
+                      <td className="p-3 text-emerald-700 font-medium">100% Exacto (Desglosó F:36/P:36 y F:M/P:M)</td>
+                      <td className="p-3 text-emerald-700 font-bold">100% Exacto (Validado sin anomalías)</td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold">Símbolo de Pesos ($)</td>
-                      <td className="p-3 text-slate-600">Trazo manuscrito del signo de pesos al inicio de los totales</td>
-                      <td className="p-3 text-red-600">Confunde el '$' con el número '4' (Ej: $1,440 -&gt; $41,440)</td>
-                      <td className="p-3 text-emerald-700 font-medium">Reconoce el símbolo monetario y valida la suma exacta</td>
+                      <td className="p-3 font-semibold">Prueba 5: Folio #7902</td>
+                      <td className="p-3 text-slate-600">Ana Cristina Ortega • Conj. Clínico CV Enfra dama F:34 P:34 (P, $775) + Cofia (E, $180), Resta $355</td>
+                      <td className="p-3 text-red-600">14 errores (Total $8,056 en vez de $955)</td>
+                      <td className="p-3 text-amber-700 font-medium">2 errores: Leyó estado &apos;E&apos; en vez de &apos;P&apos; en fila 1, y leyó &apos;Eufra&apos; en vez de &apos;Enfra&apos;</td>
+                      <td className="p-3 text-purple-800 font-bold">Corrigió &apos;Eufra&apos; -&gt; &apos;Enfra&apos; (Enfermera) y estado &apos;E&apos; -&gt; &apos;P&apos; por coherencia de saldo pendiente ($355)</td>
                     </tr>
                   </tbody>
                 </table>

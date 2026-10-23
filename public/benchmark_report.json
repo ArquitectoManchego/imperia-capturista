@@ -14,15 +14,15 @@
       "conclusion": "No apto para manuscritos reales en producción: alta confusión de dígitos y nombres ilegibles."
     },
     "ia_multimodal_vision": {
-      "nombre": "IA Multimodal Visión (Gemini 1.5/2.5 Flash)",
-      "precision_global_pct": 100.0,
-      "tasa_error_pct": 0.0,
-      "total_errores": 0,
+      "nombre": "IA Multimodal Visión (Gemini 2.5 Flash - 1 Pasada)",
+      "precision_global_pct": 94.67,
+      "tasa_error_pct": 5.33,
+      "total_errores": 4,
       "campos_evaluados": 75,
-      "costo_creditos": "Bajo (~$0.00015 / nota)",
+      "costo_creditos": "Bajo (~$0.00015 / nota - 1 llamada)",
       "limite_cuota": "Tope estricto de 500 hojas/hora protegido",
       "ganador_etapa_1": true,
-      "conclusion": "Ganador claro de la primera fase: lee cursiva, detecta vouchers grapados y normaliza tallas F/P."
+      "conclusion": "Ganador absoluto de Etapa 1 frente a OCR (94.67% vs 24.0%), pero cometió 4 errores sutiles de dominio/caligrafía en 5 notas reales."
     },
     "sistema_superior_adversarial": {
       "nombre": "Sistema Superior Ensemble (Multi-Pass Chain-of-Verification CoVe)",
@@ -32,11 +32,11 @@
       "campos_evaluados": 75,
       "pruebas_ejecutadas": 5,
       "limite_max_pruebas": 5,
-      "consumo_recursos": "Alto (3x tokens de inferencia por verificación cruzada)",
+      "consumo_recursos": "Alto (2x a 3x tokens de inferencia por doble verificación cruzada)",
       "encuentra_errores_en_inferior": true,
-      "anomalias_detectadas": 0,
+      "anomalias_detectadas": 4,
       "requiere_autorizacion": true,
-      "conclusion": "Capaz de auditar y prevenir descuadres de centavos y detectar notas marginales de bordado."
+      "conclusion": "Detectó y corrigió los 4 errores sutiles de Gemini Flash (Folio 7953: método de pago y género en pantalón mixto; Folio 7902: 'Eufra' -> 'Enfra' y estado 'E' -> 'P')."
     }
   },
   "detalle_por_caso": {

@@ -80,6 +80,14 @@ export const SAMPLE_NOTES: NoteData[] = [
       suma_importes: 425.0,
       total_coincide: true
     },
+    auditoria_adversarial: {
+      pase_verificacion: "Completado con éxito (Prueba 2/5 - CoVe)",
+      anomalias_detectadas: 2,
+      registro_correcciones: [
+        { tipo: "METODO_PAGO_AUDITADO", detalle: "Corregido de EFECTIVO a TARJETA_CREDITO al detectar casilla marcada en la cabecera." },
+        { tipo: "LEXICO_GENERO_IMPERIA", detalle: "Corregido género de Unisex a Dama ('Pantalón mixto' refiere a tela mixta; 'tiro alto' corresponde a Dama).", fila: 0 }
+      ]
+    },
     cuota_creditos: {
       usados_esta_hora: 2,
       limite_por_hora: 500,
@@ -263,10 +271,11 @@ export const SAMPLE_NOTES: NoteData[] = [
       total_coincide: true
     },
     auditoria_adversarial: {
-      pase_verificacion: "Completado con éxito (Prueba 5/5)",
-      anomalias_detectadas: 1,
+      pase_verificacion: "Completado con éxito (Prueba 5/5 - CoVe)",
+      anomalias_detectadas: 2,
       registro_correcciones: [
-        { tipo: "TALLA_DIFERENCIADA_DETECTADA", detalle: "Fila 1: Talla Filipina 34 / Pantalón 34 separada con precisión", fila: 0 }
+        { tipo: "COHERENCIA_OPERATIVA_ESTADO", detalle: "Fila 1 corregida de 'E' (Entregado) a 'P' (Pedido) por existir saldo pendiente ($355) y fecha de entrega posterior (15/07/2026).", fila: 0 },
+        { tipo: "LEXICO_OFICIAL_IMPERIA", detalle: "Corregida lectura de manuscrito 'Eufra' -> 'Enfra' (abreviatura de Enfermera en Conjunto Clínico CV Enfra dama).", fila: 0 }
       ]
     },
     cuota_creditos: {
