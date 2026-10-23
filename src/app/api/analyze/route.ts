@@ -296,7 +296,7 @@ async function callGeminiVision(key: string, prompt: string, cleanBase64: string
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { imageBase64, engine = 'ai', sampleId, apiKey } = body;
+    const { imageBase64, engine = 'superior', sampleId, apiKey } = body;
 
     // El Sistema Superior consume 2 pasadas de verificación por hoja
     const creditCost = engine === 'superior' ? 2 : 1;

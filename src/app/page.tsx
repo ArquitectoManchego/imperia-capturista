@@ -36,7 +36,7 @@ export default function CapturistaApp() {
   // Navigation
   const [activeTab, setActiveTab] = useState<'captura' | 'auditoria' | 'historial'>('captura');
   const [isMobileMode, setIsMobileMode] = useState<boolean>(false);
-  const [selectedEngine, setSelectedEngine] = useState<EngineType>('ai');
+  const [selectedEngine, setSelectedEngine] = useState<EngineType>('superior');
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   
   // Note state (mutable notes list)
@@ -311,14 +311,10 @@ export default function CapturistaApp() {
     }
   };
 
-  // Handle engine switch with authorization check for Superior engine
+  // Handle engine switch (Superior Engine authorized by administrator)
   const handleEngineChange = (engine: EngineType) => {
-    if (engine === 'superior') {
-      setShowSuperiorModal(true);
-    } else {
-      setSelectedEngine(engine);
-      runAnalysis(engine);
-    }
+    setSelectedEngine(engine);
+    runAnalysis(engine);
   };
 
   // Confirm Superior Engine activation
