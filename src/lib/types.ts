@@ -59,6 +59,9 @@ export interface NoteData {
     pase_verificacion: string;
   };
   imageUrl?: string;
+  syncedToDb?: boolean;
+  archivada?: boolean;
+  firestoreId?: string;
 }
 
 export type EngineType = 'ocr' | 'ai' | 'superior';

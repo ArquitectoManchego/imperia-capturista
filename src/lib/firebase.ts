@@ -1,5 +1,19 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  doc, 
+  setDoc, 
+  getDocs, 
+  updateDoc, 
+  deleteDoc, 
+  serverTimestamp, 
+  query, 
+  orderBy, 
+  limit 
+} from 'firebase/firestore';
+import { NoteData, NoteItem, ItemStatus, PaymentMethod } from './types';
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyBW3nlhDa6_As07gcxqS98LzE_4LIFihS8",
@@ -94,3 +108,111 @@ export async function syncOrderToSoftwareImperia(orderData: any): Promise<SyncRe
     };
   }
 }
+
+export async function fetchOrdersFromSoftwareImperia(): Promise<NoteData[]> {
+  try {
+    const q = query(collection(db, "pedidos"), orderBy("createdAt", "desc"), limit(100));
+    let snapshot;
+    try {
+      snapshot = await getDocs(q);
+    } catch {
+      // Si el índice orderBy aún no está listo, hacer fetch directo de la colección
+      snapshot = await getDocs(collection(db, "pedidos"));
+    }
+
+    const notes: NoteData[] = [];
+    snapshot.forEach(docSnap => {
+      const d = docSnap.data();
+      const items: NoteItem[] = (d.items || []).map((it: any, idx: number) => ({
+        id: it.productId || `item-${docSnap.id}-${idx}`,
+        ped_apa_ent: (it.estadoPartida || 'P') as ItemStatus,
+        cant: Number(it.cantidad) || 1,
+        clave: it.sku || undefined,
+        concepto: it.nombre || `${it.prenda || 'Prenda'} ${it.talla || ''}`.trim(),
+        prenda: it.prenda || 'Prenda',
+        corte: it.corte || '',
+        genero: it.genero || 'Dama',
+        talla: it.talla || '',
+        talla_filipina: it.talla_filipina,
+        talla_pantalon: it.talla_pantalon,
+        notas: it.notas || '',
+        p_unit: Number(it.precioUnitario) || 0,
+        importe: Number(it.importe) || 0
+      }));
+
+      const sumImportes = items.reduce((acc, it) => acc + (Number(it.importe) || 0), 0);
+      const total = Number(d.total) || sumImportes;
+      const anticipo = Number(d.montoPagado) || 0;
+      const resta = Number(d.saldoPendiente) || 0;
+      const diferencia = Math.round((total - anticipo - resta) * 100) / 100;
+
+      let fechaEmision = new Date().toLocaleDateString('es-MX');
+      if (d.createdAt?.toDate) {
+        fechaEmision = d.createdAt.toDate().toLocaleDateString('es-MX');
+      } else if (d.fechaPedido?.toDate) {
+        fechaEmision = d.fechaPedido.toDate().toLocaleDateString('es-MX');
+      }
+
+      notes.push({
+        id: docSnap.id,
+        firestoreId: docSnap.id,
+        folio: String(d.numeroNota || 'S/F'),
+        fecha_emision: fechaEmision,
+        metodo_pago: (d.metodoPago || 'EFECTIVO') as PaymentMethod,
+        cliente: d.clienteNombre || 'Cliente Mostrador',
+        telefono: d.telefono || '',
+        rfc: '',
+        direccion: '',
+        imageUrl: d.imageUrl || undefined,
+        items,
+        fecha_entrega: d.fechaEntregaTexto || '',
+        anticipo,
+        resta,
+        total,
+        motor: d.motorAnalisis || 'IA_MULTIMODAL',
+        syncedToDb: true,
+        archivada: Boolean(d.archivada),
+        validacion_financiera: {
+          cuadre_ok: Math.abs(diferencia) < 0.05,
+          diferencia,
+          suma_importes: sumImportes,
+          total_coincide: Math.abs(sumImportes - total) < 0.05
+        },
+        cuota_creditos: {
+          usados_esta_hora: 1,
+          limite_por_hora: 500,
+          disponibles: 499,
+          total_acumulado: 1
+        }
+      });
+    });
+
+    return notes;
+  } catch (err) {
+    console.error("Error al consultar pedidos en Firestore:", err);
+    return [];
+  }
+}
+
+export async function archiveOrderInSoftwareImperia(pedidoId: string, archivada: boolean): Promise<boolean> {
+  try {
+    const docRef = doc(db, "pedidos", pedidoId);
+    await updateDoc(docRef, { archivada });
+    return true;
+  } catch (err) {
+    console.error("Error al archivar en Firestore:", err);
+    return false;
+  }
+}
+
+export async function deleteOrderFromSoftwareImperia(pedidoId: string): Promise<boolean> {
+  try {
+    const docRef = doc(db, "pedidos", pedidoId);
+    await deleteDoc(docRef);
+    return true;
+  } catch (err) {
+    console.error("Error al borrar en Firestore:", err);
+    return false;
+  }
+}
+

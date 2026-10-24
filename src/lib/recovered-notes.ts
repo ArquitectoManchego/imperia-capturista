@@ -1,0 +1,1482 @@
+import { NoteData } from './types';
+
+export const RECOVERED_FIRESTORE_NOTES: NoteData[] = [
+  {
+    "id": "6JweXqUwlvflaBAsxKu5",
+    "firestoreId": "6JweXqUwlvflaBAsxKu5",
+    "folio": "7955",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "NO_ESPECIFICADO",
+    "cliente": "Bracely Hernandez Garcia",
+    "telefono": "2297528869",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173856.jpg",
+    "items": [
+      {
+        "id": "item-6JweXqUwlvflaBAsxKu5-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-38-PANT-40",
+        "concepto": "Conjunto Clinico Blanco Ampero del Castillo licra-cabra dama sobre medida F:~38 P:~40",
+        "prenda": "Conjunto Cl├¡nico",
+        "corte": "Blanco, Ampero del Castillo, licra-cabra",
+        "genero": "Dama",
+        "talla": "F:38 P:40",
+        "notas": "sobre medida",
+        "p_unit": 865,
+        "importe": 865
+      }
+    ],
+    "fecha_entrega": "29/09/2026",
+    "anticipo": 0,
+    "resta": 865,
+    "total": 865,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 865,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "9gr9Flr5xhq0sZLkQxOJ",
+    "firestoreId": "9gr9Flr5xhq0sZLkQxOJ",
+    "folio": "7962",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Kevin Alain Cruz Ruiz",
+    "telefono": "2851176993",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173915.jpg",
+    "items": [
+      {
+        "id": "item-9gr9Flr5xhq0sZLkQxOJ-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Conjunto Cl├¡nico-28",
+        "concepto": "Conjunto clinico caballero blanco con cierre talla 28",
+        "prenda": "Conjunto Cl├¡nico",
+        "corte": "con cierre",
+        "genero": "Caballero",
+        "talla": "28",
+        "notas": "blanco",
+        "p_unit": 865,
+        "importe": 865
+      },
+      {
+        "id": "item-9gr9Flr5xhq0sZLkQxOJ-1",
+        "ped_apa_ent": "B",
+        "cant": 1,
+        "clave": "IMP-GEN-U",
+        "concepto": "Logo: Amparo Castillo, Si somos UNAM con banda espalda",
+        "prenda": "Prenda",
+        "corte": "",
+        "genero": "Unisex",
+        "talla": "",
+        "notas": "Bordado: Amparo Castillo, Si somos UNAM con banda espalda",
+        "p_unit": 35,
+        "importe": 35
+      }
+    ],
+    "fecha_entrega": "08/10/2026",
+    "anticipo": 500,
+    "resta": 400,
+    "total": 900,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 900,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "G0IUUJyqqIRZgs4tQKrd",
+    "firestoreId": "G0IUUJyqqIRZgs4tQKrd",
+    "folio": "7966",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TARJETA_DEBITO",
+    "cliente": "Gabriela Mart├¡nez Serrano",
+    "telefono": "5625064866",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173925.jpg",
+    "items": [
+      {
+        "id": "item-G0IUUJyqqIRZgs4tQKrd-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-CH-PANT-M",
+        "concepto": "Conjunto Qx. C/V Enfra. Dama F: CH (m) P: M (m)",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "Cuello V",
+        "genero": "Dama",
+        "talla": "F:CH P:M",
+        "notas": "manga corta o similar (m)",
+        "p_unit": 645,
+        "importe": 645
+      }
+    ],
+    "fecha_entrega": "20/10/2026",
+    "anticipo": 300,
+    "resta": 345,
+    "total": 645,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 645,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "L80dHziUSUkjAwzo2aHl",
+    "firestoreId": "L80dHziUSUkjAwzo2aHl",
+    "folio": "7902",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Ana Cristina Ortega",
+    "telefono": "2295507808",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173946.jpg",
+    "items": [
+      {
+        "id": "item-L80dHziUSUkjAwzo2aHl-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-34-PANT-34",
+        "concepto": "Conjunto Cl├¡nico CV Enfra dama F: ~34 P: ~34",
+        "prenda": "Conjunto Cl├¡nico",
+        "corte": "Cuello V",
+        "genero": "Dama",
+        "talla": "F:34 P:34",
+        "notas": "Enfra dama",
+        "p_unit": 775,
+        "importe": 775
+      },
+      {
+        "id": "item-L80dHziUSUkjAwzo2aHl-1",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "IMP-Cofia-M",
+        "concepto": "Cofia lisa M",
+        "prenda": "Cofia",
+        "corte": "Lisa",
+        "genero": "Unisex",
+        "talla": "M",
+        "notas": "Entregado",
+        "p_unit": 180,
+        "importe": 180
+      }
+    ],
+    "fecha_entrega": "15/07/2026",
+    "anticipo": 600,
+    "resta": 355,
+    "total": 955,
+    "motor": "SUPERIOR_ADVERSARIAL_ENSEMBLE",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 955,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "MMh8syZVeh9WiqhonEGL",
+    "firestoreId": "MMh8syZVeh9WiqhonEGL",
+    "folio": "7965",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TARJETA_CREDITO",
+    "cliente": "Mahola Espinosa Amola",
+    "telefono": "2291774546",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173951.jpg",
+    "items": [
+      {
+        "id": "item-MMh8syZVeh9WiqhonEGL-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Conjunto Qx CN Enfra dama F: CH(m) P: M(m)",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "Cuello V",
+        "genero": "Dama",
+        "talla": "F:CH P:M",
+        "notas": "",
+        "p_unit": 645,
+        "importe": 645
+      }
+    ],
+    "fecha_entrega": "20/10/2026",
+    "anticipo": 300,
+    "resta": 345,
+    "total": 645,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 645,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "QQhpfkXhf8x4r1Zs7SH1",
+    "firestoreId": "QQhpfkXhf8x4r1Zs7SH1",
+    "folio": "7975",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TARJETA_DEBITO",
+    "cliente": "Minerva",
+    "telefono": "6346",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174124.jpg",
+    "items": [
+      {
+        "id": "item-QQhpfkXhf8x4r1Zs7SH1-0",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "IMP-Falda-6",
+        "concepto": "Falda CVC T-6",
+        "prenda": "Falda",
+        "corte": "CVC",
+        "genero": "Dama",
+        "talla": "6",
+        "notas": "",
+        "p_unit": 379,
+        "importe": 379
+      },
+      {
+        "id": "item-QQhpfkXhf8x4r1Zs7SH1-1",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Falda-6",
+        "concepto": "Falda CVC T-6",
+        "prenda": "Falda",
+        "corte": "CVC",
+        "genero": "Dama",
+        "talla": "6",
+        "notas": "",
+        "p_unit": 379,
+        "importe": 379
+      },
+      {
+        "id": "item-QQhpfkXhf8x4r1Zs7SH1-2",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Chamarra-G.8",
+        "concepto": "Chamarra CVC T-G.8",
+        "prenda": "Chamarra",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "G.8",
+        "notas": "",
+        "p_unit": 395,
+        "importe": 395
+      }
+    ],
+    "fecha_entrega": "30/09",
+    "anticipo": 1153,
+    "resta": 0,
+    "total": 1153,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 1153,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "SKiUJeyzRT1ByVqAfy9F",
+    "firestoreId": "SKiUJeyzRT1ByVqAfy9F",
+    "folio": "7967",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Montserrat Diaz",
+    "telefono": "2293987242",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174128.jpg",
+    "items": [
+      {
+        "id": "item-SKiUJeyzRT1ByVqAfy9F-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-m-PANT-m",
+        "concepto": "Conjunto Qx. CV. Entha dama F: m (m) P: m (m)",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "Cuello V, Entha",
+        "genero": "Dama",
+        "talla": "F:m P:m",
+        "notas": "",
+        "p_unit": 645,
+        "importe": 645
+      }
+    ],
+    "fecha_entrega": "20/10/2026",
+    "anticipo": 300,
+    "resta": 345,
+    "total": 645,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 645,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "W6OirW5AlPvbQA3Motar",
+    "firestoreId": "W6OirW5AlPvbQA3Motar",
+    "folio": "7897",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Merari Morales",
+    "telefono": "2292880638",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174159.jpg",
+    "items": [
+      {
+        "id": "item-W6OirW5AlPvbQA3Motar-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Conjunto Qx. CV Extra dama F: XXL (A) P: sobre medida NXL",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "Cuello V Extra",
+        "genero": "Dama",
+        "talla": "F:XXL P:NXL",
+        "notas": "A = Apartado, sobre medida NXL",
+        "p_unit": 645,
+        "importe": 645
+      }
+    ],
+    "fecha_entrega": "29/05/2026",
+    "anticipo": 300,
+    "resta": 345,
+    "total": 645,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 645,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "XCqqYyT9LHm2ExEplZGU",
+    "firestoreId": "XCqqYyT9LHm2ExEplZGU",
+    "folio": "7964",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Axel Torres",
+    "telefono": "2299294998",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174311.jpg",
+    "items": [
+      {
+        "id": "item-XCqqYyT9LHm2ExEplZGU-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-XL-PANT-XL",
+        "concepto": "Conjunto Qx. CV EUfo Cab F: XL P: XL (+1 cadera) 1 talla m├ís, completo.",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "Cuello V EUfo",
+        "genero": "Caballero",
+        "talla": "F:XL P:XL",
+        "notas": "(+1 cadera) 1 talla m├ís, completo.",
+        "p_unit": 645,
+        "importe": 645
+      }
+    ],
+    "fecha_entrega": "15/10/2026",
+    "anticipo": 645,
+    "resta": 0,
+    "total": 645,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 645,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "XYMdlpDOSOSa7dHXAlDv",
+    "firestoreId": "XYMdlpDOSOSa7dHXAlDv",
+    "folio": "7963",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TRANSFERENCIA",
+    "cliente": "Guillermina G├│mez Hdez",
+    "telefono": "2291013077",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174334.jpg",
+    "items": [
+      {
+        "id": "item-XYMdlpDOSOSa7dHXAlDv-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Filipina-40",
+        "concepto": "Filipina blanca con botones dama UV talla 40 tergal (comunitaria WEnpa)",
+        "prenda": "Filipina",
+        "corte": "botones UV",
+        "genero": "Dama",
+        "talla": "40",
+        "notas": "blanca (comunitaria WEnpa)",
+        "p_unit": 830,
+        "importe": 830
+      },
+      {
+        "id": "item-XYMdlpDOSOSa7dHXAlDv-1",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Pantal├│n-38",
+        "concepto": "Pantal├│n azul con cierre y botones (mixto) tergal talla 38 y el├ístico",
+        "prenda": "Pantal├│n",
+        "corte": "cierre y botones",
+        "genero": "Unisex",
+        "talla": "38",
+        "notas": "azul y el├ístico",
+        "p_unit": 0,
+        "importe": 0
+      },
+      {
+        "id": "item-XYMdlpDOSOSa7dHXAlDv-2",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-GEN-U",
+        "concepto": "logo manga izq. - Cambio de talla a 40 el 23 de Sept.",
+        "prenda": "Prenda",
+        "corte": "",
+        "genero": "Dama",
+        "talla": "",
+        "notas": "",
+        "p_unit": 30,
+        "importe": 30
+      }
+    ],
+    "fecha_entrega": "09/10/2026",
+    "anticipo": 500,
+    "resta": 360,
+    "total": 860,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 860,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "YB0OjpJY8xzwfOEH794N",
+    "firestoreId": "YB0OjpJY8xzwfOEH794N",
+    "folio": "7945",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TARJETA_DEBITO",
+    "cliente": "Roberto Velasco Delgado",
+    "telefono": "2941009378",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174400.jpg",
+    "items": [
+      {
+        "id": "item-YB0OjpJY8xzwfOEH794N-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-38-PANT-36",
+        "concepto": "Conjunto Comunitario CV Enfra Cab F:38 P:36",
+        "prenda": "Conjunto Comunitario",
+        "corte": "CV",
+        "genero": "Caballero",
+        "talla": "F:38 P:36",
+        "notas": "Enfra",
+        "p_unit": 815,
+        "importe": 815
+      }
+    ],
+    "fecha_entrega": "18/09/2026",
+    "anticipo": 415,
+    "resta": 400,
+    "total": 815,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 815,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "ZZzpZ9PJ7Bj6n00fGnVu",
+    "firestoreId": "ZZzpZ9PJ7Bj6n00fGnVu",
+    "folio": "7960",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Natali Hernandez",
+    "telefono": "2294776907",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174429.jpg",
+    "items": [
+      {
+        "id": "item-ZZzpZ9PJ7Bj6n00fGnVu-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Bata-XL",
+        "concepto": "Bata gabardina blanca XL",
+        "prenda": "Bata",
+        "corte": "gabardina",
+        "genero": "Unisex",
+        "talla": "XL",
+        "notas": "",
+        "p_unit": 385,
+        "importe": 385
+      },
+      {
+        "id": "item-ZZzpZ9PJ7Bj6n00fGnVu-1",
+        "ped_apa_ent": "B",
+        "cant": 1,
+        "clave": "IMP-GEN-U",
+        "concepto": "Bordado (pendiente de enfermer",
+        "prenda": "Prenda",
+        "corte": "",
+        "genero": "Unisex",
+        "talla": "",
+        "notas": "Bordado (pendiente de enfermera)",
+        "p_unit": 50,
+        "importe": 50
+      }
+    ],
+    "fecha_entrega": "26/09/2026",
+    "anticipo": 400,
+    "resta": 35,
+    "total": 435,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 435,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "al5yFqwvDzLhROFqMbVF",
+    "firestoreId": "al5yFqwvDzLhROFqMbVF",
+    "folio": "7931",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Rafael Gallardo",
+    "telefono": "2291014267",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174437.jpg",
+    "items": [
+      {
+        "id": "item-al5yFqwvDzLhROFqMbVF-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Conjunto Cl├¡nico Universidad de Oriente blanco con marino caballero cmo enfermeria F:34 P:32",
+        "prenda": "Conjunto Cl├¡nico",
+        "corte": "Universidad de Oriente",
+        "genero": "Caballero",
+        "talla": "F:34 P:32",
+        "notas": "blanco con marino, cmo enfermeria",
+        "p_unit": 765,
+        "importe": 765
+      },
+      {
+        "id": "item-al5yFqwvDzLhROFqMbVF-1",
+        "ped_apa_ent": "B",
+        "cant": 1,
+        "clave": "IMP-GEN-U",
+        "concepto": "Kit 3 bordados UO enfermera",
+        "prenda": "Prenda",
+        "corte": "",
+        "genero": "Unisex",
+        "talla": "",
+        "notas": "Kit 3 bordados UO enfermera",
+        "p_unit": 150,
+        "importe": 150
+      }
+    ],
+    "fecha_entrega": "08/09/2026",
+    "anticipo": 500,
+    "resta": 415,
+    "total": 915,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 915,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "bmfH5fjcWyH7dA8L4Pj0",
+    "firestoreId": "bmfH5fjcWyH7dA8L4Pj0",
+    "folio": "7901",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Frida Far├¡as Cabrera",
+    "telefono": "2295309979",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174452.jpg",
+    "items": [
+      {
+        "id": "item-bmfH5fjcWyH7dA8L4Pj0-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-36-PANT-36",
+        "concepto": "Conjunto Cl├¡nico CV Enfra dama F: ~36 P: ~36",
+        "prenda": "Conjunto Cl├¡nico",
+        "corte": "Cuello V",
+        "genero": "Dama",
+        "talla": "F:36 P:36",
+        "notas": "Enfra dama",
+        "p_unit": 775,
+        "importe": 775
+      },
+      {
+        "id": "item-bmfH5fjcWyH7dA8L4Pj0-1",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-M-PANT-M",
+        "concepto": "Conjunto Qx. CV Enfra dama F: ~M P: ~M",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "Cuello V",
+        "genero": "Dama",
+        "talla": "F:M P:M",
+        "notas": "Enfra dama",
+        "p_unit": 645,
+        "importe": 645
+      },
+      {
+        "id": "item-bmfH5fjcWyH7dA8L4Pj0-2",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "IMP-Cofia-M",
+        "concepto": "Cofia lisa M",
+        "prenda": "Cofia",
+        "corte": "Lisa",
+        "genero": "Unisex",
+        "talla": "M",
+        "notas": "Entregado",
+        "p_unit": 180,
+        "importe": 180
+      }
+    ],
+    "fecha_entrega": "20/07/2026",
+    "anticipo": 1600,
+    "resta": 0,
+    "total": 1600,
+    "motor": "SUPERIOR_ADVERSARIAL_ENSEMBLE",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 1600,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "ifzX4glLvaYb5mkOXfAq",
+    "firestoreId": "ifzX4glLvaYb5mkOXfAq",
+    "folio": "7948",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "NO_ESPECIFICADO",
+    "cliente": "Anabel",
+    "telefono": "",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174503.jpg",
+    "items": [
+      {
+        "id": "item-ifzX4glLvaYb5mkOXfAq-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Short-14",
+        "concepto": "Short CVC-14 diario",
+        "prenda": "Short",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "14",
+        "notas": "Recib├¡ falda short 14 Anabel / m, Pagado",
+        "p_unit": 379,
+        "importe": 379
+      },
+      {
+        "id": "item-ifzX4glLvaYb5mkOXfAq-1",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Polo-18",
+        "concepto": "Polo CVC T-18",
+        "prenda": "Polo",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "18",
+        "notas": "Pagado",
+        "p_unit": 389,
+        "importe": 389
+      }
+    ],
+    "fecha_entrega": "",
+    "anticipo": 768,
+    "resta": 0,
+    "total": 768,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 768,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "jQMcHfzGkLIM1vnnJd3z",
+    "firestoreId": "jQMcHfzGkLIM1vnnJd3z",
+    "folio": "7969",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Morales",
+    "telefono": "2292880638",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174528.jpg",
+    "items": [
+      {
+        "id": "item-jQMcHfzGkLIM1vnnJd3z-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "FIL-XXL-PANT-NXXL",
+        "concepto": "Conjunto Qc CV Extra dama F:XXL (A) P: Sobre medida NXXL",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "Cuello V Extra",
+        "genero": "Dama",
+        "talla": "F:XXL P:NXXL",
+        "notas": "Sobre medida",
+        "p_unit": 645,
+        "importe": 645
+      }
+    ],
+    "fecha_entrega": "27/04/2026",
+    "anticipo": 645,
+    "resta": 0,
+    "total": 645,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 645,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "k9YldjQOktSiXDg0PGCj",
+    "firestoreId": "k9YldjQOktSiXDg0PGCj",
+    "folio": "7953",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TARJETA_CREDITO",
+    "cliente": "Sara Molina Prieto",
+    "telefono": "2294477760",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174538.jpg",
+    "items": [
+      {
+        "id": "item-k9YldjQOktSiXDg0PGCj-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Pantal├│n-36",
+        "concepto": "Pantal├│n mixto marino, tiro alto sobre medida ~ 36",
+        "prenda": "Pantal├│n",
+        "corte": "Tiro alto",
+        "genero": "Dama",
+        "talla": "36",
+        "notas": "Marino, tiro alto sobre medida ~ 36",
+        "p_unit": 425,
+        "importe": 425
+      }
+    ],
+    "fecha_entrega": "23/09/2026",
+    "anticipo": 225,
+    "resta": 200,
+    "total": 425,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 425,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "m004o9hzxpI3UxosXYoj",
+    "firestoreId": "m004o9hzxpI3UxosXYoj",
+    "folio": "7943",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Enid",
+    "telefono": "2291091573",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174549.jpg",
+    "items": [
+      {
+        "id": "item-m004o9hzxpI3UxosXYoj-0",
+        "ped_apa_ent": "P",
+        "cant": 2,
+        "clave": "IMP-Pants-L",
+        "concepto": "Pants CVC Talla L",
+        "prenda": "Pants",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "L",
+        "notas": "11/Sept Vier",
+        "p_unit": 439,
+        "importe": 878
+      },
+      {
+        "id": "item-m004o9hzxpI3UxosXYoj-1",
+        "ped_apa_ent": "P",
+        "cant": 2,
+        "clave": "IMP-Playera polo-16",
+        "concepto": "Playera polo CVC Talla 16",
+        "prenda": "Playera polo",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "16",
+        "notas": "4/Sept Vier",
+        "p_unit": 389,
+        "importe": 778
+      },
+      {
+        "id": "item-m004o9hzxpI3UxosXYoj-2",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "IMP-Falda Short-14",
+        "concepto": "Falda Short CVC talla 14",
+        "prenda": "Falda Short",
+        "corte": "CVC",
+        "genero": "Dama",
+        "talla": "14",
+        "notas": "",
+        "p_unit": 385,
+        "importe": 385
+      }
+    ],
+    "fecha_entrega": "",
+    "anticipo": 2041,
+    "resta": 0,
+    "total": 2041,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 2041,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "mkfAdu5UO0CF0o0Z8O1D",
+    "firestoreId": "mkfAdu5UO0CF0o0Z8O1D",
+    "folio": "7970",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Lorena Barojas",
+    "telefono": "2781065894",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174601.jpg",
+    "items": [
+      {
+        "id": "item-mkfAdu5UO0CF0o0Z8O1D-0",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Filipina Comunitaria CV Eufra dama 34",
+        "prenda": "Filipina",
+        "corte": "Comunitaria CV Eufra",
+        "genero": "Dama",
+        "talla": "34",
+        "notas": "",
+        "p_unit": 475,
+        "importe": 475
+      },
+      {
+        "id": "item-mkfAdu5UO0CF0o0Z8O1D-1",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Conjunto Comunitario CV Eufra dama F:34 P:34 amplia listo",
+        "prenda": "Conjunto Comunitario",
+        "corte": "CV Eufra",
+        "genero": "Dama",
+        "talla": "F:34 P:34",
+        "notas": "amplia listo",
+        "p_unit": 775,
+        "importe": 775
+      }
+    ],
+    "fecha_entrega": "27/09/2026",
+    "anticipo": 850,
+    "resta": 400,
+    "total": 1250,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 1250,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "nOTNLmQrmMSs9ba4LsYD",
+    "firestoreId": "nOTNLmQrmMSs9ba4LsYD",
+    "folio": "7954",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TARJETA_DEBITO",
+    "cliente": "Enid Quino",
+    "telefono": "2291091573",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174613.jpg",
+    "items": [
+      {
+        "id": "item-nOTNLmQrmMSs9ba4LsYD-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Falda-14",
+        "concepto": "Falda CVC T-14",
+        "prenda": "Falda",
+        "corte": "CVC",
+        "genero": "Dama",
+        "talla": "14",
+        "notas": "Pagado",
+        "p_unit": 385,
+        "importe": 385
+      }
+    ],
+    "fecha_entrega": "23/09/2026",
+    "anticipo": 385,
+    "resta": 0,
+    "total": 385,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 385,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "nTfJWVoTZycsQEXVH3jt",
+    "firestoreId": "nTfJWVoTZycsQEXVH3jt",
+    "folio": "7944",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Beth Mart├¡nez",
+    "telefono": "2219017144",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_174618.jpg",
+    "items": [
+      {
+        "id": "item-nTfJWVoTZycsQEXVH3jt-0",
+        "ped_apa_ent": "P",
+        "cant": 2,
+        "clave": "2",
+        "concepto": "Playera polo CVC T-12",
+        "prenda": "Playera polo",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "12",
+        "notas": "",
+        "p_unit": 389,
+        "importe": 778
+      },
+      {
+        "id": "item-nTfJWVoTZycsQEXVH3jt-1",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Playera-12",
+        "concepto": "Playera deportes CVC T-12",
+        "prenda": "Playera",
+        "corte": "deportes CVC",
+        "genero": "Unisex",
+        "talla": "12",
+        "notas": "",
+        "p_unit": 320,
+        "importe": 320
+      },
+      {
+        "id": "item-nTfJWVoTZycsQEXVH3jt-2",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Pants-12",
+        "concepto": "Pants CVC T-12",
+        "prenda": "Pants",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "12",
+        "notas": "",
+        "p_unit": 420,
+        "importe": 420
+      },
+      {
+        "id": "item-nTfJWVoTZycsQEXVH3jt-3",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Short-12",
+        "concepto": "Short CVC T-12",
+        "prenda": "Short",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "12",
+        "notas": "",
+        "p_unit": 269,
+        "importe": 269
+      }
+    ],
+    "fecha_entrega": "18/09/2026",
+    "anticipo": 1500,
+    "resta": 287,
+    "total": 1787,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 1787,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "pmjKaSYpGl9MzM63qCKb",
+    "firestoreId": "pmjKaSYpGl9MzM63qCKb",
+    "folio": "7907",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "EFECTIVO",
+    "cliente": "Francisco Martinez",
+    "telefono": "2713715270",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173856.jpg",
+    "items": [
+      {
+        "id": "item-pmjKaSYpGl9MzM63qCKb-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Pantal├│n comunitario marino LV Enpa cab. ~34",
+        "prenda": "Pantal├│n",
+        "corte": "comunitario marino LV",
+        "genero": "Caballero",
+        "talla": "34",
+        "notas": "",
+        "p_unit": 460,
+        "importe": 460
+      }
+    ],
+    "fecha_entrega": "04/08/2026",
+    "anticipo": 300,
+    "resta": 160,
+    "total": 460,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 460,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "qxuAD2BNXtD8HQnEli81",
+    "firestoreId": "qxuAD2BNXtD8HQnEli81",
+    "folio": "7947",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "NO_ESPECIFICADO",
+    "cliente": "Anabel",
+    "telefono": "",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173915.jpg",
+    "items": [
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-0",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Playera deportes CVC T-6",
+        "prenda": "Playera",
+        "corte": "deportes CVC",
+        "genero": "Unisex",
+        "talla": "6",
+        "notas": "",
+        "p_unit": 290,
+        "importe": 290
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-1",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Shirt + deportes CVC T-4",
+        "prenda": "Shirt",
+        "corte": "deportes CVC",
+        "genero": "Unisex",
+        "talla": "4",
+        "notas": "",
+        "p_unit": 249,
+        "importe": 249
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-2",
+        "ped_apa_ent": "P",
+        "cant": 3,
+        "clave": "3",
+        "concepto": "Polo CVC T-12",
+        "prenda": "Polo",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "12",
+        "notas": "",
+        "p_unit": 259.33,
+        "importe": 777.99
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-3",
+        "ped_apa_ent": "P",
+        "cant": 2,
+        "clave": "2",
+        "concepto": "Falda CVC T-10",
+        "prenda": "Falda",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "10",
+        "notas": "",
+        "p_unit": 385,
+        "importe": 770
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-4",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Falda CVC T-10",
+        "prenda": "Falda",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "10",
+        "notas": "",
+        "p_unit": 385,
+        "importe": 385
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-5",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Playera deportes CVC 12",
+        "prenda": "Playera",
+        "corte": "deportes CVC",
+        "genero": "Unisex",
+        "talla": "12",
+        "notas": "",
+        "p_unit": 320,
+        "importe": 320
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-6",
+        "ped_apa_ent": "E",
+        "cant": 1,
+        "clave": "1",
+        "concepto": "Short deportes CVC 10",
+        "prenda": "Short",
+        "corte": "deportes CVC",
+        "genero": "Unisex",
+        "talla": "10",
+        "notas": "",
+        "p_unit": 269,
+        "importe": 269
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-7",
+        "ped_apa_ent": "E",
+        "cant": 2,
+        "clave": "2",
+        "concepto": "Short Drabio CVC T-14",
+        "prenda": "Short",
+        "corte": "Drabio CVC",
+        "genero": "Unisex",
+        "talla": "14",
+        "notas": "falta short 14, dej├│ Anabel/m",
+        "p_unit": 379,
+        "importe": 758
+      },
+      {
+        "id": "item-qxuAD2BNXtD8HQnEli81-8",
+        "ped_apa_ent": "E",
+        "cant": 2,
+        "clave": "2",
+        "concepto": "Polo CVC T-14",
+        "prenda": "Polo",
+        "corte": "CVC",
+        "genero": "Unisex",
+        "talla": "14",
+        "notas": "Pagado",
+        "p_unit": 389,
+        "importe": 778
+      }
+    ],
+    "fecha_entrega": "",
+    "anticipo": 4597,
+    "resta": 0,
+    "total": 4597,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 4596.99,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  },
+  {
+    "id": "uHb7Fzx9Ru4WnrDgWFa9",
+    "firestoreId": "uHb7Fzx9Ru4WnrDgWFa9",
+    "folio": "7951",
+    "fecha_emision": "23/10/2026",
+    "metodo_pago": "TARJETA_CREDITO",
+    "cliente": "Monserrat G├│mez Nava",
+    "telefono": "2292306838",
+    "rfc": "",
+    "direccion": "",
+    "imageUrl": "/samples/real/20260903_173925.jpg",
+    "items": [
+      {
+        "id": "item-uHb7Fzx9Ru4WnrDgWFa9-0",
+        "ped_apa_ent": "P",
+        "cant": 1,
+        "clave": "IMP-Conjunto Quir├║rgico-XL",
+        "concepto": "Conjunto Qx. Blanco dama CEPAV sobre medida ~ XL",
+        "prenda": "Conjunto Quir├║rgico",
+        "corte": "CEPAV sobre medida",
+        "genero": "Dama",
+        "talla": "XL",
+        "notas": "CEPAV sobre medida ~ XL, Pagado",
+        "p_unit": 865,
+        "importe": 865
+      }
+    ],
+    "fecha_entrega": "22/09/2026",
+    "anticipo": 865,
+    "resta": 0,
+    "total": 865,
+    "motor": "IA_MULTIMODAL",
+    "syncedToDb": true,
+    "archivada": false,
+    "validacion_financiera": {
+      "cuadre_ok": true,
+      "diferencia": 0,
+      "suma_importes": 865,
+      "total_coincide": true
+    },
+    "cuota_creditos": {
+      "usados_esta_hora": 1,
+      "limite_por_hora": 500,
+      "disponibles": 499,
+      "total_acumulado": 1
+    }
+  }
+];

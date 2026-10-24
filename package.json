@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3028",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3028",
     "lint": "next lint",
     "cap:sync": "cap sync",
     "cap:build": "pnpm build && cap sync android"

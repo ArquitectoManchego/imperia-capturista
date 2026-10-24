@@ -26,11 +26,41 @@ import {
   ExternalLink,
   ChevronRight,
   TrendingUp,
-  FileText
+  FileText,
+  Archive,
+  ArchiveRestore,
+  Filter
 } from 'lucide-react';
 import { NoteData, NoteItem, ItemStatus, PaymentMethod, EngineType } from '@/lib/types';
 import { SAMPLE_NOTES } from '@/lib/sample-data';
-import { syncOrderToSoftwareImperia } from '@/lib/firebase';
+import { 
+  syncOrderToSoftwareImperia, 
+  fetchOrdersFromSoftwareImperia, 
+  archiveOrderInSoftwareImperia, 
+  deleteOrderFromSoftwareImperia 
+} from '@/lib/firebase';
+import { RECOVERED_FIRESTORE_NOTES } from '@/lib/recovered-notes';
+
+// Pre-combinar notas recuperadas de Firestore con notas de muestra para carga instantánea
+const getInitialNotes = (): NoteData[] => {
+  const map = new Map<string, NoteData>();
+  RECOVERED_FIRESTORE_NOTES.forEach(n => map.set(n.folio, n));
+  SAMPLE_NOTES.forEach(n => {
+    if (!map.has(n.folio)) {
+      map.set(n.folio, n);
+    } else {
+      const existing = map.get(n.folio)!;
+      map.set(n.folio, {
+        ...existing,
+        syncedToDb: true,
+        imageUrl: n.imageUrl || existing.imageUrl
+      });
+    }
+  });
+  return Array.from(map.values());
+};
+
+const INITIAL_NOTES_LIST = getInitialNotes();
 
 export default function CapturistaApp() {
   // Navigation
@@ -39,11 +69,14 @@ export default function CapturistaApp() {
   const [selectedEngine, setSelectedEngine] = useState<EngineType>('superior');
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   
-  // Note state (mutable notes list)
-  const [notesList, setNotesList] = useState<NoteData[]>(SAMPLE_NOTES);
-  const [currentNote, setCurrentNote] = useState<NoteData>(SAMPLE_NOTES[0]);
+  // Note state (mutable notes list con 24+ notas reales)
+  const [notesList, setNotesList] = useState<NoteData[]>(INITIAL_NOTES_LIST);
+  const [currentNote, setCurrentNote] = useState<NoteData>(INITIAL_NOTES_LIST[0] || SAMPLE_NOTES[0]);
   const [selectedSampleIndex, setSelectedSampleIndex] = useState<number>(0);
-  const [activeImageUri, setActiveImageUri] = useState<string>(SAMPLE_NOTES[0]?.imageUrl || '/samples/real/caso_real_1.jpg');
+  const [activeImageUri, setActiveImageUri] = useState<string>(
+    INITIAL_NOTES_LIST[0]?.imageUrl || SAMPLE_NOTES[0]?.imageUrl || '/samples/real/caso_real_1.jpg'
+  );
+  const [showArchived, setShowArchived] = useState<boolean>(false);
   
   // Staged photos queue (previsualización de fotos capturadas antes de subir)
   const [stagedPhotos, setStagedPhotos] = useState<string[]>([]);
@@ -74,7 +107,16 @@ export default function CapturistaApp() {
   
   // Sync status
   const [syncStatus, setSyncStatus] = useState<{ loading: boolean; success?: boolean; message?: string } | null>(null);
-  const [syncedOrders, setSyncedOrders] = useState<any[]>([]);
+  const [syncedOrders, setSyncedOrders] = useState<any[]>(
+    RECOVERED_FIRESTORE_NOTES.map(n => ({
+      id: n.firestoreId || n.id,
+      folio: n.folio,
+      cliente: n.cliente,
+      total: n.total,
+      fecha: n.fecha_emision,
+      archivada: n.archivada
+    }))
+  );
 
   // Modals
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
@@ -102,19 +144,100 @@ export default function CapturistaApp() {
       .catch(err => console.log('Benchmark data offline:', err));
   }, []);
 
-  // Handle sample selection
+  // Cargar pedidos en tiempo real desde Firestore Software Imperia al iniciar
+  useEffect(() => {
+    let isMounted = true;
+    async function syncFromFirestore() {
+      try {
+        const liveOrders = await fetchOrdersFromSoftwareImperia();
+        if (!isMounted || !liveOrders || liveOrders.length === 0) return;
+
+        setSyncedOrders(liveOrders.map(n => ({
+          id: n.firestoreId || n.id,
+          folio: n.folio,
+          cliente: n.cliente,
+          total: n.total,
+          fecha: n.fecha_emision,
+          archivada: n.archivada
+        })));
+
+        setNotesList(prev => {
+          const map = new Map<string, NoteData>();
+          liveOrders.forEach(lo => {
+            const fallbackImage = RECOVERED_FIRESTORE_NOTES.find(r => r.folio === lo.folio)?.imageUrl || `/samples/real/20260903_173856.jpg`;
+            map.set(lo.folio, {
+              ...lo,
+              syncedToDb: true,
+              imageUrl: lo.imageUrl || fallbackImage
+            });
+          });
+
+          prev.forEach(pn => {
+            if (!map.has(pn.folio)) {
+              map.set(pn.folio, pn);
+            }
+          });
+
+          return Array.from(map.values());
+        });
+      } catch (err) {
+        console.warn("Error al sincronizar con Firestore en segundo plano:", err);
+      }
+    }
+    syncFromFirestore();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Handle note selection
   const handleSelectSample = (idx: number) => {
-    if (idx < 0 || idx >= notesList.length) return;
+    const listToUse = showArchived ? notesList : notesList.filter(n => !n.archivada);
+    if (idx < 0 || idx >= listToUse.length) return;
     setSelectedSampleIndex(idx);
-    const sample = notesList[idx];
+    const sample = listToUse[idx];
     setCurrentNote(JSON.parse(JSON.stringify(sample)));
-    setActiveImageUri(sample.imageUrl || `/samples/real/caso_real_${(idx % 5) + 1}.jpg`);
+    setActiveImageUri(sample.imageUrl || `/samples/real/caso_real_1.jpg`);
     setZoomLevel(1);
     setRotation(0);
   };
 
-  // Delete note from notes list
-  const handleDeleteNote = (folioToDelete: string) => {
+  // Archivar o desarchivar nota (opción en el botón del número de nota)
+  const handleToggleArchiveNote = async (folioToToggle: string, newArchivedState: boolean) => {
+    const targetNote = notesList.find(n => n.folio === folioToToggle);
+    setNotesList(prev => prev.map(n => n.folio === folioToToggle ? { ...n, archivada: newArchivedState } : n));
+    if (currentNote.folio === folioToToggle) {
+      setCurrentNote(prev => ({ ...prev, archivada: newArchivedState }));
+    }
+    setSyncedOrders(prev => prev.map(o => o.folio === folioToToggle ? { ...o, archivada: newArchivedState } : o));
+
+    if (targetNote?.firestoreId) {
+      try {
+        await archiveOrderInSoftwareImperia(targetNote.firestoreId, newArchivedState);
+      } catch (e) {
+        console.error("Error al actualizar archivo en Firestore:", e);
+      }
+    }
+  };
+
+  // Borrar nota (opción en el botón del número de nota)
+  const handleDeleteNote = async (folioToDelete: string) => {
+    const targetNote = notesList.find(n => n.folio === folioToDelete);
+    if (!targetNote) return;
+
+    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la nota #${folioToDelete} (${targetNote.cliente || 'Cliente'})?`);
+    if (!confirmDelete) return;
+
+    if (targetNote.firestoreId) {
+      const deleteFromCloud = window.confirm(`Esta nota ya está subida en Software Imperia Firestore. ¿Deseas borrarla también de la base de datos en la nube?`);
+      if (deleteFromCloud) {
+        try {
+          await deleteOrderFromSoftwareImperia(targetNote.firestoreId);
+          setSyncedOrders(prev => prev.filter(o => o.folio !== folioToDelete));
+        } catch (e) {
+          console.error("Error al borrar en Firestore:", e);
+        }
+      }
+    }
+
     const updated = notesList.filter(n => n.folio !== folioToDelete);
     setNotesList(updated);
 
@@ -142,14 +265,15 @@ export default function CapturistaApp() {
       return;
     }
 
+    const visibleAfterDelete = showArchived ? updated : updated.filter(n => !n.archivada);
     if (currentNote.folio === folioToDelete) {
-      const nextIdx = Math.min(Math.max(selectedSampleIndex, 0), updated.length - 1);
+      const nextIdx = Math.min(Math.max(selectedSampleIndex, 0), visibleAfterDelete.length - 1);
       setSelectedSampleIndex(nextIdx);
-      const nextNote = JSON.parse(JSON.stringify(updated[nextIdx]));
+      const nextNote = JSON.parse(JSON.stringify(visibleAfterDelete[nextIdx] || updated[0]));
       setCurrentNote(nextNote);
-      setActiveImageUri(nextNote.imageUrl || `/samples/real/caso_real_${(nextIdx % 5) + 1}.jpg`);
+      setActiveImageUri(nextNote.imageUrl || `/samples/real/caso_real_1.jpg`);
     } else {
-      const newActiveIdx = updated.findIndex(n => n.folio === currentNote.folio);
+      const newActiveIdx = visibleAfterDelete.findIndex(n => n.folio === currentNote.folio);
       setSelectedSampleIndex(newActiveIdx >= 0 ? newActiveIdx : 0);
     }
   };
@@ -560,15 +684,23 @@ export default function CapturistaApp() {
         message: res.message
       });
       if (res.success) {
+        const updatedCurrent: NoteData = {
+          ...currentNote,
+          syncedToDb: true,
+          firestoreId: res.pedidoId
+        };
+        setCurrentNote(updatedCurrent);
+        setNotesList(prev => prev.map(n => n.folio === currentNote.folio ? updatedCurrent : n));
         setSyncedOrders(prev => [
           {
             id: res.pedidoId,
             folio: currentNote.folio,
             cliente: currentNote.cliente,
             total: currentNote.total,
-            fecha: new Date().toLocaleTimeString()
+            fecha: new Date().toLocaleTimeString(),
+            archivada: false
           },
-          ...prev
+          ...prev.filter(p => p.folio !== currentNote.folio)
         ]);
       }
     } catch (err: any) {
@@ -1041,36 +1173,100 @@ export default function CapturistaApp() {
                 </button>
               </div>
 
-              {/* Selector de notas agrupadas con botón de borrar individual */}
+              {/* Selector de notas agrupadas con color verde para notas en BD Software Imperia, y opciones de Archivar / Borrar */}
               <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 max-w-full">
-                <span className="text-xs text-slate-500 mr-1 hidden sm:inline font-semibold">Notas:</span>
-                {notesList.map((s, idx) => {
-                  const isSelected = selectedSampleIndex === idx;
+                <span className="text-xs text-slate-500 mr-1 hidden sm:inline font-semibold">
+                  Notas ({showArchived ? notesList.length : notesList.filter(n => !n.archivada).length}):
+                </span>
+
+                {/* Alternador de visualización de notas archivadas */}
+                {notesList.some(n => n.archivada) && (
+                  <button
+                    onClick={() => setShowArchived(!showArchived)}
+                    className={`px-2 py-1 rounded-lg text-[11px] font-semibold border flex items-center space-x-1 transition flex-shrink-0 ${
+                      showArchived 
+                        ? 'bg-purple-100 text-purple-900 border-purple-300 font-bold' 
+                        : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                    }`}
+                    title={showArchived ? "Ocultar notas archivadas" : "Mostrar notas archivadas"}
+                  >
+                    <Archive className="w-3 h-3 text-purple-600" />
+                    <span>{showArchived ? 'Archivadas visibles' : `Ver archivadas (${notesList.filter(n => n.archivada).length})`}</span>
+                  </button>
+                )}
+
+                {(showArchived ? notesList : notesList.filter(n => !n.archivada)).map((s, idx) => {
+                  const isSelected = currentNote.folio === s.folio;
+                  const isSynced = Boolean(s.syncedToDb);
+                  const isArchived = Boolean(s.archivada);
+
                   return (
                     <div 
                       key={s.id || `${s.folio}-${idx}`} 
-                      className={`inline-flex items-center rounded-lg text-xs transition border group ${
-                        isSelected 
-                          ? 'bg-amber-400 text-slate-950 font-bold border-amber-500 shadow-sm' 
-                          : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
-                      }`}
+                      className={`inline-flex items-center rounded-lg text-xs transition border group shadow-xs ${
+                        isSynced 
+                          ? (isSelected 
+                              ? 'bg-emerald-600 text-white font-bold border-emerald-700 shadow-md ring-2 ring-emerald-300' 
+                              : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-300 font-semibold')
+                          : (isSelected 
+                              ? 'bg-amber-400 text-slate-950 font-bold border-amber-500 shadow-sm ring-2 ring-amber-300' 
+                              : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200')
+                      } ${isArchived ? 'opacity-60 italic' : ''}`}
                     >
+                      {/* Botón principal: Seleccionar y ver propiedades de la nota */}
                       <button 
-                        onClick={() => handleSelectSample(idx)}
-                        className="pl-2.5 pr-1 py-1 flex items-center space-x-1"
-                        title={`Ver nota #${s.folio}`}
+                        onClick={() => {
+                          setSelectedSampleIndex(idx);
+                          setCurrentNote(JSON.parse(JSON.stringify(s)));
+                          setActiveImageUri(s.imageUrl || `/samples/real/caso_real_1.jpg`);
+                          setZoomLevel(1);
+                          setRotation(0);
+                        }}
+                        className="pl-2.5 pr-1.5 py-1 flex items-center space-x-1.5"
+                        title={`Nota #${s.folio} - ${s.cliente} - $${s.total} ${isSynced ? '✓ Guardada en Software Imperia Firestore' : '⚠ Pendiente de subir'}`}
                       >
+                        {isSynced ? (
+                          <Database className={`w-3 h-3 ${isSelected ? 'text-white' : 'text-emerald-700'}`} />
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
+                        )}
                         <span>#{s.folio}</span>
                       </button>
+
+                      {/* Opción de Archivar / Desarchivar */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleArchiveNote(s.folio, !isArchived);
+                        }}
+                        className={`p-1 rounded-full transition ${
+                          isSelected 
+                            ? (isSynced ? 'hover:bg-emerald-700 text-emerald-100' : 'hover:bg-amber-500 text-slate-800') 
+                            : (isSynced ? 'hover:bg-emerald-200 text-emerald-800' : 'hover:bg-slate-300 text-slate-600')
+                        }`}
+                        title={isArchived ? `Desarchivar nota #${s.folio}` : `Archivar nota #${s.folio}`}
+                      >
+                        {isArchived ? (
+                          <ArchiveRestore className="w-3 h-3 hover:scale-125 transition-transform" />
+                        ) : (
+                          <Archive className="w-3 h-3 hover:scale-125 transition-transform" />
+                        )}
+                      </button>
+
+                      {/* Opción de Borrar */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeleteNote(s.folio);
                         }}
-                        className="p-1 mr-1 text-slate-500 hover:text-red-600 rounded-full hover:bg-red-100/60 transition"
+                        className={`p-1 mr-1 rounded-full transition ${
+                          isSelected 
+                            ? (isSynced ? 'hover:bg-red-700 hover:text-white text-emerald-100' : 'hover:bg-red-600 hover:text-white text-slate-800') 
+                            : 'hover:bg-red-100 hover:text-red-700 text-slate-500'
+                        }`}
                         title={`Borrar nota #${s.folio}`}
                       >
-                        <X className="w-3 h-3 hover:scale-125 transition-transform" />
+                        <Trash2 className="w-3 h-3 hover:scale-125 transition-transform" />
                       </button>
                     </div>
                   );
@@ -1567,23 +1763,50 @@ export default function CapturistaApp() {
                       </button>
                     </div>
 
-                    <button 
-                      onClick={handleSyncToFirestore}
-                      disabled={syncStatus?.loading}
-                      className="bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold text-xs px-4 py-2 rounded-lg flex items-center space-x-1.5 transition shadow"
-                    >
-                      {syncStatus?.loading ? (
-                        <>
-                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                          <span>Subiendo a Software Imperia...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Database className="w-3.5 h-3.5 text-slate-950" />
-                          <span>Subir a Software Imperia</span>
-                        </>
-                      )}
-                    </button>
+                    {currentNote.syncedToDb ? (
+                      <div className="flex items-center space-x-2">
+                        <span className="text-[11px] bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded-lg border border-emerald-300 flex items-center space-x-1">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Guardada en Software Imperia</span>
+                        </span>
+                        <button 
+                          onClick={handleSyncToFirestore}
+                          disabled={syncStatus?.loading}
+                          className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow"
+                          title="Actualizar datos de este pedido en Firestore"
+                        >
+                          {syncStatus?.loading ? (
+                            <>
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                              <span>Actualizando...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Database className="w-3.5 h-3.5 text-white" />
+                              <span>Actualizar en BD</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    ) : (
+                      <button 
+                        onClick={handleSyncToFirestore}
+                        disabled={syncStatus?.loading}
+                        className="bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold text-xs px-4 py-2 rounded-lg flex items-center space-x-1.5 transition shadow"
+                      >
+                        {syncStatus?.loading ? (
+                          <>
+                            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            <span>Subiendo a Software Imperia...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Database className="w-3.5 h-3.5 text-slate-950" />
+                            <span>Subir a Software Imperia</span>
+                          </>
+                        )}
+                      </button>
+                    )}
                   </div>
 
                   {/* Mensaje de respuesta de Firestore */}
@@ -1775,22 +1998,63 @@ export default function CapturistaApp() {
                       <th className="p-3">Folio Nota</th>
                       <th className="p-3">Cliente</th>
                       <th className="p-3 text-right">Total</th>
-                      <th className="p-3 text-center">Hora Captura</th>
+                      <th className="p-3 text-center">Fecha / Hora</th>
                       <th className="p-3 text-center">Estado</th>
+                      <th className="p-3 text-center">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
                     {syncedOrders.map((ord) => (
-                      <tr key={ord.id} className="hover:bg-slate-50">
+                      <tr key={ord.id} className={`hover:bg-slate-50 ${ord.archivada ? 'opacity-60 bg-slate-50/50' : ''}`}>
                         <td className="p-3 font-mono text-blue-600 font-semibold">{ord.id}</td>
                         <td className="p-3 font-bold text-red-600">#{ord.folio}</td>
                         <td className="p-3 font-medium text-slate-800">{ord.cliente}</td>
                         <td className="p-3 text-right font-mono font-bold">${Number(ord.total).toFixed(2)}</td>
                         <td className="p-3 text-center text-slate-500">{ord.fecha}</td>
                         <td className="p-3 text-center">
-                          <span className="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">
-                            En Producción
-                          </span>
+                          {ord.archivada ? (
+                            <span className="bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                              Archivada
+                            </span>
+                          ) : (
+                            <span className="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                              En Producción
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-3 text-center">
+                          <div className="flex items-center justify-center space-x-1.5">
+                            <button
+                              onClick={() => {
+                                const target = notesList.find(n => n.folio === ord.folio);
+                                if (target) {
+                                  const idx = notesList.findIndex(n => n.folio === ord.folio);
+                                  setSelectedSampleIndex(idx);
+                                  setCurrentNote(target);
+                                  setActiveImageUri(target.imageUrl || `/samples/real/caso_real_1.jpg`);
+                                }
+                                setActiveTab('captura');
+                              }}
+                              className="px-2 py-1 bg-amber-100 hover:bg-amber-200 text-slate-900 rounded text-[11px] font-semibold transition"
+                              title="Cargar nota en mesa de captura y tabla"
+                            >
+                              Ver en Tabla
+                            </button>
+                            <button
+                              onClick={() => handleToggleArchiveNote(ord.folio, !ord.archivada)}
+                              className="p-1 hover:bg-purple-100 text-purple-700 rounded transition"
+                              title={ord.archivada ? "Desarchivar" : "Archivar"}
+                            >
+                              {ord.archivada ? <ArchiveRestore className="w-3.5 h-3.5" /> : <Archive className="w-3.5 h-3.5" />}
+                            </button>
+                            <button
+                              onClick={() => handleDeleteNote(ord.folio)}
+                              className="p-1 hover:bg-red-100 text-red-600 rounded transition"
+                              title="Borrar de la base de datos"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
