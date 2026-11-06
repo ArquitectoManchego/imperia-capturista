@@ -29,7 +29,10 @@ import {
   FileText,
   Archive,
   ArchiveRestore,
-  Filter
+  Filter,
+  Check,
+  Layers,
+  ArrowRight
 } from 'lucide-react';
 import { NoteData, NoteItem, ItemStatus, PaymentMethod, EngineType } from '@/lib/types';
 import { SAMPLE_NOTES } from '@/lib/sample-data';
@@ -40,14 +43,23 @@ import {
   deleteOrderFromSoftwareImperia 
 } from '@/lib/firebase';
 import { RECOVERED_FIRESTORE_NOTES } from '@/lib/recovered-notes';
+import { 
+  CatalogProduct, 
+  INITIAL_PRODUCTS_CATALOG, 
+  fetchProductsFromSoftwareImperia, 
+  findBestProductMatch,
+  enrichItemWithCatalogMatch,
+  enrichNoteWithCatalogMatches
+} from '@/lib/catalog';
 
 // Pre-combinar notas recuperadas de Firestore con notas de muestra para carga instantánea
 const getInitialNotes = (): NoteData[] => {
   const map = new Map<string, NoteData>();
-  RECOVERED_FIRESTORE_NOTES.forEach(n => map.set(n.folio, n));
+  RECOVERED_FIRESTORE_NOTES.forEach(n => map.set(n.folio, enrichNoteWithCatalogMatches(n, INITIAL_PRODUCTS_CATALOG)));
   SAMPLE_NOTES.forEach(n => {
+    const enriched = enrichNoteWithCatalogMatches(n, INITIAL_PRODUCTS_CATALOG);
     if (!map.has(n.folio)) {
-      map.set(n.folio, n);
+      map.set(n.folio, enriched);
     } else {
       const existing = map.get(n.folio)!;
       map.set(n.folio, {
@@ -70,6 +82,7 @@ export default function CapturistaApp() {
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   
   // Note state (mutable notes list con 24+ notas reales)
+  const [productCatalog, setProductCatalog] = useState<CatalogProduct[]>(INITIAL_PRODUCTS_CATALOG);
   const [notesList, setNotesList] = useState<NoteData[]>(INITIAL_NOTES_LIST);
   const [currentNote, setCurrentNote] = useState<NoteData>(INITIAL_NOTES_LIST[0] || SAMPLE_NOTES[0]);
   const [selectedSampleIndex, setSelectedSampleIndex] = useState<number>(0);
@@ -188,6 +201,24 @@ export default function CapturistaApp() {
     return () => { isMounted = false; };
   }, []);
 
+  // Cargar catálogo de productos en vivo desde Firestore Software Imperia
+  useEffect(() => {
+    let isMounted = true;
+    async function loadCatalog() {
+      try {
+        const liveCatalog = await fetchProductsFromSoftwareImperia();
+        if (!isMounted || !liveCatalog || liveCatalog.length === 0) return;
+        setProductCatalog(liveCatalog);
+        setCurrentNote(prev => enrichNoteWithCatalogMatches(prev, liveCatalog));
+        setNotesList(prev => prev.map(n => enrichNoteWithCatalogMatches(n, liveCatalog)));
+      } catch (err) {
+        console.warn("Error al cargar catálogo de productos desde Firestore:", err);
+      }
+    }
+    loadCatalog();
+    return () => { isMounted = false; };
+  }, []);
+
   // Handle note selection
   const handleSelectSample = (idx: number) => {
     const listToUse = showArchived ? notesList : notesList.filter(n => !n.archivada);
@@ -258,7 +289,13 @@ export default function CapturistaApp() {
         anticipo: 0,
         resta: 0,
         total: 0,
-        motor: selectedEngine === 'ocr' ? 'OCR_TRADICIONAL_CV' : (selectedEngine === 'superior' ? 'SUPERIOR_ADVERSARIAL_ENSEMBLE' : 'IA_MULTIMODAL')
+        motor: selectedEngine === 'ocr' ? 'OCR_TRADICIONAL_CV' : (selectedEngine === 'superior' ? 'SUPERIOR_ADVERSARIAL_ENSEMBLE' : 'IA_MULTIMODAL'),
+        validacion_financiera: {
+          suma_importes: 0,
+          cuadre_ok: true,
+          diferencia: 0,
+          total_coincide: true
+        }
       };
       setCurrentNote(emptyNote);
       setActiveImageUri('');
@@ -413,10 +450,10 @@ export default function CapturistaApp() {
       }));
       await new Promise(r => setTimeout(r, 400));
 
-      const updatedNote: NoteData = {
+      const updatedNote: NoteData = enrichNoteWithCatalogMatches({
         ...data,
         imageUrl: activeImageUri
-      };
+      }, productCatalog);
       setCurrentNote(updatedNote);
       setNotesList(prev => prev.map((n, idx) => (idx === selectedSampleIndex || n.folio === updatedNote.folio) ? updatedNote : n));
       if (updatedNote.cuota_creditos) {
@@ -553,11 +590,11 @@ export default function CapturistaApp() {
           throw new Error(analyzedData.error || `Error al analizar la foto #${i + 1} (${res.status})`);
         }
 
-        const noteToAdd: NoteData = {
+        const noteToAdd: NoteData = enrichNoteWithCatalogMatches({
           ...analyzedData,
           id: `captured-${Date.now()}-${i}`,
           imageUrl: compressedPhoto
-        };
+        }, productCatalog);
 
         newNotes.push(noteToAdd);
         if (analyzedData.cuota_creditos) {
@@ -623,12 +660,41 @@ export default function CapturistaApp() {
       updatedItems[index].importe = Math.round(cant * punit * 100) / 100;
     }
 
+    // Si se modifica el concepto por texto, re-evaluar la coincidencia con el catálogo de productos
+    if (field === 'concepto') {
+      const match = findBestProductMatch(String(value), updatedItems[index].prenda, productCatalog);
+      if (match.isExactMatch && match.bestProduct) {
+        updatedItems[index].isExactMatch = true;
+        updatedItems[index].matchedProductId = match.bestProduct.id;
+        updatedItems[index].matchedProductName = match.bestProduct.nombre;
+        updatedItems[index].suggestedProductId = match.bestProduct.id;
+        updatedItems[index].suggestedProductName = match.bestProduct.nombre;
+        updatedItems[index].similarityScore = 1.0;
+        updatedItems[index].matchAction = 'use_existing';
+      } else if (match.bestProduct) {
+        updatedItems[index].isExactMatch = false;
+        updatedItems[index].suggestedProductId = match.bestProduct.id;
+        updatedItems[index].suggestedProductName = match.bestProduct.nombre;
+        updatedItems[index].similarityScore = match.score;
+        if (updatedItems[index].matchAction === 'use_existing' && updatedItems[index].matchedProductName !== match.bestProduct.nombre) {
+          updatedItems[index].matchedProductId = undefined;
+          updatedItems[index].matchedProductName = undefined;
+          updatedItems[index].matchAction = undefined;
+        }
+      } else {
+        updatedItems[index].isExactMatch = false;
+        updatedItems[index].suggestedProductId = undefined;
+        updatedItems[index].suggestedProductName = undefined;
+        updatedItems[index].similarityScore = 0;
+      }
+    }
+
     // Recalculate totals
     const sumImportes = updatedItems.reduce((acc, it) => acc + (Number(it.importe) || 0), 0);
     const newTotal = sumImportes;
     const newResta = Math.max(Math.round((newTotal - currentNote.anticipo) * 100) / 100, 0);
 
-    setCurrentNote({
+    const updatedNote: NoteData = {
       ...currentNote,
       items: updatedItems,
       total: newTotal,
@@ -639,11 +705,72 @@ export default function CapturistaApp() {
         diferencia: Math.round((newTotal - currentNote.anticipo - newResta) * 100) / 100,
         total_coincide: true
       }
-    });
+    };
+    setCurrentNote(updatedNote);
+    setNotesList(prev => prev.map(n => n.folio === currentNote.folio ? updatedNote : n));
+  };
+
+  // Seleccionar producto existente de la base de datos para una fila
+  const handleSelectExistingProduct = (index: number, product: CatalogProduct) => {
+    const updatedItems = [...currentNote.items];
+    const currentItem = updatedItems[index];
+    const unitPrice = (Number(currentItem.p_unit) === 0 && product.precio) ? product.precio : currentItem.p_unit;
+    const importe = Math.round(currentItem.cant * unitPrice * 100) / 100;
+
+    updatedItems[index] = {
+      ...currentItem,
+      matchedProductId: product.id,
+      matchedProductName: product.nombre,
+      suggestedProductId: product.id,
+      suggestedProductName: product.nombre,
+      isExactMatch: true,
+      matchAction: 'use_existing',
+      similarityScore: 1.0,
+      p_unit: unitPrice,
+      importe: importe
+    };
+
+    const sumImportes = updatedItems.reduce((acc, it) => acc + (Number(it.importe) || 0), 0);
+    const updatedNote: NoteData = {
+      ...currentNote,
+      items: updatedItems,
+      total: sumImportes,
+      resta: Math.max(Math.round((sumImportes - currentNote.anticipo) * 100) / 100, 0),
+      validacion_financiera: {
+        suma_importes: sumImportes,
+        cuadre_ok: Math.abs(sumImportes - currentNote.anticipo - Math.max(sumImportes - currentNote.anticipo, 0)) < 0.01,
+        diferencia: 0,
+        total_coincide: true
+      }
+    };
+    setCurrentNote(updatedNote);
+    setNotesList(prev => prev.map(n => n.folio === currentNote.folio ? updatedNote : n));
+  };
+
+  // Pedir que se genere un nuevo concepto a partir de lo adivinado por la IA
+  const handleCreateNewConcept = (index: number) => {
+    const updatedItems = [...currentNote.items];
+    const currentItem = updatedItems[index];
+
+    updatedItems[index] = {
+      ...currentItem,
+      matchedProductId: undefined,
+      matchedProductName: undefined,
+      isExactMatch: false,
+      matchAction: 'create_new',
+      similarityScore: 0
+    };
+
+    const updatedNote: NoteData = {
+      ...currentNote,
+      items: updatedItems
+    };
+    setCurrentNote(updatedNote);
+    setNotesList(prev => prev.map(n => n.folio === currentNote.folio ? updatedNote : n));
   };
 
   const handleAddItem = () => {
-    const newItem: NoteItem = {
+    const rawItem: NoteItem = {
       id: `item-${Date.now()}`,
       ped_apa_ent: 'P',
       cant: 1,
@@ -656,6 +783,7 @@ export default function CapturistaApp() {
       p_unit: 0,
       importe: 0
     };
+    const newItem = enrichItemWithCatalogMatch(rawItem, productCatalog);
     setCurrentNote({
       ...currentNote,
       items: [...currentNote.items, newItem]
@@ -1469,19 +1597,28 @@ export default function CapturistaApp() {
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
                           <tr className="bg-slate-100 border-b border-slate-200 text-[10px] font-bold text-slate-600 uppercase">
-                            <th className="p-2 w-16 text-center">Estado</th>
-                            <th className="p-2 w-14 text-center">Cant.</th>
-                            <th className="p-2 min-w-[200px]">Concepto / Prenda</th>
+                            <th className="p-2 w-14 text-center">Estado</th>
+                            <th className="p-2 w-12 text-center">Cant.</th>
+                            <th className="p-2 min-w-[210px]">1. Concepto Extraído (IA)</th>
+                            <th className="p-2 w-28 text-center bg-slate-200/50">Match BD</th>
+                            <th className="p-2 min-w-[250px]">2. Producto en BD (Software Imperia)</th>
                             <th className="p-2 w-16 text-center">Talla</th>
-                            <th className="p-2 min-w-[120px]">Notas Operativas</th>
+                            <th className="p-2 min-w-[110px]">Notas Operativas</th>
                             <th className="p-2 w-20 text-right">P. Unit</th>
-                            <th className="p-2 w-24 text-right">Importe</th>
+                            <th className="p-2 w-20 text-right">Importe</th>
                             <th className="p-2 w-8 text-center"></th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200">
                           {currentNote.items.map((it, idx) => (
-                            <tr key={it.id || idx} className="hover:bg-slate-50/80 transition">
+                            <tr 
+                              key={it.id || idx} 
+                              className={`transition ${
+                                it.isExactMatch 
+                                  ? 'bg-emerald-50/30 hover:bg-emerald-50/60' 
+                                  : 'hover:bg-slate-50/80'
+                              }`}
+                            >
                               {/* Estado P/A/E/B */}
                               <td className="p-1.5 text-center">
                                 <select 
@@ -1503,7 +1640,7 @@ export default function CapturistaApp() {
                                   min="1"
                                   value={it.cant}
                                   onChange={(e) => handleItemChange(idx, 'cant', e.target.value)}
-                                  className="w-12 text-center text-xs font-semibold border border-slate-300 rounded py-0.5"
+                                  className="w-11 text-center text-xs font-semibold border border-slate-300 rounded py-0.5"
                                 />
                                 {it.clave && (
                                   <span className="block text-[9px] text-amber-700 bg-amber-100 rounded px-0.5 mt-0.5" title="Número tomado de columna CLAVE">
@@ -1512,19 +1649,153 @@ export default function CapturistaApp() {
                                 )}
                               </td>
 
-                              {/* Concepto */}
-                              <td className="p-1.5">
+                              {/* 1. Concepto Extraído (IA) */}
+                              <td className={`p-1.5 transition ${it.isExactMatch ? 'border-l-2 border-emerald-500 bg-emerald-50/40' : ''}`}>
                                 <input 
                                   type="text" 
                                   value={it.concepto}
                                   onChange={(e) => handleItemChange(idx, 'concepto', e.target.value)}
-                                  className="w-full text-xs font-medium border border-slate-300 rounded px-1.5 py-0.5 focus:border-amber-500"
+                                  className={`w-full text-xs font-semibold rounded px-2 py-1 transition ${
+                                    it.isExactMatch 
+                                      ? 'border-2 border-emerald-500 bg-white text-emerald-950 focus:border-emerald-600 shadow-xs' 
+                                      : 'border border-slate-300 bg-white focus:border-amber-500'
+                                  }`}
+                                  placeholder="Concepto extraído por IA"
                                 />
-                                <div className="flex items-center space-x-1 mt-0.5 text-[10px] text-slate-500">
-                                  <span className="font-semibold text-slate-700">{it.prenda || 'Prenda'}:</span>
+                                <div className="flex items-center space-x-1.5 mt-0.5 text-[10px] text-slate-500">
+                                  <span className="font-bold text-slate-700">{it.prenda || 'Prenda'}:</span>
                                   <span>{it.corte || 'Estándar'}</span>
                                   {it.genero && <span className="text-slate-400">({it.genero})</span>}
                                 </div>
+                              </td>
+
+                              {/* PARTE RESALTADA EN VERDE ENTRE AMBAS COLUMNAS (MATCH) */}
+                              <td className={`p-1.5 text-center transition ${
+                                it.isExactMatch 
+                                  ? 'bg-emerald-100/90 border-y-2 border-emerald-500' 
+                                  : 'bg-slate-50 border-x border-slate-200'
+                              }`}>
+                                {it.isExactMatch ? (
+                                  <div className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-emerald-600 text-white font-extrabold text-[10px] shadow-sm tracking-tight animate-in fade-in">
+                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                    <span>MATCH EXACTO</span>
+                                  </div>
+                                ) : it.matchAction === 'create_new' ? (
+                                  <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-purple-100 border border-purple-300 text-purple-800 font-bold text-[10px]">
+                                    <Sparkles className="w-3 h-3 text-purple-600" />
+                                    <span>NUEVO</span>
+                                  </div>
+                                ) : (
+                                  <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-amber-100 border border-amber-300 text-amber-800 font-bold text-[10px]">
+                                    <AlertTriangle className="w-3 h-3 text-amber-600" />
+                                    <span>{Math.round((it.similarityScore || 0) * 100)}% Parecido</span>
+                                  </div>
+                                )}
+                              </td>
+
+                              {/* 2. Producto en Base de Datos (Software Imperia) */}
+                              <td className={`p-1.5 transition ${it.isExactMatch ? 'border-r-2 border-emerald-500 bg-emerald-50/40' : ''}`}>
+                                {it.isExactMatch ? (
+                                  <div className="flex items-center justify-between p-1.5 bg-emerald-100/80 border border-emerald-400 rounded-lg">
+                                    <div className="flex items-center space-x-1.5 overflow-hidden">
+                                      <Database className="w-3.5 h-3.5 text-emerald-800 flex-shrink-0" />
+                                      <span className="font-extrabold text-xs text-emerald-950 truncate" title={it.matchedProductName}>
+                                        {it.matchedProductName}
+                                      </span>
+                                    </div>
+                                    <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded ml-1 flex-shrink-0">
+                                      EN BD
+                                    </span>
+                                  </div>
+                                ) : it.matchAction === 'create_new' ? (
+                                  <div className="p-1.5 bg-purple-50 border border-purple-200 rounded-lg space-y-1">
+                                    <div className="flex items-center justify-between text-purple-900 font-bold text-xs">
+                                      <div className="flex items-center space-x-1">
+                                        <Sparkles className="w-3 h-3 text-purple-600" />
+                                        <span>Nuevo Concepto Registrable</span>
+                                      </div>
+                                      <span className="text-[9px] bg-purple-200 text-purple-900 font-bold px-1 py-0.2 rounded">NUEVO</span>
+                                    </div>
+                                    <p className="text-[10px] text-purple-700 leading-tight">
+                                      Se creará en la colección <code className="font-mono bg-purple-100 px-1 rounded">products</code> al subir.
+                                    </p>
+                                    <button
+                                      onClick={() => {
+                                        const best = productCatalog.find(p => p.id === it.suggestedProductId) || productCatalog[0];
+                                        if (best) handleSelectExistingProduct(idx, best);
+                                      }}
+                                      className="text-[10px] text-purple-700 underline font-semibold hover:text-purple-900"
+                                    >
+                                      Cambiar a producto existente
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div className="space-y-1 bg-white p-1.5 rounded-lg border border-slate-300 shadow-xs">
+                                    <div className="text-[10px] text-slate-500 font-semibold flex items-center justify-between">
+                                      <span>Más parecido en BD:</span>
+                                      <span className="text-amber-700 font-bold">{Math.round((it.similarityScore || 0) * 100)}%</span>
+                                    </div>
+                                    
+                                    {it.suggestedProductName ? (
+                                      <div className="text-xs font-bold text-slate-800 truncate" title={it.suggestedProductName}>
+                                        📦 {it.suggestedProductName}
+                                      </div>
+                                    ) : (
+                                      <div className="text-xs text-slate-400 italic">Sin coincidencia clara</div>
+                                    )}
+
+                                    {/* Botones de decisión para evitar duplicados o crear nuevo concepto */}
+                                    <div className="flex items-center space-x-1 pt-0.5">
+                                      {it.suggestedProductId && (
+                                        <button
+                                          onClick={() => {
+                                            const best = productCatalog.find(p => p.id === it.suggestedProductId);
+                                            if (best) handleSelectExistingProduct(idx, best);
+                                          }}
+                                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded px-1.5 py-1 text-[10px] font-bold flex items-center justify-center space-x-1 transition shadow-xs"
+                                          title={`Usar producto existente: ${it.suggestedProductName}`}
+                                        >
+                                          <CheckCircle2 className="w-3 h-3" />
+                                          <span>Usar de BD</span>
+                                        </button>
+                                      )}
+
+                                      <button
+                                        onClick={() => handleCreateNewConcept(idx)}
+                                        className="flex-1 bg-purple-600 hover:bg-purple-700 text-white rounded px-1.5 py-1 text-[10px] font-bold flex items-center justify-center space-x-1 transition shadow-xs"
+                                        title="Generar nuevo concepto a partir de lo adivinado por la IA"
+                                      >
+                                        <Plus className="w-3 h-3" />
+                                        <span>Crear Nuevo</span>
+                                      </button>
+                                    </div>
+
+                                    {/* Selector de todos los productos de BD */}
+                                    <div className="pt-0.5">
+                                      <select
+                                        onChange={(e) => {
+                                          if (!e.target.value) return;
+                                          if (e.target.value === '__NEW__') {
+                                            handleCreateNewConcept(idx);
+                                          } else {
+                                            const selected = productCatalog.find(p => p.id === e.target.value);
+                                            if (selected) handleSelectExistingProduct(idx, selected);
+                                          }
+                                        }}
+                                        defaultValue=""
+                                        className="w-full text-[10px] font-medium border border-slate-200 rounded px-1 py-0.5 bg-slate-50 text-slate-700"
+                                      >
+                                        <option value="" disabled>-- O seleccionar otro de la BD --</option>
+                                        <option value="__NEW__">✨ [+ Crear Nuevo Concepto en BD]</option>
+                                        {productCatalog.map(p => (
+                                          <option key={p.id} value={p.id}>
+                                            {p.nombre} {p.precio ? `($${p.precio})` : ''}
+                                          </option>
+                                        ))}
+                                      </select>
+                                    </div>
+                                  </div>
+                                )}
                               </td>
 
                               {/* Talla */}
@@ -1590,7 +1861,14 @@ export default function CapturistaApp() {
                     /* VISTA TARJETA MÓVIL OPTIMIZADA PARA CELULAR SAMSUNG A55 */
                     <div className="space-y-3">
                       {currentNote.items.map((it, idx) => (
-                        <div key={it.id || idx} className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-sm space-y-2">
+                        <div 
+                          key={it.id || idx} 
+                          className={`rounded-xl p-3 shadow-sm space-y-2.5 transition ${
+                            it.isExactMatch 
+                              ? 'bg-emerald-50/40 border-2 border-emerald-500' 
+                              : 'bg-slate-50 border border-slate-200'
+                          }`}
+                        >
                           <div className="flex items-center justify-between">
                             {/* Chips de estado touch para dedo */}
                             <div className="flex space-x-1">
@@ -1618,14 +1896,125 @@ export default function CapturistaApp() {
                           </div>
 
                           <div>
-                            <label className="text-[10px] text-slate-500 font-bold uppercase">Concepto / Prenda</label>
+                            <label className="text-[10px] text-slate-500 font-bold uppercase">1. Concepto Extraído por IA</label>
                             <input 
                               type="text" 
                               value={it.concepto}
                               onChange={(e) => handleItemChange(idx, 'concepto', e.target.value)}
-                              className="w-full text-xs font-semibold bg-white border border-slate-300 rounded-lg p-2"
+                              className={`w-full text-xs font-semibold rounded-lg p-2 ${
+                                it.isExactMatch 
+                                  ? 'border-2 border-emerald-500 bg-white text-emerald-950 font-bold' 
+                                  : 'border border-slate-300 bg-white'
+                              }`}
                             />
                           </div>
+
+                          {/* SECCIÓN RESALTADA EN VERDE SI ES MATCH EXACTO O ELECCIÓN DE PRODUCTO BD */}
+                          {it.isExactMatch ? (
+                            <div className="bg-emerald-100/90 border-2 border-emerald-500 rounded-xl p-2.5 space-y-1 shadow-xs">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-1 text-emerald-900 font-extrabold text-xs">
+                                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                  <span>MATCH EXACTO CON BASE DE DATOS</span>
+                                </div>
+                                <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded">
+                                  100% OK
+                                </span>
+                              </div>
+                              <div className="flex items-center space-x-1.5 text-xs font-extrabold text-emerald-950 pl-1">
+                                <Database className="w-3.5 h-3.5 text-emerald-800 flex-shrink-0" />
+                                <span className="truncate">{it.matchedProductName}</span>
+                              </div>
+                            </div>
+                          ) : it.matchAction === 'create_new' ? (
+                            <div className="bg-purple-50 border border-purple-300 rounded-xl p-2.5 space-y-1">
+                              <div className="flex items-center justify-between text-purple-900 font-bold text-xs">
+                                <div className="flex items-center space-x-1.5">
+                                  <Sparkles className="w-4 h-4 text-purple-600" />
+                                  <span>Nuevo concepto para la base de datos</span>
+                                </div>
+                                <span className="text-[9px] bg-purple-200 text-purple-900 font-bold px-1.5 py-0.2 rounded">NUEVO</span>
+                              </div>
+                              <p className="text-[10px] text-purple-700">
+                                Se registrará automáticamente en Software Imperia al sincronizar.
+                              </p>
+                              <button
+                                onClick={() => {
+                                  const best = productCatalog.find(p => p.id === it.suggestedProductId) || productCatalog[0];
+                                  if (best) handleSelectExistingProduct(idx, best);
+                                }}
+                                className="text-[11px] text-purple-700 underline font-semibold"
+                              >
+                                Cambiar a usar producto de BD
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="bg-white border border-amber-300 rounded-xl p-2.5 space-y-2 shadow-xs">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="font-bold text-slate-700 flex items-center space-x-1">
+                                  <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                                  <span>Producto más parecido en BD:</span>
+                                </span>
+                                <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                                  {Math.round((it.similarityScore || 0) * 100)}% Match
+                                </span>
+                              </div>
+
+                              {it.suggestedProductName && (
+                                <div className="text-xs font-bold text-slate-900 pl-1">
+                                  📦 {it.suggestedProductName}
+                                </div>
+                              )}
+
+                              {/* Botones de decisión para evitar duplicados en la BD */}
+                              <div className="grid grid-cols-2 gap-2 pt-1">
+                                {it.suggestedProductId && (
+                                  <button
+                                    onClick={() => {
+                                      const best = productCatalog.find(p => p.id === it.suggestedProductId);
+                                      if (best) handleSelectExistingProduct(idx, best);
+                                    }}
+                                    className="bg-emerald-600 active:bg-emerald-700 text-white font-bold text-xs py-2 px-2 rounded-lg flex items-center justify-center space-x-1 shadow"
+                                  >
+                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                    <span>Usar de BD</span>
+                                  </button>
+                                )}
+
+                                <button
+                                  onClick={() => handleCreateNewConcept(idx)}
+                                  className="bg-purple-600 active:bg-purple-700 text-white font-bold text-xs py-2 px-2 rounded-lg flex items-center justify-center space-x-1 shadow"
+                                >
+                                  <Plus className="w-3.5 h-3.5" />
+                                  <span>Crear Nuevo</span>
+                                </button>
+                              </div>
+
+                              <div>
+                                <select
+                                  onChange={(e) => {
+                                    if (!e.target.value) return;
+                                    if (e.target.value === '__NEW__') {
+                                      handleCreateNewConcept(idx);
+                                    } else {
+                                      const selected = productCatalog.find(p => p.id === e.target.value);
+                                      if (selected) handleSelectExistingProduct(idx, selected);
+                                    }
+                                  }}
+                                  defaultValue=""
+                                  className="w-full text-xs border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-slate-800"
+                                >
+                                  <option value="" disabled>-- O seleccionar otro producto de BD --</option>
+                                  <option value="__NEW__">✨ [+ Crear Nuevo Concepto en BD]</option>
+                                  {productCatalog.map(p => (
+                                    <option key={p.id} value={p.id}>
+                                      {p.nombre} {p.precio ? `($${p.precio})` : ''}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+                          )}
 
                           <div className="grid grid-cols-3 gap-2">
                             <div>

@@ -55,21 +55,52 @@ export async function syncOrderToSoftwareImperia(orderData: any): Promise<SyncRe
     }
 
     // 2. Normalizar partidas para la colección 'pedidos' de Software Imperia
-    const itemsFormatted = (orderData.items || []).map((it: any, index: number) => ({
-      productId: `prod_manual_${index}`,
-      variantId: `var_${it.talla || 'STD'}`,
-      sku: it.clave || (it.talla_filipina ? `FIL-${it.talla_filipina}-PANT-${it.talla_pantalon}` : `IMP-${it.prenda || 'GEN'}-${it.talla || 'U'}`),
-      nombre: it.concepto || `${it.prenda || 'Prenda'} ${it.talla || ''}`.trim(),
-      cantidad: Number(it.cant) || 1,
-      precioUnitario: Number(it.p_unit) || 0,
-      importe: Number(it.importe) || 0,
-      estadoPartida: it.ped_apa_ent || 'P',
-      prenda: it.prenda || '',
-      corte: it.corte || '',
-      genero: it.genero || '',
-      talla: it.talla || (it.talla_filipina ? `F:${it.talla_filipina} P:${it.talla_pantalon}` : ''),
-      notas: it.notas || ''
-    }));
+    const itemsFormatted = [];
+    for (let index = 0; index < (orderData.items || []).length; index++) {
+      const it = orderData.items[index];
+      let finalProductId = it.matchedProductId;
+
+      // Si el usuario solicitó generar un nuevo concepto en la base de datos a partir de lo extraído por IA
+      if (it.matchAction === 'create_new' && !finalProductId) {
+        try {
+          const newProductDoc = {
+            nombre: (it.concepto || 'Nuevo Producto').trim(),
+            prenda: it.prenda || 'PRENDA',
+            precio: Number(it.p_unit) || 0,
+            sku_base: `IMP-${(it.concepto || 'PROD').slice(0, 8).toUpperCase().replace(/[^A-Z0-9]/g, '')}`,
+            ramo: 'GENERAL',
+            escuela: '',
+            descripcion: `Concepto generado desde Capturista IA (Nota #${orderData.folio})`,
+            esPropio: true,
+            origen: 'Capturista IA WebApp',
+            createdAt: serverTimestamp()
+          };
+          const newDocRef = await addDoc(collection(db, 'products'), newProductDoc);
+          finalProductId = newDocRef.id;
+        } catch (e) {
+          console.warn("No se pudo crear producto en 'products':", e);
+          finalProductId = `prod_new_${index}`;
+        }
+      }
+
+      itemsFormatted.push({
+        productId: finalProductId || `prod_manual_${index}`,
+        variantId: `var_${it.talla || 'STD'}`,
+        sku: it.clave || (it.talla_filipina ? `FIL-${it.talla_filipina}-PANT-${it.talla_pantalon}` : `IMP-${it.prenda || 'GEN'}-${it.talla || 'U'}`),
+        nombre: (it.matchAction === 'use_existing' && it.matchedProductName) ? it.matchedProductName : (it.concepto || `${it.prenda || 'Prenda'} ${it.talla || ''}`.trim()),
+        cantidad: Number(it.cant) || 1,
+        precioUnitario: Number(it.p_unit) || 0,
+        importe: Number(it.importe) || 0,
+        estadoPartida: it.ped_apa_ent || 'P',
+        prenda: it.prenda || '',
+        corte: it.corte || '',
+        genero: it.genero || '',
+        talla: it.talla || (it.talla_filipina ? `F:${it.talla_filipina} P:${it.talla_pantalon}` : ''),
+        notas: it.notas || '',
+        isExactMatch: Boolean(it.isExactMatch),
+        matchAction: it.matchAction || (it.isExactMatch ? 'use_existing' : 'manual')
+      });
+    }
 
     // 3. Documento del Pedido
     const pedidoDoc = {

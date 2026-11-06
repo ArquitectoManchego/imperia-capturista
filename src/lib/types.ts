@@ -1,5 +1,17 @@
 export type ItemStatus = 'P' | 'A' | 'E' | 'B';
 
+export interface CatalogProduct {
+  id: string;
+  nombre: string;
+  prenda?: string;
+  precio?: number;
+  sku_base?: string;
+  ramo?: string;
+  escuela?: string;
+  descripcion?: string;
+  esPropio?: boolean;
+}
+
 export interface NoteItem {
   id: string;
   ped_apa_ent: ItemStatus;
@@ -15,6 +27,14 @@ export interface NoteItem {
   notas: string;
   p_unit: number;
   importe: number;
+  // Campos de validación y matching contra Base de Datos Software Imperia
+  matchedProductId?: string;
+  matchedProductName?: string;
+  suggestedProductId?: string;
+  suggestedProductName?: string;
+  similarityScore?: number; // 0 a 1
+  isExactMatch?: boolean;
+  matchAction?: 'use_existing' | 'create_new';
 }
 
 export type PaymentMethod = 
