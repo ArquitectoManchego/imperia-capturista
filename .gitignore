@@ -26,4 +26,5 @@ Thumbs.db
 # Temporary data files
 capturista_orders_*.json
 scripts/
+scratch/
 *.tsbuildinfo

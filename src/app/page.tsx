@@ -54,12 +54,45 @@ import {
   desglosarComponentesConjunto
 } from '@/lib/catalog';
 
+// Mapeo verificado fotográficamente entre folios y fotografías reales escaneadas
+const EXACT_NOTE_PHOTOS: Record<string, string> = {
+  "7901": "/samples/real/20260903_173946.jpg",
+  "7902": "/samples/real/20260903_173951.jpg",
+  "7907": "/samples/real/20260903_174159.jpg",
+  "7925": "/samples/real/20260903_174311.jpg",
+  "7927": "/samples/real/20260903_174334.jpg",
+  "7931": "/samples/real/20260903_174400.jpg",
+  "7934": "/samples/real/20260903_174429.jpg",
+  "7935": "/samples/real/20260903_174437.jpg",
+  "7937": "/samples/real/20260903_174452.jpg",
+  "7938": "/samples/real/20260903_174503.jpg",
+  "7943": "/samples/real/20260903_174528.jpg",
+  "7944": "/samples/real/20260903_174538.jpg",
+  "7945": "/samples/real/20260903_174549.jpg",
+  "7946": "/samples/real/20260903_174601.jpg",
+  "7947": "/samples/real/20260903_174613.jpg",
+  "7948": "/samples/real/20260903_174618.jpg",
+  "7951": "/samples/real/20260903_173856.jpg",
+  "7953": "/samples/real/20260903_173915.jpg",
+  "7954": "/samples/real/20260903_173925.jpg"
+};
+
 // Pre-combinar notas recuperadas de Firestore con notas de muestra para carga instantánea
 const getInitialNotes = (): NoteData[] => {
   const map = new Map<string, NoteData>();
-  RECOVERED_FIRESTORE_NOTES.forEach(n => map.set(n.folio, enrichNoteWithCatalogMatches(n, INITIAL_PRODUCTS_CATALOG)));
+  RECOVERED_FIRESTORE_NOTES.forEach(n => {
+    const verifiedImage = EXACT_NOTE_PHOTOS[n.folio] || n.imageUrl || '';
+    map.set(n.folio, enrichNoteWithCatalogMatches({
+      ...n,
+      imageUrl: verifiedImage
+    }, INITIAL_PRODUCTS_CATALOG));
+  });
   SAMPLE_NOTES.forEach(n => {
-    const enriched = enrichNoteWithCatalogMatches(n, INITIAL_PRODUCTS_CATALOG);
+    const verifiedImage = EXACT_NOTE_PHOTOS[n.folio] || n.imageUrl || '';
+    const enriched = enrichNoteWithCatalogMatches({
+      ...n,
+      imageUrl: verifiedImage
+    }, INITIAL_PRODUCTS_CATALOG);
     if (!map.has(n.folio)) {
       map.set(n.folio, enriched);
     } else {
@@ -67,7 +100,7 @@ const getInitialNotes = (): NoteData[] => {
       map.set(n.folio, {
         ...existing,
         syncedToDb: true,
-        imageUrl: n.imageUrl || existing.imageUrl
+        imageUrl: verifiedImage || existing.imageUrl
       });
     }
   });
@@ -83,13 +116,13 @@ export default function CapturistaApp() {
   const [selectedEngine, setSelectedEngine] = useState<EngineType>('superior');
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   
-  // Note state (mutable notes list con 24+ notas reales)
+  // Note state (mutable notes list con 31+ notas reales)
   const [productCatalog, setProductCatalog] = useState<CatalogProduct[]>(INITIAL_PRODUCTS_CATALOG);
   const [notesList, setNotesList] = useState<NoteData[]>(INITIAL_NOTES_LIST);
   const [currentNote, setCurrentNote] = useState<NoteData>(INITIAL_NOTES_LIST[0] || SAMPLE_NOTES[0]);
   const [selectedSampleIndex, setSelectedSampleIndex] = useState<number>(0);
   const [activeImageUri, setActiveImageUri] = useState<string>(
-    INITIAL_NOTES_LIST[0]?.imageUrl || SAMPLE_NOTES[0]?.imageUrl || '/samples/real/caso_real_1.jpg'
+    INITIAL_NOTES_LIST[0]?.imageUrl || EXACT_NOTE_PHOTOS[INITIAL_NOTES_LIST[0]?.folio] || ''
   );
   const [showArchived, setShowArchived] = useState<boolean>(false);
   
@@ -179,11 +212,11 @@ export default function CapturistaApp() {
         setNotesList(prev => {
           const map = new Map<string, NoteData>();
           liveOrders.forEach(lo => {
-            const fallbackImage = RECOVERED_FIRESTORE_NOTES.find(r => r.folio === lo.folio)?.imageUrl || `/samples/real/20260903_173856.jpg`;
+            const matchedPhoto = EXACT_NOTE_PHOTOS[lo.folio] || RECOVERED_FIRESTORE_NOTES.find(r => r.folio === lo.folio)?.imageUrl || '';
             map.set(lo.folio, {
               ...lo,
               syncedToDb: true,
-              imageUrl: lo.imageUrl || fallbackImage
+              imageUrl: lo.imageUrl || matchedPhoto
             });
           });
 
@@ -228,7 +261,8 @@ export default function CapturistaApp() {
     setSelectedSampleIndex(idx);
     const sample = listToUse[idx];
     setCurrentNote(JSON.parse(JSON.stringify(sample)));
-    setActiveImageUri(sample.imageUrl || `/samples/real/caso_real_1.jpg`);
+    const photoToDisplay = sample.imageUrl || EXACT_NOTE_PHOTOS[sample.folio] || '';
+    setActiveImageUri(photoToDisplay);
     setZoomLevel(1);
     setRotation(0);
   };
@@ -1487,20 +1521,42 @@ export default function CapturistaApp() {
                     </div>
                   )}
 
-                  <img 
-                    src={activeImageUri} 
-                    alt="Nota de remisión" 
-                    className="max-h-full max-w-full object-contain transition-transform duration-200 rounded shadow"
-                    style={{ 
-                      transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
-                      transformOrigin: 'center center'
-                    }}
-                  />
+                  {activeImageUri ? (
+                    <img 
+                      src={activeImageUri} 
+                      alt={`Nota #${currentNote.folio} - ${currentNote.cliente}`} 
+                      className="max-h-full max-w-full object-contain transition-transform duration-200 rounded shadow"
+                      style={{ 
+                        transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
+                        transformOrigin: 'center center'
+                      }}
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-center p-6 space-y-3 text-slate-400 max-w-sm">
+                      <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400 shadow-inner">
+                        <Database className="w-7 h-7" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-100">Nota #{currentNote.folio}</h4>
+                        <p className="text-xs font-semibold text-emerald-400">{currentNote.cliente || 'Cliente Mostrador'}</p>
+                      </div>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Esta nota está sincronizada en tiempo real desde <strong>Software Imperia Firestore</strong>. Todos sus conceptos, prendas, tallas y cuadre contable están cargados en la mesa de captura.
+                      </p>
+                      <button 
+                        onClick={handleCaptureClick}
+                        className="mt-1 bg-slate-900 hover:bg-slate-800 text-amber-400 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 flex items-center space-x-1.5 transition shadow"
+                      >
+                        <Camera className="w-3.5 h-3.5" />
+                        <span>Cargar o tomar nueva foto</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-2 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex justify-between items-center">
-                  <span>Tinta manuscrita en formato impreso estándar</span>
-                  <span className="font-mono text-emerald-600 font-semibold">1024 x 679 px</span>
+                  <span>{activeImageUri ? 'Tinta manuscrita en formato impreso estándar' : 'Sincronizado desde base de datos en la nube'}</span>
+                  <span className="font-mono text-emerald-600 font-semibold">{activeImageUri ? 'Foto original vinculada' : 'Software Imperia Cloud'}</span>
                 </div>
               </div>
 
