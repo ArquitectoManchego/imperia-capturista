@@ -1,335 +1,760 @@
 [
   {
+    "id": "09bW9ko8RdB2IA4mVOaw",
+    "nombre": "CONJUNTO COMUNITARIO UV ENFRA DAMA",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 850,
+    "sku_base": "CONJ-COM-UV-DAM",
+    "ramo": "MEDICINA",
+    "escuela": "CVC",
+    "descripcion": "Kit comunitario UV enfermería dama: Filipina comunitaria y Pantalón",
+    "componentes": [
+      {
+        "productNombre": "FILIPINA COMUNITARIA UV ENFRA DAMA",
+        "tallaClave": "talla_filipina",
+        "genero": "Dama",
+        "prenda": "FILIPINA",
+        "productId": "dm0LCOgRUvYbloRwDdQ4",
+        "rol": "filipina"
+      },
+      {
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "prenda": "PANTALON",
+        "tallaClave": "talla_pantalon",
+        "productNombre": "PANTALON MIXTO",
+        "genero": "Unisex",
+        "rol": "pantalon"
+      }
+    ]
+  },
+  {
     "id": "5Y7lI6CaQwxnLuFn9w7W",
     "nombre": "FILIPINA CLINICA UV ENFRA DAMA",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 425,
     "sku_base": "FILCLINUVENFRADAM",
     "ramo": "MEDICINA",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "5h8pM1qeVkL0lFyI8w2P",
     "nombre": "PLAYERA DIARIO CVC",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 379,
     "sku_base": "POLOCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "PLAYERA POLO DE UNIFORME ESCOLAR PARA EL COLEGIO CVC",
+    "componentes": []
   },
   {
     "id": "6h3Dk3yIth1LD5awyfDG",
     "nombre": "FILIPINA REYNA AMPARO DEL CASTILLO",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 425,
     "sku_base": "FILREYAMPC",
     "ramo": "MEDICINA",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "7zLe6KaA8uJKNlZ2Rwu3",
     "nombre": "FILIPINA QUIRURGICA UV ENFRA CABALLERO",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 525,
     "sku_base": "FILQXUVENFRACAB",
     "ramo": "MEDICINA",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "",
+    "componentes": []
+  },
+  {
+    "id": "8zt5EcfKl6bYAy4cYaHX",
+    "nombre": "CONJUNTO COMUNITARIO UV ENFRA CABALLERO",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 890,
+    "sku_base": "CONJ-COM-UV-CAB",
+    "ramo": "MEDICINA",
+    "escuela": "CVC",
+    "descripcion": "Kit comunitario UV enfermería caballero: Filipina comunitaria y Pantalón casual marino",
+    "componentes": [
+      {
+        "productNombre": "FILIPINA COMUNITARIA UV ENFRA CABALLERO",
+        "productId": "sUR720oRwUEVVr4FEIut",
+        "rol": "filipina",
+        "prenda": "FILIPINA",
+        "genero": "Caballero",
+        "tallaClave": "talla_filipina"
+      },
+      {
+        "productNombre": "PANTALON CASUAL CABALLERO",
+        "prenda": "PANTALON",
+        "productId": "vdiEzOOubqsaeo7OGeE1",
+        "genero": "Caballero",
+        "rol": "pantalon",
+        "tallaClave": "talla_pantalon"
+      }
+    ]
   },
   {
     "id": "B49JGRLBNf4a6Oc625k3",
     "nombre": "Mandil de Arte Manga Larga",
     "prenda": "MANDIL",
+    "tipo_producto": "PRODUCTO",
     "precio": 0,
     "sku_base": "MANLAR",
     "ramo": "ESCOLAR",
-    "escuela": "NIC"
+    "escuela": "NIC",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "B6TT7WGmQihTfq2mJZ4o",
     "nombre": "Mandil de Arte",
     "prenda": "MANDIL",
+    "tipo_producto": "PRODUCTO",
     "precio": 0,
     "sku_base": "MAN",
     "ramo": "ESCOLAR",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "CeXBOWV7uKVT4Wmy6o4i",
     "nombre": "PANTALON QUIRURGICO AMPARO DEL CASTILLO LIC",
     "prenda": "PANTALON",
+    "tipo_producto": "PRODUCTO",
     "precio": 525,
     "sku_base": "PANTQXAMPCLIC",
     "ramo": "MEDICINA",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "Chk7s0TsnM3gpUX2Yul4",
     "nombre": "PANTS CVC",
     "prenda": "PANTALON",
+    "tipo_producto": "PRODUCTO",
     "precio": 395,
     "sku_base": "PANTCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "PANTALON ROMPEVIENTOS COLEGIO CVC",
+    "componentes": []
   },
   {
     "id": "G9xRUeZO5HMHESnDRVha",
     "nombre": "PLAYERA DEPORTES CVC",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 290,
     "sku_base": "PLADEPCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "PLAYERA DE DEPORTES DEL COLEGIO CVC",
+    "componentes": []
   },
   {
     "id": "KdyTV3WlXOHUYwbNu4tj",
     "nombre": "SHORT DEPORTES CVC",
     "prenda": "SHORT",
+    "tipo_producto": "PRODUCTO",
     "precio": 249,
     "sku_base": "SHORDEPCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "SHORT DE DEPORTES DEL COLEGIO CVC",
+    "componentes": []
   },
   {
     "id": "M7Iust0snw3w5snAJP9K",
     "nombre": "FILIPINA CLINICA UV ENFRA CABALLERO",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 425,
     "sku_base": "FILCLINUVENFRACAB",
     "ramo": "MEDICINA",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "",
+    "componentes": []
+  },
+  {
+    "id": "PnxqZM3NPgKCfL6L53K8",
+    "nombre": "CONJUNTO QUIRURGICO UV ENFRA DAMA",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 865,
+    "sku_base": "CONJ-QX-UV-DAM",
+    "ramo": "MEDICINA",
+    "escuela": "CVC",
+    "descripcion": "Kit quirúrgico UV enfermería dama de 3 piezas: Filipina, Pantalón y Gorro",
+    "componentes": [
+      {
+        "prenda": "FILIPINA",
+        "productNombre": "FILIPINA QUIRURGICA UV ENFRA DAMA",
+        "rol": "filipina",
+        "productId": "gjbuz1MnmCgsJJqUmD0W",
+        "tallaClave": "talla_filipina",
+        "genero": "Dama"
+      },
+      {
+        "genero": "Unisex",
+        "rol": "pantalon",
+        "productNombre": "PANTALON QUIRURGICO UV ENFRA",
+        "productId": "lARbAaGsOFaskYWY7xT1",
+        "prenda": "PANTALON",
+        "tallaClave": "talla_pantalon"
+      },
+      {
+        "rol": "gorro",
+        "productId": "pmq3FhPxqocMmI0z4prn",
+        "genero": "Unisex",
+        "productNombre": "GORRO QUIRURGICO",
+        "tallaClave": "unitalla",
+        "prenda": "GORRO"
+      }
+    ]
+  },
+  {
+    "id": "RjgZRzOLJmFVMOEklBAH",
+    "nombre": "CONJUNTO QUIRURGICO GENERAL CABALLERO",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 850,
+    "sku_base": "CONJ-QX-GEN-CAB",
+    "ramo": "MEDICINA",
+    "escuela": "",
+    "descripcion": "Conjunto quirúrgico caballero modelo abierto por tela y color: Filipina caballero y Pantalón unisex",
+    "componentes": [
+      {
+        "genero": "Caballero",
+        "productId": "7zLe6KaA8uJKNlZ2Rwu3",
+        "productNombre": "FILIPINA QUIRURGICA CABALLERO",
+        "rol": "filipina",
+        "tallaClave": "talla_filipina",
+        "prenda": "FILIPINA"
+      },
+      {
+        "prenda": "PANTALON",
+        "productId": "lARbAaGsOFaskYWY7xT1",
+        "rol": "pantalon",
+        "tallaClave": "talla_pantalon",
+        "productNombre": "PANTALON QUIRURGICO UNISEX",
+        "genero": "Unisex"
+      }
+    ]
+  },
+  {
+    "id": "U5POIlbKMvSl1WLjckOf",
+    "nombre": "CONJUNTO CLINICO UV ENFRA CABALLERO",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 850,
+    "sku_base": "CONJ-CLIN-UV-CAB",
+    "ramo": "MEDICINA",
+    "escuela": "CVC",
+    "descripcion": "Kit clínico UV enfermería caballero de 2 piezas: Filipina clínica y Pantalón blanco mixto",
+    "componentes": [
+      {
+        "genero": "Caballero",
+        "rol": "filipina",
+        "tallaClave": "talla_filipina",
+        "productNombre": "FILIPINA CLINICA UV ENFRA CABALLERO",
+        "productId": "M7Iust0snw3w5snAJP9K",
+        "prenda": "FILIPINA"
+      },
+      {
+        "productNombre": "PANTALON MIXTO",
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "genero": "Unisex",
+        "tallaClave": "talla_pantalon",
+        "rol": "pantalon",
+        "prenda": "PANTALON"
+      }
+    ]
   },
   {
     "id": "Uuq1ku3Ez8F0oK3PivIF",
     "nombre": "SHORT DIARIO CVC",
     "prenda": "SHORT",
+    "tipo_producto": "PRODUCTO",
     "precio": 359,
     "sku_base": "SHORDIACVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "SHORT DE UNIFORME DIARIO DEL COLEGIO CVC",
+    "componentes": []
   },
   {
     "id": "WWNUSeNQAl3PD6t1Q9nh",
     "nombre": "CHAMARRA CVC",
     "prenda": "CHAMARRA",
+    "tipo_producto": "PRODUCTO",
     "precio": 395,
     "sku_base": "CHAMCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "CHAMARRA ROMPEVIENTOS PARA COLEGIO CVC",
+    "componentes": []
   },
   {
     "id": "Wjg5GOMnYX7pTMCZVGiG",
     "nombre": "PLAYERA POLO PREMIUM DAMA",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 0,
     "sku_base": "POLEURPREMDAM",
     "ramo": "GENERAL",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "PLAYERA POLO 50/50 ALGODON POLIESTER DAMA",
+    "componentes": []
   },
   {
     "id": "XPdGtb1M6qwHSbv6JoeD",
     "nombre": "PLAYERA POLO PREMIUM CABALLERO",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 0,
     "sku_base": "POLEURPRMCAB",
     "ramo": "GENERAL",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "PLAYERA POLO CABALLERO 50/50 ALGODON Y POLIESTER",
+    "componentes": []
+  },
+  {
+    "id": "am5L3BaNGRm2soTjZ2rM",
+    "nombre": "CONJUNTO CLINICO CABALLERO BLANCO CON CIERRE",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 865,
+    "sku_base": "CONJ-CLIN-CAB-CIERRE",
+    "ramo": "MEDICINA",
+    "escuela": "",
+    "descripcion": "Kit clínico caballero blanco con cierre al frente y pantalón blanco",
+    "componentes": [
+      {
+        "prenda": "FILIPINA",
+        "productNombre": "FILIPINA CLINICA BLANCA CON CIERRE",
+        "productId": "M7Iust0snw3w5snAJP9K",
+        "tallaClave": "talla_filipina",
+        "genero": "Caballero",
+        "rol": "filipina"
+      },
+      {
+        "genero": "Unisex",
+        "prenda": "PANTALON",
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "tallaClave": "talla_pantalon",
+        "productNombre": "PANTALON MIXTO",
+        "rol": "pantalon"
+      }
+    ]
   },
   {
     "id": "dm0LCOgRUvYbloRwDdQ4",
     "nombre": "FILIPINA COMUNITARIA UV ENFRA DAMA",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 425,
     "sku_base": "FILCOMUVENFRADAM",
     "ramo": "MEDICINA",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "FILIPINA COMUNITARIA PARA LA UV FAC. DE ENFERMERIA",
+    "componentes": []
   },
   {
     "id": "gjbuz1MnmCgsJJqUmD0W",
     "nombre": "FILIPINA QUIRURGICA UV ENFRA DAMA",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 525,
     "sku_base": "FILQXUVENFRADAM",
     "ramo": "MEDICINA",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "kuwiXETbXDanLaq56fyB",
     "nombre": "FALDA SHORT DIARIO CVC",
     "prenda": "FALDA",
+    "tipo_producto": "PRODUCTO",
     "precio": 379,
     "sku_base": "FALDIACVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "FALDA SHORT DE UNIFORME DIARIO DEL COLEGIO CVC",
+    "componentes": []
   },
   {
     "id": "lARbAaGsOFaskYWY7xT1",
     "nombre": "PANTALON QUIRURGICO UV ENFRA",
     "prenda": "PANTALON",
+    "tipo_producto": "PRODUCTO",
     "precio": 525,
     "sku_base": "PANTQXUVENFRA",
     "ramo": "MEDICINA",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "",
+    "componentes": []
+  },
+  {
+    "id": "mSUMNTJ2Bh9P4ntJ4OlC",
+    "nombre": "CONJUNTO QUIRURGICO GENERAL DAMA",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 850,
+    "sku_base": "CONJ-QX-GEN-DAM",
+    "ramo": "MEDICINA",
+    "escuela": "",
+    "descripcion": "Conjunto quirúrgico dama modelo abierto por tela y color: Filipina dama y Pantalón unisex",
+    "componentes": [
+      {
+        "rol": "filipina",
+        "productId": "gjbuz1MnmCgsJJqUmD0W",
+        "prenda": "FILIPINA",
+        "productNombre": "FILIPINA QUIRURGICA DAMA",
+        "genero": "Dama",
+        "tallaClave": "talla_filipina"
+      },
+      {
+        "genero": "Unisex",
+        "tallaClave": "talla_pantalon",
+        "rol": "pantalon",
+        "productId": "lARbAaGsOFaskYWY7xT1",
+        "productNombre": "PANTALON QUIRURGICO UNISEX",
+        "prenda": "PANTALON"
+      }
+    ]
   },
   {
     "id": "placeholder-product",
     "nombre": "Producto de Ejemplo",
     "prenda": "Prenda",
+    "tipo_producto": "PRODUCTO",
     "precio": 0,
     "sku_base": "EJEMPLO-001",
     "ramo": "Ejemplo",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Este es un producto base de ejemplo.",
+    "componentes": []
   },
   {
     "id": "pmq3FhPxqocMmI0z4prn",
     "nombre": "GORRO QUIRURGICO",
     "prenda": "GORRO",
+    "tipo_producto": "PRODUCTO",
     "precio": 0,
     "sku_base": "GORQX",
     "ramo": "MEDICINA",
-    "escuela": "AMPARO DEL CASTILLO"
+    "escuela": "AMPARO DEL CASTILLO",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "prod_chamarra_yazbek_dtf",
     "nombre": "Chamarra / Sudadera Yazbek Personalizada DTF",
     "prenda": "CHAMARRA",
+    "tipo_producto": "PRODUCTO",
     "precio": 485,
     "sku_base": "CHAM-YAZ-DTF",
     "ramo": "PERSONALIZADO",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Chamarra sudadera Yazbek de alta calidad personalizada con impresión DTF duradera al frente o espalda. Opciones: con gorro y cangurera, con cierre o cuello redondo sin gorro. Colores principales: Negro y Rojo.",
+    "componentes": []
   },
   {
     "id": "prod_noordwijk_olympic_games",
     "nombre": "Playera Olympic Games - Colegio Noordwijk (Abril)",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 220,
     "sku_base": "PLA-NOORD-OLYMPIC",
     "ramo": "ESCOLAR",
-    "escuela": "COLEGIO NOORDWIJK"
+    "escuela": "COLEGIO NOORDWIJK",
+    "descripcion": "Playera oficial de cuello redondo en colores vibrantes para toda la escuela (alumnos y maestros). Cada grupo escolar lleva un color distintivo y el maestro titular lleva el mismo color del grupo para el evento Olympic Games de abril.",
+    "componentes": []
   },
   {
     "id": "prod_pantalon_franela_escocesa",
     "nombre": "Pantalón de Franela Escocesa a Cuadros",
     "prenda": "PANTALON",
+    "tipo_producto": "PRODUCTO",
     "precio": 295,
     "sku_base": "PANT-FRAN-ESC",
     "ramo": "TEMPORADA",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Pantalón cómodo de franela suave con patrones escoceses a cuadros de diferentes colores para temporada navideña, año nuevo o descanso.",
+    "componentes": []
   },
   {
     "id": "prod_pijama_navidena_escocesa",
     "nombre": "Set Pijama Navideña Personalizada (Franela Escocesa)",
     "prenda": "PIJAMA",
+    "tipo_producto": "PRODUCTO",
     "precio": 495,
     "sku_base": "PIJ-NAV-ESC",
     "ramo": "TEMPORADA",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Pijama navideña y de año nuevo. Parte superior: playera cuello redondo manga corta o larga con personalización DTF, bordado o vinil textil. Parte inferior: pantalón de franela en cuadros escoceses de varios colores.",
+    "componentes": []
   },
   {
     "id": "prod_playera_dia_de_la_madre",
     "nombre": "Playera Personalizada Día de la Madre",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 245,
     "sku_base": "PLA-PERS-MADRE",
     "ramo": "PERSONALIZADO",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Playera corte dama y unisex con diseños tiernos y elegantes para el Día de la Madre. Personalizada en técnica DTF, sublimación o bordado.",
+    "componentes": []
   },
   {
     "id": "prod_playera_dia_del_padre",
     "nombre": "Playera Personalizada Día del Padre",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 245,
     "sku_base": "PLA-PERS-PADRE",
     "ramo": "PERSONALIZADO",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Playera personalizada para el Día del Padre con diseños alusivos, personalizable con nombres o frases especiales. Técnicas: Impresión DTF de alta definición, sublimación o bordado.",
+    "componentes": []
   },
   {
     "id": "prod_playera_independencia_fiestas_patrias",
     "nombre": "Playera Fiestas Patrias (15 y 16 de Septiembre)",
     "prenda": "PLAYERA",
+    "tipo_producto": "PRODUCTO",
     "precio": 235,
     "sku_base": "PLA-PERS-PATRIA",
     "ramo": "PERSONALIZADO",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Playeras patrióticas mexicanas con diseños alusivos a la Independencia, Viva México y cultura nacional. Estampadas en DTF o vinil textil.",
+    "componentes": []
   },
   {
     "id": "prod_polo_restaurante_bordada",
     "nombre": "Playera Polo Uniforme Restaurante con Bordado (9-10 cm)",
     "prenda": "POLO",
+    "tipo_producto": "PRODUCTO",
     "precio": 295,
     "sku_base": "POLO-REST-BORD",
     "ramo": "RESTAURANTE",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Playera tipo polo fresca y resistente diseñada especialmente para personal de restaurantes, meseros, hostesses y capitanes. Incluye logotipo bordado de 9 a 10 cm en el pecho.",
+    "componentes": []
   },
   {
     "id": "prod_polo_uniforme_empresarial_bordada",
     "nombre": "Playera Polo Uniforme Empresarial con Bordado (9-10 cm)",
     "prenda": "POLO",
+    "tipo_producto": "PRODUCTO",
     "precio": 295,
     "sku_base": "POLO-EMP-BORD",
     "ramo": "EMPRESARIAL",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Playera tipo polo de alta durabilidad para empresas y corporativos. Incluye bordado institucional de 9 a 10 cm en el pecho (frente izquierdo). Presentación en corte caballero y silueta dama.",
+    "componentes": []
   },
   {
     "id": "prod_trajes_escolares_eventos",
     "nombre": "Trajes y Vestuarios Escolares Personalizados (Por Evento)",
     "prenda": "TRAJE",
+    "tipo_producto": "PRODUCTO",
     "precio": 385,
     "sku_base": "TRAJE-ESC-EVENTO",
     "ramo": "ESCOLAR",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "Fabricación y confección de trajes escolares a la medida cotizados por evento escolar: Día de Muertos (Catrines y Catrinas), Navidad y Pastorelas (Duendes, Renos, Ángeles), Semana Internacional de las Naciones Unidas (trajes típicos de diferentes países) y festivales escolares en general.",
+    "componentes": []
   },
   {
     "id": "sUR720oRwUEVVr4FEIut",
     "nombre": "FILIPINA COMUNITARIA UV ENFRA CABALLERO",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 425,
     "sku_base": "FILCOMUVENFRACAB",
     "ramo": "MEDICINA",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "FILIPINA COMUNITARIA DE LA UV FAC. DE ENFERMERIA DE CABALLERO",
+    "componentes": []
   },
   {
     "id": "v1doy7SHQdSuw0iYO2lf",
     "nombre": "MANDIL CVC",
     "prenda": "MANDIL",
+    "tipo_producto": "PRODUCTO",
     "precio": 0,
     "sku_base": "MANCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC"
+    "escuela": "CVC",
+    "descripcion": "",
+    "componentes": []
+  },
+  {
+    "id": "vKeVY28R5RRN5U6peR3a",
+    "nombre": "CONJUNTO CLINICO UV ENFRA DAMA",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 850,
+    "sku_base": "CONJ-CLIN-UV-DAM",
+    "ramo": "MEDICINA",
+    "escuela": "CVC",
+    "descripcion": "Kit clínico UV enfermería dama de 2 piezas: Filipina clínica y Pantalón blanco mixto",
+    "componentes": [
+      {
+        "prenda": "FILIPINA",
+        "rol": "filipina",
+        "tallaClave": "talla_filipina",
+        "genero": "Dama",
+        "productId": "5Y7lI6CaQwxnLuFn9w7W",
+        "productNombre": "FILIPINA CLINICA UV ENFRA DAMA"
+      },
+      {
+        "genero": "Unisex",
+        "productNombre": "PANTALON MIXTO",
+        "tallaClave": "talla_pantalon",
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "rol": "pantalon",
+        "prenda": "PANTALON"
+      }
+    ]
   },
   {
     "id": "vdiEzOOubqsaeo7OGeE1",
     "nombre": "PANTALON CASUAL CABALLERO",
     "prenda": "PANTALON",
+    "tipo_producto": "PRODUCTO",
     "precio": 465,
     "sku_base": "PANTCASCAB",
     "ramo": "MEDICINA",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "",
+    "componentes": []
+  },
+  {
+    "id": "x4pFl3lB1fIluatxy3et",
+    "nombre": "CONJUNTO QUIRURGICO UV ENFRA CABALLERO",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 865,
+    "sku_base": "CONJ-QX-UV-CAB",
+    "ramo": "MEDICINA",
+    "escuela": "CVC",
+    "descripcion": "Kit quirúrgico UV enfermería caballero de 3 piezas: Filipina, Pantalón y Gorro",
+    "componentes": [
+      {
+        "genero": "Caballero",
+        "productNombre": "FILIPINA QUIRURGICA UV ENFRA CABALLERO",
+        "tallaClave": "talla_filipina",
+        "productId": "7zLe6KaA8uJKNlZ2Rwu3",
+        "prenda": "FILIPINA",
+        "rol": "filipina"
+      },
+      {
+        "productId": "lARbAaGsOFaskYWY7xT1",
+        "genero": "Unisex",
+        "rol": "pantalon",
+        "tallaClave": "talla_pantalon",
+        "prenda": "PANTALON",
+        "productNombre": "PANTALON QUIRURGICO UV ENFRA"
+      },
+      {
+        "genero": "Unisex",
+        "tallaClave": "unitalla",
+        "productNombre": "GORRO QUIRURGICO",
+        "productId": "pmq3FhPxqocMmI0z4prn",
+        "rol": "gorro",
+        "prenda": "GORRO"
+      }
+    ]
   },
   {
     "id": "xJwIHmLMQ95we7s4iVFz",
     "nombre": "FILIPINA JOSE CABALLERO",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 425,
     "sku_base": "FILJOSCAB",
     "ramo": "MEDICINA",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "FILIPINA MODELO JOSE PARA CABALLERO, CON COSTURAS VERTICALES",
+    "componentes": []
   },
   {
     "id": "zA41O2lCVNtb0XmZiZiI",
     "nombre": "PANTALON MIXTO",
     "prenda": "PANTALON",
+    "tipo_producto": "PRODUCTO",
     "precio": 425,
     "sku_base": "PANTMIX",
     "ramo": "MEDICINA",
-    "escuela": ""
+    "escuela": "",
+    "descripcion": "",
+    "componentes": []
   },
   {
     "id": "zapREBgZTgY2Wm03Tsta",
     "nombre": "FILIPINA QUIRURGICA AMPARO DEL CASTILLO LIC",
     "prenda": "FILIPINA",
+    "tipo_producto": "PRODUCTO",
     "precio": 525,
     "sku_base": "FILQXAMPDELCLIC",
     "ramo": "MEDICINA",
-    "escuela": "AMPARO DEL CASTILLO"
+    "escuela": "AMPARO DEL CASTILLO",
+    "descripcion": "",
+    "componentes": []
+  },
+  {
+    "id": "zlaHbM7iN41SleCQdrXX",
+    "nombre": "CONJUNTO QUIRURGICO AMPARO DEL CASTILLO LIC",
+    "prenda": "CONJUNTO",
+    "tipo_producto": "CONJUNTO",
+    "precio": 950,
+    "sku_base": "CONJ-QX-AMP-LIC",
+    "ramo": "MEDICINA",
+    "escuela": "AMPARO DEL CASTILLO",
+    "descripcion": "Kit quirúrgico Amparo del Castillo: Filipina, Pantalón y Gorro",
+    "componentes": [
+      {
+        "productId": "zapREBgZTgY2Wm03Tsta",
+        "tallaClave": "talla_filipina",
+        "genero": "Dama",
+        "rol": "filipina",
+        "prenda": "FILIPINA",
+        "productNombre": "FILIPINA QUIRURGICA AMPARO DEL CASTILLO LIC"
+      },
+      {
+        "rol": "pantalon",
+        "genero": "Unisex",
+        "productId": "CeXBOWV7uKVT4Wmy6o4i",
+        "prenda": "PANTALON",
+        "tallaClave": "talla_pantalon",
+        "productNombre": "PANTALON QUIRURGICO AMPARO DEL CASTILLO LIC"
+      },
+      {
+        "prenda": "GORRO",
+        "rol": "gorro",
+        "productId": "pmq3FhPxqocMmI0z4prn",
+        "productNombre": "GORRO QUIRURGICO",
+        "tallaClave": "unitalla",
+        "genero": "Unisex"
+      }
+    ]
   }
 ]

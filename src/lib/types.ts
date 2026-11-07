@@ -1,15 +1,28 @@
 export type ItemStatus = 'P' | 'A' | 'E' | 'B';
 
+export interface KitComponent {
+  rol: 'filipina' | 'pantalon' | 'gorro' | 'accesorio';
+  prenda: string;
+  productId: string;
+  productNombre: string;
+  genero?: string; // 'Dama' | 'Caballero' | 'Unisex'
+  tallaClave?: 'talla_filipina' | 'talla_pantalon' | 'talla_gorro' | 'unitalla';
+  tallaAsignada?: string; // Talla calculada para producción (ej. 'M')
+  cantidad?: number;
+}
+
 export interface CatalogProduct {
   id: string;
   nombre: string;
   prenda?: string;
+  tipo_producto?: 'PRODUCTO' | 'CONJUNTO';
   precio?: number;
   sku_base?: string;
   ramo?: string;
   escuela?: string;
   descripcion?: string;
   esPropio?: boolean;
+  componentes?: KitComponent[];
 }
 
 export interface NoteItem {
@@ -35,6 +48,9 @@ export interface NoteItem {
   similarityScore?: number; // 0 a 1
   isExactMatch?: boolean;
   matchAction?: 'use_existing' | 'create_new';
+  // Soporte para Kit / Conjuntos de múltiples prendas
+  esConjunto?: boolean;
+  componentesDesglosados?: KitComponent[];
 }
 
 export type PaymentMethod = 

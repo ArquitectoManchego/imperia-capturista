@@ -32,6 +32,7 @@ import {
   Filter,
   Check,
   Layers,
+  PackageCheck,
   ArrowRight
 } from 'lucide-react';
 import { NoteData, NoteItem, ItemStatus, PaymentMethod, EngineType } from '@/lib/types';
@@ -49,7 +50,8 @@ import {
   fetchProductsFromSoftwareImperia, 
   findBestProductMatch,
   enrichItemWithCatalogMatch,
-  enrichNoteWithCatalogMatches
+  enrichNoteWithCatalogMatches,
+  desglosarComponentesConjunto
 } from '@/lib/catalog';
 
 // Pre-combinar notas recuperadas de Firestore con notas de muestra para carga instantánea
@@ -664,6 +666,7 @@ export default function CapturistaApp() {
     if (field === 'concepto') {
       const match = findBestProductMatch(String(value), updatedItems[index].prenda, productCatalog);
       if (match.isExactMatch && match.bestProduct) {
+        const esConj = match.bestProduct.tipo_producto === 'CONJUNTO' || (match.bestProduct.componentes && match.bestProduct.componentes.length > 0) || String(value).toLowerCase().includes('conjunto');
         updatedItems[index].isExactMatch = true;
         updatedItems[index].matchedProductId = match.bestProduct.id;
         updatedItems[index].matchedProductName = match.bestProduct.nombre;
@@ -671,21 +674,37 @@ export default function CapturistaApp() {
         updatedItems[index].suggestedProductName = match.bestProduct.nombre;
         updatedItems[index].similarityScore = 1.0;
         updatedItems[index].matchAction = 'use_existing';
+        updatedItems[index].esConjunto = esConj;
+        updatedItems[index].componentesDesglosados = esConj ? desglosarComponentesConjunto(updatedItems[index], match.bestProduct) : undefined;
       } else if (match.bestProduct) {
+        const esConj = match.bestProduct.tipo_producto === 'CONJUNTO' || (match.bestProduct.componentes && match.bestProduct.componentes.length > 0) || String(value).toLowerCase().includes('conjunto');
         updatedItems[index].isExactMatch = false;
         updatedItems[index].suggestedProductId = match.bestProduct.id;
         updatedItems[index].suggestedProductName = match.bestProduct.nombre;
         updatedItems[index].similarityScore = match.score;
+        updatedItems[index].esConjunto = esConj;
+        updatedItems[index].componentesDesglosados = esConj ? desglosarComponentesConjunto(updatedItems[index], match.bestProduct) : undefined;
         if (updatedItems[index].matchAction === 'use_existing' && updatedItems[index].matchedProductName !== match.bestProduct.nombre) {
           updatedItems[index].matchedProductId = undefined;
           updatedItems[index].matchedProductName = undefined;
           updatedItems[index].matchAction = undefined;
         }
       } else {
+        const esConj = String(value).toLowerCase().includes('conjunto');
         updatedItems[index].isExactMatch = false;
         updatedItems[index].suggestedProductId = undefined;
         updatedItems[index].suggestedProductName = undefined;
         updatedItems[index].similarityScore = 0;
+        updatedItems[index].esConjunto = esConj;
+        updatedItems[index].componentesDesglosados = esConj ? desglosarComponentesConjunto(updatedItems[index]) : undefined;
+      }
+    }
+
+    // Si se modifica talla o cantidad en un conjunto, recalcular tallas/cantidades de los componentes desglosados
+    if (field === 'talla' || field === 'talla_filipina' || field === 'talla_pantalon' || field === 'cant') {
+      if (updatedItems[index].esConjunto) {
+        const matchedProd = productCatalog.find(p => p.id === updatedItems[index].matchedProductId || p.id === updatedItems[index].suggestedProductId);
+        updatedItems[index].componentesDesglosados = desglosarComponentesConjunto(updatedItems[index], matchedProd);
       }
     }
 
@@ -716,6 +735,7 @@ export default function CapturistaApp() {
     const currentItem = updatedItems[index];
     const unitPrice = (Number(currentItem.p_unit) === 0 && product.precio) ? product.precio : currentItem.p_unit;
     const importe = Math.round(currentItem.cant * unitPrice * 100) / 100;
+    const esConj = product.tipo_producto === 'CONJUNTO' || (product.componentes && product.componentes.length > 0) || (product.nombre || '').toLowerCase().includes('conjunto');
 
     updatedItems[index] = {
       ...currentItem,
@@ -727,7 +747,9 @@ export default function CapturistaApp() {
       matchAction: 'use_existing',
       similarityScore: 1.0,
       p_unit: unitPrice,
-      importe: importe
+      importe: importe,
+      esConjunto: esConj,
+      componentesDesglosados: esConj ? desglosarComponentesConjunto(currentItem, product) : undefined
     };
 
     const sumImportes = updatedItems.reduce((acc, it) => acc + (Number(it.importe) || 0), 0);
@@ -751,6 +773,7 @@ export default function CapturistaApp() {
   const handleCreateNewConcept = (index: number) => {
     const updatedItems = [...currentNote.items];
     const currentItem = updatedItems[index];
+    const esConj = (currentItem.concepto || '').toLowerCase().includes('conjunto') || Boolean(currentItem.esConjunto);
 
     updatedItems[index] = {
       ...currentItem,
@@ -758,7 +781,9 @@ export default function CapturistaApp() {
       matchedProductName: undefined,
       isExactMatch: false,
       matchAction: 'create_new',
-      similarityScore: 0
+      similarityScore: 0,
+      esConjunto: esConj,
+      componentesDesglosados: esConj ? desglosarComponentesConjunto(currentItem) : undefined
     };
 
     const updatedNote: NoteData = {
@@ -1611,14 +1636,14 @@ export default function CapturistaApp() {
                         </thead>
                         <tbody className="divide-y divide-slate-200">
                           {currentNote.items.map((it, idx) => (
-                            <tr 
-                              key={it.id || idx} 
-                              className={`transition ${
-                                it.isExactMatch 
-                                  ? 'bg-emerald-50/30 hover:bg-emerald-50/60' 
-                                  : 'hover:bg-slate-50/80'
-                              }`}
-                            >
+                            <React.Fragment key={it.id || idx}>
+                              <tr 
+                                className={`transition ${
+                                  it.isExactMatch 
+                                    ? 'bg-emerald-50/30 hover:bg-emerald-50/60' 
+                                    : 'hover:bg-slate-50/80'
+                                }`}
+                              >
                               {/* Estado P/A/E/B */}
                               <td className="p-1.5 text-center">
                                 <select 
@@ -1853,8 +1878,60 @@ export default function CapturistaApp() {
                                 </button>
                               </td>
                             </tr>
-                          ))}
-                        </tbody>
+
+                            {/* FILA DE DESGLOSE DE PIEZAS DE KIT/CONJUNTO EN PC */}
+                            {it.esConjunto && it.componentesDesglosados && it.componentesDesglosados.length > 0 && (
+                              <tr className="bg-gradient-to-r from-indigo-50/90 via-blue-50/60 to-purple-50/80 border-b border-indigo-200 text-xs transition">
+                                <td colSpan={2} className="py-2 px-2 text-center border-r border-indigo-100">
+                                  <div className="flex flex-col items-center justify-center">
+                                    <PackageCheck className="w-4 h-4 text-indigo-600 mb-0.5" />
+                                    <span className="text-[9px] font-black tracking-wider text-indigo-700 uppercase">Kit / Conjunto</span>
+                                    <span className="text-[8px] font-mono text-indigo-500 font-bold">{it.componentesDesglosados.length} piezas</span>
+                                  </div>
+                                </td>
+                                <td colSpan={8} className="py-2 px-3">
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    <span className="text-[11px] font-extrabold text-indigo-900 flex items-center gap-1.5 flex-shrink-0">
+                                      <Layers className="w-3.5 h-3.5 text-indigo-600" />
+                                      <span>Prendas para Taller & Almacén:</span>
+                                    </span>
+                                    {it.componentesDesglosados.map((comp, cIdx) => (
+                                      <div 
+                                        key={cIdx}
+                                        className="flex items-center space-x-2 bg-white/95 border border-indigo-200 rounded-lg px-2.5 py-1 shadow-2xs hover:border-indigo-300 transition"
+                                      >
+                                        <span className="text-base select-none">
+                                          {comp.rol === 'filipina' ? '🥼' : comp.rol === 'pantalon' ? '👖' : comp.rol === 'gorro' ? '🧢' : '🧵'}
+                                        </span>
+                                        <div className="flex flex-col">
+                                          <span className="text-[11px] font-bold text-slate-800 leading-tight">
+                                            {comp.productNombre}
+                                          </span>
+                                          <div className="flex items-center space-x-1.5 text-[10px] mt-0.5">
+                                            <span className="font-mono font-extrabold px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 border border-indigo-200">
+                                              Talla: {comp.tallaAsignada || 'S'}
+                                            </span>
+                                            {comp.genero && (
+                                              <span className={`text-[9px] font-semibold px-1 rounded ${
+                                                comp.genero === 'Unisex' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'
+                                              }`}>
+                                                {comp.genero}
+                                              </span>
+                                            )}
+                                            <span className="text-[9px] text-slate-400 font-mono">
+                                              x{comp.cantidad || 1}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
                       </table>
                     </div>
                   ) : (
@@ -2012,6 +2089,41 @@ export default function CapturistaApp() {
                                     </option>
                                   ))}
                                 </select>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* DESGLOSE DE PIEZAS DE KIT/CONJUNTO EN MÓVIL */}
+                          {it.esConjunto && it.componentesDesglosados && it.componentesDesglosados.length > 0 && (
+                            <div className="bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 border border-indigo-200 rounded-xl p-2.5 space-y-1.5 shadow-2xs">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-1.5 text-indigo-950 font-extrabold text-xs">
+                                  <PackageCheck className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+                                  <span>Prendas del Conjunto ({it.componentesDesglosados.length} piezas):</span>
+                                </div>
+                                <span className="text-[9px] font-bold bg-indigo-200 text-indigo-900 px-1.5 py-0.5 rounded">
+                                  KIT
+                                </span>
+                              </div>
+                              <div className="space-y-1 pt-0.5">
+                                {it.componentesDesglosados.map((comp, cIdx) => (
+                                  <div key={cIdx} className="flex items-center justify-between bg-white px-2 py-1.5 rounded-lg border border-indigo-100 text-xs shadow-2xs">
+                                    <div className="flex items-center space-x-1.5 overflow-hidden">
+                                      <span className="text-sm select-none">
+                                        {comp.rol === 'filipina' ? '🥼' : comp.rol === 'pantalon' ? '👖' : comp.rol === 'gorro' ? '🧢' : '🧵'}
+                                      </span>
+                                      <div className="flex flex-col truncate">
+                                        <span className="font-bold text-slate-800 text-[11px] truncate">{comp.productNombre}</span>
+                                        {comp.genero && (
+                                          <span className="text-[9px] text-slate-400">{comp.genero}</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <span className="font-mono font-extrabold text-[10px] bg-indigo-100 text-indigo-900 px-1.5 py-0.5 rounded flex-shrink-0 ml-1 border border-indigo-200">
+                                      Talla: {comp.tallaAsignada || 'S'}
+                                    </span>
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           )}

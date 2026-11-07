@@ -98,7 +98,9 @@ export async function syncOrderToSoftwareImperia(orderData: any): Promise<SyncRe
         talla: it.talla || (it.talla_filipina ? `F:${it.talla_filipina} P:${it.talla_pantalon}` : ''),
         notas: it.notas || '',
         isExactMatch: Boolean(it.isExactMatch),
-        matchAction: it.matchAction || (it.isExactMatch ? 'use_existing' : 'manual')
+        matchAction: it.matchAction || (it.isExactMatch ? 'use_existing' : 'manual'),
+        esConjunto: Boolean(it.esConjunto),
+        desglose_componentes: it.componentesDesglosados || []
       });
     }
 

@@ -1,372 +1,12 @@
 import { db } from './firebase';
 import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
-import { CatalogProduct, NoteItem } from './types';
+import { CatalogProduct, NoteItem, KitComponent } from './types';
+import productsDump from './products-dump.json';
 
-export type { CatalogProduct };
+export type { CatalogProduct, KitComponent };
 
-// Catálogo base precargado con los 37 productos existentes en la base de datos de Software Imperia
-export const INITIAL_PRODUCTS_CATALOG: CatalogProduct[] = [
-  {
-    id: "5Y7lI6CaQwxnLuFn9w7W",
-    nombre: "FILIPINA CLINICA UV ENFRA DAMA",
-    prenda: "FILIPINA",
-    precio: 425,
-    sku_base: "FILCLINUVENFRADAM",
-    ramo: "MEDICINA",
-    escuela: "CVC",
-    descripcion: "FILIPINA CLINICA PARA LA UV FAC. DE ENFERMERIA DAMA"
-  },
-  {
-    id: "5h8pM1qeVkL0lFyI8w2P",
-    nombre: "PLAYERA DIARIO CVC",
-    prenda: "PLAYERA",
-    precio: 379,
-    sku_base: "POLOCVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "PLAYERA POLO DE UNIFORME ESCOLAR PARA EL COLEGIO CVC"
-  },
-  {
-    id: "6h3Dk3yIth1LD5awyfDG",
-    nombre: "FILIPINA REYNA AMPARO DEL CASTILLO",
-    prenda: "FILIPINA",
-    precio: 425,
-    sku_base: "FILREYAMPC",
-    ramo: "MEDICINA",
-    escuela: "AMPARO DEL CASTILLO",
-    descripcion: "FILIPINA REYNA PARA LA ESCUELA DE ENFERMERIA AMPARO DEL CASTILLO"
-  },
-  {
-    id: "7zLe6KaA8uJKNlZ2Rwu3",
-    nombre: "FILIPINA QUIRURGICA UV ENFRA CABALLERO",
-    prenda: "FILIPINA",
-    precio: 525,
-    sku_base: "FILQXUVENFRACAB",
-    ramo: "MEDICINA",
-    escuela: "CVC",
-    descripcion: "FILIPINA QUIRURGICA PARA LA UV FAC. DE ENFERMERIA CABALLERO"
-  },
-  {
-    id: "B49JGRLBNf4a6Oc625k3",
-    nombre: "Mandil de Arte Manga Larga",
-    prenda: "MANDIL",
-    precio: 0,
-    sku_base: "MANLAR",
-    ramo: "ESCOLAR",
-    escuela: "NIC",
-    descripcion: "MANDIL DE ARTE ESCOLAR MANGA LARGA"
-  },
-  {
-    id: "B6TT7WGmQihTfq2mJZ4o",
-    nombre: "Mandil de Arte",
-    prenda: "MANDIL",
-    precio: 0,
-    sku_base: "MAN",
-    ramo: "ESCOLAR",
-    escuela: "",
-    descripcion: "MANDIL DE ARTE ESTANDAR"
-  },
-  {
-    id: "CeXBOWV7uKVT4Wmy6o4i",
-    nombre: "PANTALON QUIRURGICO AMPARO DEL CASTILLO LIC",
-    prenda: "PANTALON",
-    precio: 525,
-    sku_base: "PANTQXAMPCLIC",
-    ramo: "MEDICINA",
-    escuela: "AMPARO DEL CASTILLO",
-    descripcion: "PANTALON QUIRURGICO PARA LICENCIATURA AMPARO DEL CASTILLO"
-  },
-  {
-    id: "Chk7s0TsnM3gpUX2Yul4",
-    nombre: "PANTS CVC",
-    prenda: "PANTALON",
-    precio: 395,
-    sku_base: "PANTCVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "PANTS DEPORTIVO OFICIAL CVC"
-  },
-  {
-    id: "G9xRUeZO5HMHESnDRVha",
-    nombre: "PLAYERA DEPORTES CVC",
-    prenda: "PLAYERA",
-    precio: 290,
-    sku_base: "PLADEPCVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "PLAYERA DEPORTIVA DEL COLEGIO CVC"
-  },
-  {
-    id: "KdyTV3WlXOHUYwbNu4tj",
-    nombre: "SHORT DEPORTES CVC",
-    prenda: "SHORT",
-    precio: 249,
-    sku_base: "SHORDEPCVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "SHORT DEPORTIVO OFICIAL CVC"
-  },
-  {
-    id: "M7Iust0snw3w5snAJP9K",
-    nombre: "FILIPINA CLINICA UV ENFRA CABALLERO",
-    prenda: "FILIPINA",
-    precio: 425,
-    sku_base: "FILCLINUVENFRACAB",
-    ramo: "MEDICINA",
-    escuela: "CVC",
-    descripcion: "FILIPINA CLINICA PARA LA UV FAC. DE ENFERMERIA CABALLERO"
-  },
-  {
-    id: "Uuq1ku3Ez8F0oK3PivIF",
-    nombre: "SHORT DIARIO CVC",
-    prenda: "SHORT",
-    precio: 359,
-    sku_base: "SHORDIACVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "SHORT DE DIARIO OFICIAL CVC"
-  },
-  {
-    id: "WWNUSeNQAl3PD6t1Q9nh",
-    nombre: "CHAMARRA CVC",
-    prenda: "CHAMARRA",
-    precio: 395,
-    sku_base: "CHAMCVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "CHAMARRA ESCOLAR OFICIAL CVC"
-  },
-  {
-    id: "Wjg5GOMnYX7pTMCZVGiG",
-    nombre: "PLAYERA POLO PREMIUM DAMA",
-    prenda: "PLAYERA",
-    precio: 0,
-    sku_base: "POLEURPREMDAM",
-    ramo: "GENERAL",
-    escuela: "",
-    descripcion: "PLAYERA POLO 50/50 ALGODON POLIESTER DAMA"
-  },
-  {
-    id: "XPdGtb1M6qwHSbv6JoeD",
-    nombre: "PLAYERA POLO PREMIUM CABALLERO",
-    prenda: "PLAYERA",
-    precio: 0,
-    sku_base: "POLEURPRMCAB",
-    ramo: "GENERAL",
-    escuela: "",
-    descripcion: "PLAYERA POLO CABALLERO 50/50 ALGODON Y POLIESTER"
-  },
-  {
-    id: "dm0LCOgRUvYbloRwDdQ4",
-    nombre: "FILIPINA COMUNITARIA UV ENFRA DAMA",
-    prenda: "FILIPINA",
-    precio: 425,
-    sku_base: "FILCOMUVENFRADAM",
-    ramo: "MEDICINA",
-    escuela: "CVC",
-    descripcion: "FILIPINA COMUNITARIA PARA LA UV FAC. DE ENFERMERIA DAMA"
-  },
-  {
-    id: "gjbuz1MnmCgsJJqUmD0W",
-    nombre: "FILIPINA QUIRURGICA UV ENFRA DAMA",
-    prenda: "FILIPINA",
-    precio: 525,
-    sku_base: "FILQXUVENFRADAM",
-    ramo: "MEDICINA",
-    escuela: "CVC",
-    descripcion: "FILIPINA QUIRURGICA PARA LA UV FAC. DE ENFERMERIA DAMA"
-  },
-  {
-    id: "kuwiXETbXDanLaq56fyB",
-    nombre: "FALDA SHORT DIARIO CVC",
-    prenda: "FALDA",
-    precio: 379,
-    sku_base: "FALDIACVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "FALDA SHORT DE UNIFORME DIARIO DEL COLEGIO CVC"
-  },
-  {
-    id: "lARbAaGsOFaskYWY7xT1",
-    nombre: "PANTALON QUIRURGICO UV ENFRA",
-    prenda: "PANTALON",
-    precio: 525,
-    sku_base: "PANTQXUVENFRA",
-    ramo: "MEDICINA",
-    escuela: "CVC",
-    descripcion: "PANTALON QUIRURGICO UV ENFERMERIA"
-  },
-  {
-    id: "pmq3FhPxqocMmI0z4prn",
-    nombre: "GORRO QUIRURGICO",
-    prenda: "GORRO",
-    precio: 0,
-    sku_base: "GORQX",
-    ramo: "MEDICINA",
-    escuela: "AMPARO DEL CASTILLO",
-    descripcion: "GORRO QUIRURGICO DE TELA"
-  },
-  {
-    id: "prod_chamarra_yazbek_dtf",
-    "nombre": "Chamarra / Sudadera Yazbek Personalizada DTF",
-    prenda: "CHAMARRA",
-    precio: 485,
-    sku_base: "CHAM-YAZ-DTF",
-    ramo: "PERSONALIZADO",
-    escuela: "",
-    descripcion: "Chamarra sudadera Yazbek de alta calidad personalizada con impresión DTF"
-  },
-  {
-    id: "prod_noordwijk_olympic_games",
-    nombre: "Playera Olympic Games - Colegio Noordwijk (Abril)",
-    prenda: "PLAYERA",
-    precio: 220,
-    sku_base: "PLA-NOORD-OLYMPIC",
-    ramo: "ESCOLAR",
-    escuela: "COLEGIO NOORDWIJK",
-    descripcion: "Playera oficial de cuello redondo para Olympic Games"
-  },
-  {
-    id: "prod_pantalon_franela_escocesa",
-    nombre: "Pantalón de Franela Escocesa a Cuadros",
-    prenda: "PANTALON",
-    precio: 295,
-    sku_base: "PANT-FRAN-ESC",
-    ramo: "TEMPORADA",
-    escuela: "",
-    descripcion: "Pantalón cómodo de franela suave con patrones escoceses a cuadros"
-  },
-  {
-    id: "prod_pijama_navidena_escocesa",
-    nombre: "Set Pijama Navideña Personalizada (Franela Escocesa)",
-    prenda: "PIJAMA",
-    precio: 495,
-    sku_base: "PIJ-NAV-ESC",
-    ramo: "TEMPORADA",
-    escuela: "",
-    descripcion: "Pijama navideña y de año nuevo con pantalón de franela"
-  },
-  {
-    id: "prod_playera_dia_de_la_madre",
-    nombre: "Playera Personalizada Día de la Madre",
-    prenda: "PLAYERA",
-    precio: 245,
-    sku_base: "PLA-PERS-MADRE",
-    ramo: "PERSONALIZADO",
-    escuela: "",
-    descripcion: "Playera personalizada para el Día de la Madre"
-  },
-  {
-    id: "prod_playera_dia_del_padre",
-    nombre: "Playera Personalizada Día del Padre",
-    prenda: "PLAYERA",
-    precio: 245,
-    sku_base: "PLA-PERS-PADRE",
-    ramo: "PERSONALIZADO",
-    escuela: "",
-    descripcion: "Playera personalizada para el Día del Padre"
-  },
-  {
-    id: "prod_playera_independencia_fiestas_patrias",
-    nombre: "Playera Fiestas Patrias (15 y 16 de Septiembre)",
-    prenda: "PLAYERA",
-    precio: 235,
-    sku_base: "PLA-PERS-PATRIA",
-    ramo: "PERSONALIZADO",
-    escuela: "",
-    descripcion: "Playeras patrióticas mexicanas con diseños alusivos a la Independencia"
-  },
-  {
-    id: "prod_polo_restaurante_bordada",
-    nombre: "Playera Polo Uniforme Restaurante con Bordado (9-10 cm)",
-    prenda: "POLO",
-    precio: 295,
-    sku_base: "POLO-REST-BORD",
-    ramo: "RESTAURANTE",
-    escuela: "",
-    descripcion: "Playera tipo polo fresca y resistente para restaurantes"
-  },
-  {
-    id: "prod_polo_uniforme_empresarial_bordada",
-    nombre: "Playera Polo Uniforme Empresarial con Bordado (9-10 cm)",
-    prenda: "POLO",
-    precio: 295,
-    sku_base: "POLO-EMP-BORD",
-    ramo: "EMPRESARIAL",
-    escuela: "",
-    descripcion: "Playera tipo polo con bordado institucional para empresas"
-  },
-  {
-    id: "prod_trajes_escolares_eventos",
-    nombre: "Trajes y Vestuarios Escolares Personalizados (Por Evento)",
-    prenda: "TRAJE",
-    precio: 385,
-    sku_base: "TRAJE-ESC-EVENTO",
-    ramo: "ESCOLAR",
-    escuela: "",
-    descripcion: "Fabricación de vestuarios escolares cotizados por evento"
-  },
-  {
-    id: "sUR720oRwUEVVr4FEIut",
-    nombre: "FILIPINA COMUNITARIA UV ENFRA CABALLERO",
-    prenda: "FILIPINA",
-    precio: 425,
-    sku_base: "FILCOMUVENFRACAB",
-    ramo: "MEDICINA",
-    escuela: "CVC",
-    descripcion: "FILIPINA COMUNITARIA DE LA UV FAC. DE ENFERMERIA DE CABALLERO"
-  },
-  {
-    id: "v1doy7SHQdSuw0iYO2lf",
-    nombre: "MANDIL CVC",
-    prenda: "MANDIL",
-    precio: 0,
-    sku_base: "MANCVC",
-    ramo: "ESCOLAR",
-    escuela: "CVC",
-    descripcion: "MANDIL ESCOLAR COLEGIO CVC"
-  },
-  {
-    id: "vdiEzOOubqsaeo7OGeE1",
-    nombre: "PANTALON CASUAL CABALLERO",
-    prenda: "PANTALON",
-    precio: 465,
-    sku_base: "PANTCASCAB",
-    ramo: "MEDICINA",
-    escuela: "",
-    descripcion: "PANTALON CASUAL CORTE CABALLERO"
-  },
-  {
-    id: "xJwIHmLMQ95we7s4iVFz",
-    nombre: "FILIPINA JOSE CABALLERO",
-    prenda: "FILIPINA",
-    precio: 425,
-    sku_base: "FILJOSCAB",
-    ramo: "MEDICINA",
-    escuela: "",
-    descripcion: "FILIPINA MODELO JOSE PARA CABALLERO"
-  },
-  {
-    id: "zA41O2lCVNtb0XmZiZiI",
-    nombre: "PANTALON MIXTO",
-    prenda: "PANTALON",
-    precio: 425,
-    sku_base: "PANTMIX",
-    ramo: "MEDICINA",
-    escuela: "",
-    descripcion: "PANTALON MIXTO UNISEX"
-  },
-  {
-    id: "zapREBgZTgY2Wm03Tsta",
-    nombre: "FILIPINA QUIRURGICA AMPARO DEL CASTILLO LIC",
-    prenda: "FILIPINA",
-    precio: 525,
-    sku_base: "FILQXAMPDELCLIC",
-    ramo: "MEDICINA",
-    escuela: "AMPARO DEL CASTILLO",
-    descripcion: "FILIPINA QUIRURGICA PARA LICENCIATURA AMPARO DEL CASTILLO"
-  }
-];
+// Catálogo base con los 47 productos y conjuntos existentes en la base de datos de Software Imperia
+export const INITIAL_PRODUCTS_CATALOG: CatalogProduct[] = productsDump as CatalogProduct[];
 
 // Función para normalizar texto eliminando acentos, puntuación y expandiendo sinónimos del dominio
 export function normalizeConcept(text: string): string {
@@ -518,22 +158,137 @@ export function findBestProductMatch(
   };
 }
 
-// Enriquecer una partida (NoteItem) con la información de match del catálogo
+// Desglosa los componentes individuales (piezas de taller/inventario) de un conjunto comercial
+export function desglosarComponentesConjunto(
+  item: NoteItem,
+  product?: CatalogProduct
+): KitComponent[] {
+  // Si no se proporcionó producto o no tiene componentes, buscar en el catálogo
+  if (!product || !product.componentes || product.componentes.length === 0) {
+    const targetName = item.matchedProductName || item.suggestedProductName || item.concepto || item.prenda || '';
+    const match = findBestProductMatch(targetName, item.prenda, INITIAL_PRODUCTS_CATALOG);
+    if (match.bestProduct && match.bestProduct.componentes && match.bestProduct.componentes.length > 0) {
+      product = match.bestProduct;
+    } else {
+      // Fallback heurístico si no hay match directo en el catálogo:
+      const norm = normalizeConcept(item.concepto || '');
+      const isQx = norm.includes('quirurgico');
+      const isClin = norm.includes('clinico');
+      const isCab = norm.includes('caballero') || (item.genero || '').toLowerCase().includes('caballero');
+
+      if (isQx) {
+        return [
+          {
+            rol: 'filipina',
+            prenda: 'FILIPINA',
+            productId: isCab ? '7zLe6KaA8uJKNlZ2Rwu3' : 'gjbuz1MnmCgsJJqUmD0W',
+            productNombre: isCab ? 'FILIPINA QUIRURGICA UV ENFRA CABALLERO' : 'FILIPINA QUIRURGICA UV ENFRA DAMA',
+            genero: isCab ? 'Caballero' : 'Dama',
+            tallaClave: 'talla_filipina',
+            tallaAsignada: item.talla_filipina || item.talla || 'S',
+            cantidad: Number(item.cant) || 1
+          },
+          {
+            rol: 'pantalon',
+            prenda: 'PANTALON',
+            productId: 'lARbAaGsOFaskYWY7xT1',
+            productNombre: 'PANTALON QUIRURGICO UV ENFRA (UNISEX)',
+            genero: 'Unisex',
+            tallaClave: 'talla_pantalon',
+            tallaAsignada: item.talla_pantalon || item.talla || 'S',
+            cantidad: Number(item.cant) || 1
+          },
+          {
+            rol: 'gorro',
+            prenda: 'GORRO',
+            productId: 'pmq3FhPxqocMmI0z4prn',
+            productNombre: 'GORRO QUIRURGICO UV ENFRA (UNISEX)',
+            genero: 'Unisex',
+            tallaClave: 'unitalla',
+            tallaAsignada: 'Unitalla',
+            cantidad: Number(item.cant) || 1
+          }
+        ];
+      }
+
+      if (isClin) {
+        return [
+          {
+            rol: 'filipina',
+            prenda: 'FILIPINA',
+            productId: isCab ? 'M7Iust0snw3w5snAJP9K' : '5Y7lI6CaQwxnLuFn9w7W',
+            productNombre: isCab ? 'FILIPINA CLINICA CABALLERO' : 'FILIPINA CLINICA UV ENFRA DAMA',
+            genero: isCab ? 'Caballero' : 'Dama',
+            tallaClave: 'talla_filipina',
+            tallaAsignada: item.talla_filipina || item.talla || 'S',
+            cantidad: Number(item.cant) || 1
+          },
+          {
+            rol: 'pantalon',
+            prenda: 'PANTALON',
+            productId: 'zA41O2lCVNtb0XmZiZiI',
+            productNombre: 'PANTALON MIXTO BLANCO (UNISEX)',
+            genero: 'Unisex',
+            tallaClave: 'talla_pantalon',
+            tallaAsignada: item.talla_pantalon || item.talla || 'S',
+            cantidad: Number(item.cant) || 1
+          }
+        ];
+      }
+
+      return [];
+    }
+  }
+
+  return (product.componentes || []).map(comp => {
+    let tallaAsignada = '';
+    if (comp.rol === 'filipina') {
+      tallaAsignada = item.talla_filipina || item.talla || 'S';
+    } else if (comp.rol === 'pantalon') {
+      tallaAsignada = item.talla_pantalon || item.talla || 'S';
+    } else if (comp.rol === 'gorro') {
+      tallaAsignada = 'Unitalla';
+    } else {
+      tallaAsignada = item.talla || 'Unitalla';
+    }
+
+    return {
+      ...comp,
+      tallaAsignada: (tallaAsignada || 'S').trim().toUpperCase(),
+      cantidad: (comp.cantidad || 1) * (Number(item.cant) || 1)
+    };
+  });
+}
+
+// Enriquecer una partida (NoteItem) con la información de match del catálogo y desglose de conjuntos
 export function enrichItemWithCatalogMatch(
   item: NoteItem,
   catalog: CatalogProduct[] = INITIAL_PRODUCTS_CATALOG
 ): NoteItem {
   // Si ya tiene una acción manual del usuario o coincidencia previa respetarla
   if (item.matchAction === 'use_existing' && item.matchedProductId) {
-    return item;
+    const existingProd = catalog.find(p => p.id === item.matchedProductId);
+    const esConj = existingProd?.tipo_producto === 'CONJUNTO' || (existingProd?.componentes && existingProd.componentes.length > 0) || normalizeConcept(item.concepto).includes('conjunto') || Boolean(item.esConjunto);
+    const componentes = esConj ? desglosarComponentesConjunto(item, existingProd) : item.componentesDesglosados;
+    return {
+      ...item,
+      esConjunto: esConj,
+      componentesDesglosados: componentes
+    };
   }
   if (item.matchAction === 'create_new') {
-    return item;
+    const esConj = normalizeConcept(item.concepto).includes('conjunto') || Boolean(item.esConjunto);
+    return {
+      ...item,
+      esConjunto: esConj,
+      componentesDesglosados: esConj ? desglosarComponentesConjunto(item) : item.componentesDesglosados
+    };
   }
 
   const match = findBestProductMatch(item.concepto || item.prenda || '', item.prenda, catalog);
 
   if (match.isExactMatch && match.bestProduct) {
+    const esConj = match.bestProduct.tipo_producto === 'CONJUNTO' || (match.bestProduct.componentes && match.bestProduct.componentes.length > 0) || normalizeConcept(item.concepto).includes('conjunto');
     return {
       ...item,
       matchedProductId: match.bestProduct.id,
@@ -542,11 +297,14 @@ export function enrichItemWithCatalogMatch(
       suggestedProductName: match.bestProduct.nombre,
       similarityScore: 1.0,
       isExactMatch: true,
-      matchAction: 'use_existing'
+      matchAction: 'use_existing',
+      esConjunto: esConj,
+      componentesDesglosados: esConj ? desglosarComponentesConjunto(item, match.bestProduct) : undefined
     };
   }
 
   if (match.bestProduct) {
+    const esConj = match.bestProduct.tipo_producto === 'CONJUNTO' || (match.bestProduct.componentes && match.bestProduct.componentes.length > 0) || normalizeConcept(item.concepto).includes('conjunto');
     return {
       ...item,
       suggestedProductId: match.bestProduct.id,
@@ -555,15 +313,20 @@ export function enrichItemWithCatalogMatch(
       matchedProductName: undefined,
       similarityScore: match.score,
       isExactMatch: false,
-      matchAction: undefined // Pendiente de que el usuario elija
+      matchAction: undefined, // Pendiente de que el usuario elija
+      esConjunto: esConj,
+      componentesDesglosados: esConj ? desglosarComponentesConjunto(item, match.bestProduct) : undefined
     };
   }
 
+  const esConj = normalizeConcept(item.concepto).includes('conjunto');
   return {
     ...item,
     similarityScore: 0,
     isExactMatch: false,
-    matchAction: undefined
+    matchAction: undefined,
+    esConjunto: esConj,
+    componentesDesglosados: esConj ? desglosarComponentesConjunto(item) : undefined
   };
 }
 
@@ -593,12 +356,14 @@ export async function fetchProductsFromSoftwareImperia(): Promise<CatalogProduct
         id: docSnap.id,
         nombre: d.nombre || 'Producto sin nombre',
         prenda: d.prenda || '',
+        tipo_producto: (d.tipo_producto as 'PRODUCTO' | 'CONJUNTO') || (d.componentes && d.componentes.length > 0 ? 'CONJUNTO' : 'PRODUCTO'),
         precio: Number(d.precio || d.precioBase) || 0,
         sku_base: d.sku_base || '',
         ramo: d.ramo || '',
         escuela: d.escuela || '',
         descripcion: d.descripcion || '',
-        esPropio: d.esPropio ?? true
+        esPropio: d.esPropio ?? true,
+        componentes: d.componentes || []
       };
     });
     return products;
