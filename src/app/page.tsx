@@ -344,7 +344,7 @@ export default function CapturistaApp() {
       setSelectedSampleIndex(nextIdx);
       const nextNote = JSON.parse(JSON.stringify(visibleAfterDelete[nextIdx] || updated[0]));
       setCurrentNote(nextNote);
-      setActiveImageUri(nextNote.imageUrl || `/samples/real/caso_real_1.jpg`);
+      setActiveImageUri(nextNote.imageUrl || EXACT_NOTE_PHOTOS[nextNote.folio] || '');
     } else {
       const newActiveIdx = visibleAfterDelete.findIndex(n => n.folio === currentNote.folio);
       setSelectedSampleIndex(newActiveIdx >= 0 ? newActiveIdx : 0);
@@ -1402,13 +1402,7 @@ export default function CapturistaApp() {
                     >
                       {/* Botón principal: Seleccionar y ver propiedades de la nota */}
                       <button 
-                        onClick={() => {
-                          setSelectedSampleIndex(idx);
-                          setCurrentNote(JSON.parse(JSON.stringify(s)));
-                          setActiveImageUri(s.imageUrl || `/samples/real/caso_real_1.jpg`);
-                          setZoomLevel(1);
-                          setRotation(0);
-                        }}
+                        onClick={() => handleSelectSample(idx)}
                         className="pl-2.5 pr-1.5 py-1 flex items-center space-x-1.5"
                         title={`Nota #${s.folio} - ${s.cliente} - $${s.total} ${isSynced ? '✓ Guardada en Software Imperia Firestore' : '⚠ Pendiente de subir'}`}
                       >
@@ -2585,10 +2579,16 @@ export default function CapturistaApp() {
                               onClick={() => {
                                 const target = notesList.find(n => n.folio === ord.folio);
                                 if (target) {
-                                  const idx = notesList.findIndex(n => n.folio === ord.folio);
-                                  setSelectedSampleIndex(idx);
-                                  setCurrentNote(target);
-                                  setActiveImageUri(target.imageUrl || `/samples/real/caso_real_1.jpg`);
+                                  const listToUse = showArchived ? notesList : notesList.filter(n => !n.archivada);
+                                  const visibleIdx = listToUse.findIndex(n => n.folio === ord.folio);
+                                  if (visibleIdx >= 0) {
+                                    handleSelectSample(visibleIdx);
+                                  } else {
+                                    setCurrentNote(JSON.parse(JSON.stringify(target)));
+                                    setActiveImageUri(target.imageUrl || EXACT_NOTE_PHOTOS[target.folio] || '');
+                                    setZoomLevel(1);
+                                    setRotation(0);
+                                  }
                                 }
                                 setActiveTab('captura');
                               }}
