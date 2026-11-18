@@ -350,22 +350,34 @@ export async function fetchProductsFromSoftwareImperia(): Promise<CatalogProduct
     if (snap.empty) {
       return INITIAL_PRODUCTS_CATALOG;
     }
-    const products: CatalogProduct[] = snap.docs.map(docSnap => {
-      const d = docSnap.data();
-      return {
-        id: docSnap.id,
-        nombre: d.nombre || 'Producto sin nombre',
-        prenda: d.prenda || '',
-        tipo_producto: (d.tipo_producto as 'PRODUCTO' | 'CONJUNTO') || (d.componentes && d.componentes.length > 0 ? 'CONJUNTO' : 'PRODUCTO'),
-        precio: Number(d.precio || d.precioBase) || 0,
-        sku_base: d.sku_base || '',
-        ramo: d.ramo || '',
-        escuela: d.escuela || '',
-        descripcion: d.descripcion || '',
-        esPropio: d.esPropio ?? true,
-        componentes: d.componentes || []
-      };
-    });
+    const products: CatalogProduct[] = snap.docs
+      .filter(d => d.id !== 'placeholder-product')
+      .map(docSnap => {
+        const d = docSnap.data();
+        return {
+          id: docSnap.id,
+          nombre: d.nombre || d.nombre_producto || 'Producto sin nombre',
+          nombre_producto: d.nombre_producto || d.nombre || '',
+          codigo_producto: d.codigo_producto || '',
+          codigo_barras: d.codigo_barras || d.barcode || '',
+          prenda: d.prenda || d.tipo_prenda || '',
+          tipo_prenda: d.tipo_prenda || d.prenda || '',
+          tipo_producto: d.tipo_producto || (d.componentes && d.componentes.length > 0 ? 'CONJUNTO' : 'PRENDA_SIMPLE'),
+          modelo: d.modelo || '',
+          variante: d.variante || '',
+          genero: d.genero || 'Unisex',
+          tallas_disponibles: d.tallas_disponibles || [],
+          tipo_tela: d.tipo_tela || '',
+          color_tela: d.color_tela || '',
+          precio: Number(d.precio || d.precioBase) || 0,
+          sku_base: d.sku_base || '',
+          ramo: d.ramo || '',
+          escuela: d.escuela || '',
+          descripcion: d.descripcion || '',
+          esPropio: d.esPropio ?? true,
+          componentes: d.componentes || []
+        };
+      });
     return products;
   } catch (err) {
     console.warn("Aviso al consultar productos de Firestore, usando catálogo base:", err);
@@ -373,18 +385,45 @@ export async function fetchProductsFromSoftwareImperia(): Promise<CatalogProduct
   }
 }
 
-// Registrar un nuevo producto en la colección 'products' de Software Imperia
+// Registrar un nuevo producto en la colección 'products' evitando duplicados
 export async function createNewProductInSoftwareImperia(
   productData: Partial<CatalogProduct>
 ): Promise<CatalogProduct> {
+  const cleanName = (productData.nombre || 'Nuevo Producto').trim();
+  const existingSnap = await getDocs(collection(db, 'products'));
+  const normTarget = normalizeConcept(cleanName);
+  const existing = existingSnap.docs.find(d => normalizeConcept(d.data().nombre || '') === normTarget);
+  if (existing) {
+    const ed = existing.data();
+    return { id: existing.id, ...ed } as CatalogProduct;
+  }
+
+  const skuBase = (productData.sku_base || `PRAGO-${cleanName.slice(0, 8).toUpperCase().replace(/[^A-Z0-9]/g, '')}`).trim();
+  const prenda = (productData.prenda || productData.tipo_prenda || 'PRENDA').toUpperCase();
+  const genero = productData.genero || 'Unisex';
+  const tipoTela = productData.tipo_tela || 'Tergal / Microfibra';
+  const colorTela = productData.color_tela || 'Blanco';
   const newProductDoc = {
-    nombre: (productData.nombre || 'Nuevo Producto').trim(),
-    prenda: productData.prenda || 'PRENDA',
+    codigo_producto: productData.codigo_producto || `PRG-${skuBase.slice(0, 8)}`,
+    sku_base: skuBase,
+    sku: skuBase,
+    codigo_barras: productData.codigo_barras || '',
+    tipo_producto: productData.tipo_producto || 'PRENDA_SIMPLE',
+    nombre: cleanName,
+    nombre_producto: cleanName,
+    prenda,
+    tipo_prenda: prenda,
+    modelo: productData.modelo || 'Estándar',
+    variante: `${tipoTela} • ${colorTela} • ${genero}`,
+    genero,
+    tallas_disponibles: productData.tallas_disponibles || ['XS', 'S', 'M', 'L', 'XL'],
+    tipo_tela: tipoTela,
+    color_tela: colorTela,
     precio: Number(productData.precio) || 0,
-    sku_base: productData.sku_base || `IMP-${(productData.nombre || 'PROD').slice(0, 8).toUpperCase().replace(/[^A-Z0-9]/g, '')}`,
     ramo: productData.ramo || 'GENERAL',
     escuela: productData.escuela || '',
     descripcion: productData.descripcion || `Concepto generado desde Capturista IA`,
+    marca: 'PRAGO',
     esPropio: true,
     origen: 'Capturista IA WebApp',
     createdAt: serverTimestamp()
@@ -394,5 +433,5 @@ export async function createNewProductInSoftwareImperia(
   return {
     id: docRef.id,
     ...newProductDoc
-  };
+  } as CatalogProduct;
 }

@@ -1,4 +1,5 @@
-export type ItemStatus = 'P' | 'A' | 'E' | 'B';
+export type ItemStatus = 'P' | 'A' | 'F' | 'E' | 'B';
+export type EstadoPrenda = 'por_fabricar' | 'apartada' | 'fabricada' | 'en_bordado' | 'entregada';
 
 export interface KitComponent {
   rol: 'filipina' | 'pantalon' | 'gorro' | 'accesorio';
@@ -14,8 +15,18 @@ export interface KitComponent {
 export interface CatalogProduct {
   id: string;
   nombre: string;
+  nombre_producto?: string;
+  codigo_producto?: string;
+  codigo_barras?: string;
   prenda?: string;
-  tipo_producto?: 'PRODUCTO' | 'CONJUNTO';
+  tipo_prenda?: string;
+  tipo_producto?: 'PRODUCTO' | 'CONJUNTO' | 'PRENDA_SIMPLE' | 'PAQUETE' | 'ACCESORIO' | 'SERVICIO';
+  modelo?: string;
+  variante?: string;
+  genero?: string;
+  tallas_disponibles?: string[];
+  tipo_tela?: string;
+  color_tela?: string;
   precio?: number;
   sku_base?: string;
   ramo?: string;
@@ -28,13 +39,18 @@ export interface CatalogProduct {
 export interface NoteItem {
   id: string;
   ped_apa_ent: ItemStatus;
+  estado_prenda?: EstadoPrenda;
   cant: number;
   clave?: string;
+  codigo_producto?: string;
+  codigo_barras?: string;
   concepto: string;
   prenda: string;
   corte: string;
   genero: string;
   talla: string;
+  tipo_tela?: string;
+  color_tela?: string;
   talla_filipina?: string;
   talla_pantalon?: string;
   notas: string;

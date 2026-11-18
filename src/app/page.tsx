@@ -688,6 +688,16 @@ export default function CapturistaApp() {
   const handleItemChange = (index: number, field: keyof NoteItem, value: any) => {
     const updatedItems = [...currentNote.items];
     updatedItems[index] = { ...updatedItems[index], [field]: value };
+
+    if (field === 'ped_apa_ent') {
+      const code = String(value || 'P').toUpperCase();
+      updatedItems[index].estado_prenda =
+        code === 'E' ? 'entregada' : code === 'A' ? 'apartada' : code === 'F' ? 'fabricada' : code === 'B' ? 'en_bordado' : 'por_fabricar';
+    } else if (field === 'estado_prenda') {
+      const ep = String(value || 'por_fabricar').toLowerCase();
+      updatedItems[index].ped_apa_ent =
+        ep === 'entregada' ? 'E' : ep === 'apartada' ? 'A' : ep === 'fabricada' ? 'F' : ep === 'en_bordado' ? 'B' : 'P';
+    }
     
     // Auto recalculate Importe if cant or p_unit changed
     if (field === 'cant' || field === 'p_unit') {
@@ -1694,17 +1704,24 @@ export default function CapturistaApp() {
                                     : 'hover:bg-slate-50/80'
                                 }`}
                               >
-                              {/* Estado P/A/E/B */}
+                              {/* Estado P/A/F/B/E por prenda */}
                               <td className="p-1.5 text-center">
                                 <select 
                                   value={it.ped_apa_ent}
                                   onChange={(e) => handleItemChange(idx, 'ped_apa_ent', e.target.value)}
-                                  className="text-[10px] font-bold rounded px-1 py-0.5 border border-slate-300 bg-white"
+                                  className={`text-[10px] font-bold rounded px-1 py-0.5 border ${
+                                    it.ped_apa_ent === 'E' ? 'bg-emerald-50 text-emerald-800 border-emerald-300' :
+                                    it.ped_apa_ent === 'F' ? 'bg-green-50 text-green-800 border-green-300' :
+                                    it.ped_apa_ent === 'A' ? 'bg-sky-50 text-sky-800 border-sky-300' :
+                                    it.ped_apa_ent === 'B' ? 'bg-purple-50 text-purple-800 border-purple-300' :
+                                    'bg-amber-50 text-amber-800 border-amber-300'
+                                  }`}
                                 >
-                                  <option value="P">P (Pedido)</option>
-                                  <option value="A">A (Apartado)</option>
-                                  <option value="E">E (Entregado)</option>
-                                  <option value="B">B (Bordado)</option>
+                                  <option value="P">P • Por Fabricar</option>
+                                  <option value="A">A • Apartada</option>
+                                  <option value="F">F • Ya Fabricada</option>
+                                  <option value="B">B • En Bordado</option>
+                                  <option value="E">E • Entregada</option>
                                 </select>
                               </td>
 
@@ -1997,19 +2014,25 @@ export default function CapturistaApp() {
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            {/* Chips de estado touch para dedo */}
-                            <div className="flex space-x-1">
-                              {(['P', 'A', 'E', 'B'] as ItemStatus[]).map((st) => (
+                            {/* Chips de estado touch por prenda */}
+                            <div className="flex flex-wrap gap-1">
+                              {([
+                                { code: 'P', label: 'P • Fabricar' },
+                                { code: 'A', label: 'A • Apartada' },
+                                { code: 'F', label: 'F • Fabricada' },
+                                { code: 'B', label: 'B • Bordado' },
+                                { code: 'E', label: 'E • Entregada' }
+                              ] as { code: ItemStatus; label: string }[]).map((st) => (
                                 <button
-                                  key={st}
-                                  onClick={() => handleItemChange(idx, 'ped_apa_ent', st)}
-                                  className={`w-7 h-7 rounded-lg text-xs font-bold transition flex items-center justify-center ${
-                                    it.ped_apa_ent === st
+                                  key={st.code}
+                                  onClick={() => handleItemChange(idx, 'ped_apa_ent', st.code)}
+                                  className={`px-2 h-7 rounded-lg text-[10px] font-bold transition flex items-center justify-center ${
+                                    it.ped_apa_ent === st.code
                                       ? 'bg-amber-500 text-slate-950 shadow'
                                       : 'bg-white border border-slate-200 text-slate-600'
                                   }`}
                                 >
-                                  {st}
+                                  {st.label}
                                 </button>
                               ))}
                             </div>

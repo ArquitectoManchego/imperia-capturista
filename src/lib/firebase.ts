@@ -1,31 +1,67 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  doc, 
-  setDoc, 
-  getDocs, 
-  updateDoc, 
-  deleteDoc, 
-  serverTimestamp, 
-  query, 
-  orderBy, 
-  limit 
+import { getAuth, signInAnonymously } from 'firebase/auth';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp,
+  query,
+  where,
+  orderBy,
+  limit
 } from 'firebase/firestore';
-import { NoteData, NoteItem, ItemStatus, PaymentMethod } from './types';
+import { NoteData, NoteItem, ItemStatus, EstadoPrenda, PaymentMethod } from './types';
 
 export const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyBW3nlhDa6_As07gcxqS98LzE_4LIFihS8",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDt5BgYMgdK1yXEWuo0QgBB7yN9pK1WqlI",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "html-dashboard-integrator.firebaseapp.com",
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "html-dashboard-integrator",
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "html-dashboard-integrator.appspot.com",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "1084644965062",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:1084644965062:web:6e1871286c1527e0d635c7"
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "html-dashboard-integrator.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "845963956236",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:845963956236:web:aa508b14941fa55f355e29"
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+let authReadyPromise: Promise<void> | null = null;
+export async function ensureAnonymousAuth(): Promise<void> {
+  if (typeof window === 'undefined') return;
+  if (auth.currentUser) return;
+  if (!authReadyPromise) {
+    authReadyPromise = signInAnonymously(auth)
+      .then(() => undefined)
+      .catch(() => undefined);
+  }
+  return authReadyPromise;
+}
+
+export function statusCodeToEstadoPrenda(code?: ItemStatus | string): EstadoPrenda {
+  const u = String(code || 'P').toUpperCase();
+  if (u === 'E' || u === 'ENTREGADA') return 'entregada';
+  if (u === 'A' || u === 'APARTADA') return 'apartada';
+  if (u === 'F' || u === 'FABRICADA') return 'fabricada';
+  if (u === 'B' || u === 'EN_BORDADO') return 'en_bordado';
+  return 'por_fabricar';
+}
+
+export function estadoPrendaToStatusCode(ep?: string): ItemStatus {
+  const u = String(ep || 'por_fabricar').toLowerCase();
+  if (u === 'entregada' || u === 'e') return 'E';
+  if (u === 'apartada' || u === 'a') return 'A';
+  if (u === 'fabricada' || u === 'f') return 'F';
+  if (u === 'en_bordado' || u === 'b') return 'B';
+  return 'P';
+}
+
+const normStr = (s: string) =>
+  String(s || '').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 export interface SyncResult {
   pedidoId: string;
@@ -36,13 +72,26 @@ export interface SyncResult {
 
 export async function syncOrderToSoftwareImperia(orderData: any): Promise<SyncResult> {
   try {
-    // 1. Guardar o actualizar datos de cliente si existen
+    await ensureAnonymousAuth();
+
+    // 1. Upsert de cliente evitando duplicados en colección unificada 'clientes'
     let clienteId = "cliente_directo";
-    if (orderData.cliente && orderData.cliente.trim()) {
-      const clientDoc = {
-        nombre: orderData.cliente.trim(),
-        telefono: orderData.telefono || "",
-        tags: ["Captura Nota Remision"],
+    const clientName = (orderData.cliente || '').trim();
+    const clientPhone = (orderData.telefono || '').trim();
+    if (clientName) {
+      const cliSnap = await getDocs(collection(db, "clientes"));
+      const cleanPhone = clientPhone.replace(/\D/g, '');
+      const normName = normStr(clientName);
+      const existingCli = cliSnap.docs.find(d => {
+        const dd = d.data();
+        const dp = String(dd.telefono || '').replace(/\D/g, '');
+        return (cleanPhone.length >= 8 && dp === cleanPhone) || normStr(dd.nombre) === normName;
+      });
+
+      const clientDoc: Record<string, any> = {
+        nombre: clientName,
+        telefono: clientPhone,
+        tags: ["Capturista"],
         isUser: false,
         datosFiscales: {
           rfc: orderData.rfc || "",
@@ -50,87 +99,203 @@ export async function syncOrderToSoftwareImperia(orderData: any): Promise<SyncRe
         },
         updatedAt: serverTimestamp()
       };
-      const clientRef = await addDoc(collection(db, "clientes"), clientDoc);
-      clienteId = clientRef.id;
+      if (existingCli) {
+        clienteId = existingCli.id;
+        await updateDoc(doc(db, "clientes", clienteId), clientDoc);
+      } else {
+        const clientRef = await addDoc(collection(db, "clientes"), {
+          ...clientDoc,
+          createdAt: serverTimestamp()
+        });
+        clienteId = clientRef.id;
+      }
     }
 
-    // 2. Normalizar partidas para la colección 'pedidos' de Software Imperia
-    const itemsFormatted = [];
+    // 2. Cargar catálogo unificado de 'products' para enlazar los 12 campos PRAGO y evitar duplicados
+    const prodSnap = await getDocs(collection(db, 'products'));
+    const existingProducts = prodSnap.docs.map(d => ({ id: d.id, ...(d.data() as any) }));
+
+    const itemsFormatted: any[] = [];
     for (let index = 0; index < (orderData.items || []).length; index++) {
       const it = orderData.items[index];
-      let finalProductId = it.matchedProductId;
+      let matchedProd = it.matchedProductId
+        ? existingProducts.find(p => p.id === it.matchedProductId)
+        : undefined;
 
-      // Si el usuario solicitó generar un nuevo concepto en la base de datos a partir de lo extraído por IA
-      if (it.matchAction === 'create_new' && !finalProductId) {
+      if (!matchedProd && (it.matchedProductName || it.concepto)) {
+        const normConcept = normStr(it.matchedProductName || it.concepto);
+        matchedProd = existingProducts.find(p => normStr(p.nombre) === normConcept);
+      }
+
+      if (it.matchAction === 'create_new' && !matchedProd) {
         try {
+          const newName = (it.concepto || 'Nuevo Producto').trim();
+          const skuBase = `PRAGO-${newName.slice(0, 8).toUpperCase().replace(/[^A-Z0-9]/g, '')}`;
+          const prenda = (it.prenda || 'PRENDA').toUpperCase();
           const newProductDoc = {
-            nombre: (it.concepto || 'Nuevo Producto').trim(),
-            prenda: it.prenda || 'PRENDA',
+            codigo_producto: `PRG-${skuBase.slice(0, 8)}`,
+            sku_base: skuBase,
+            sku: skuBase,
+            codigo_barras: '',
+            tipo_producto: 'PRENDA_SIMPLE',
+            nombre: newName,
+            nombre_producto: newName,
+            prenda,
+            tipo_prenda: prenda,
+            modelo: it.corte || 'Estándar',
+            variante: `Universal • Unisex`,
+            genero: it.genero || 'Unisex',
+            tallas_disponibles: [it.talla || 'M'],
+            tipo_tela: it.tipo_tela || 'Tergal',
+            color_tela: it.color_tela || 'Institucional',
             precio: Number(it.p_unit) || 0,
-            sku_base: `IMP-${(it.concepto || 'PROD').slice(0, 8).toUpperCase().replace(/[^A-Z0-9]/g, '')}`,
             ramo: 'GENERAL',
             escuela: '',
             descripcion: `Concepto generado desde Capturista IA (Nota #${orderData.folio})`,
+            marca: 'PRAGO',
             esPropio: true,
             origen: 'Capturista IA WebApp',
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
           };
           const newDocRef = await addDoc(collection(db, 'products'), newProductDoc);
-          finalProductId = newDocRef.id;
+          matchedProd = { id: newDocRef.id, ...newProductDoc };
+          existingProducts.push(matchedProd);
         } catch (e) {
           console.warn("No se pudo crear producto en 'products':", e);
-          finalProductId = `prod_new_${index}`;
         }
       }
 
+      const finalProductId = matchedProd?.id || it.matchedProductId || 'prod_manual';
+      const ep: EstadoPrenda = it.estado_prenda || statusCodeToEstadoPrenda(it.ped_apa_ent || 'P');
+      const tallaClean = it.talla || (it.talla_filipina ? `F:${it.talla_filipina} P:${it.talla_pantalon}` : 'Unitalla');
+
       itemsFormatted.push({
-        productId: finalProductId || `prod_manual_${index}`,
-        variantId: `var_${it.talla || 'STD'}`,
-        sku: it.clave || (it.talla_filipina ? `FIL-${it.talla_filipina}-PANT-${it.talla_pantalon}` : `IMP-${it.prenda || 'GEN'}-${it.talla || 'U'}`),
-        nombre: (it.matchAction === 'use_existing' && it.matchedProductName) ? it.matchedProductName : (it.concepto || `${it.prenda || 'Prenda'} ${it.talla || ''}`.trim()),
+        itemId: it.id || `item_${index + 1}`,
+        productId: finalProductId,
+        variantId: `var_${tallaClean}`,
+        codigo_producto: matchedProd?.codigo_producto || it.codigo_producto || '',
+        sku: matchedProd?.sku_base || it.clave || `IMP-${it.prenda || 'GEN'}-${tallaClean}`,
+        codigo_barras: matchedProd?.codigo_barras || it.codigo_barras || '',
+        nombre: matchedProd?.nombre || it.matchedProductName || it.concepto || `${it.prenda || 'Prenda'} ${tallaClean}`.trim(),
+        conceptoOriginal: it.concepto || '',
+        tipo_producto: matchedProd?.tipo_producto || 'PRENDA_SIMPLE',
+        tipo_prenda: matchedProd?.tipo_prenda || it.prenda || 'PRENDA',
+        modelo: matchedProd?.modelo || it.corte || '',
+        genero: it.genero || matchedProd?.genero || 'Unisex',
+        talla: tallaClean,
+        tipo_tela: it.tipo_tela || matchedProd?.tipo_tela || '',
+        color_tela: it.color_tela || matchedProd?.color_tela || '',
         cantidad: Number(it.cant) || 1,
         precioUnitario: Number(it.p_unit) || 0,
         importe: Number(it.importe) || 0,
-        estadoPartida: it.ped_apa_ent || 'P',
+        estado_prenda: ep,
+        estadoPartida: estadoPrendaToStatusCode(ep),
         prenda: it.prenda || '',
         corte: it.corte || '',
-        genero: it.genero || '',
-        talla: it.talla || (it.talla_filipina ? `F:${it.talla_filipina} P:${it.talla_pantalon}` : ''),
         notas: it.notas || '',
-        isExactMatch: Boolean(it.isExactMatch),
-        matchAction: it.matchAction || (it.isExactMatch ? 'use_existing' : 'manual'),
-        esConjunto: Boolean(it.esConjunto),
-        desglose_componentes: it.componentesDesglosados || []
+        isExactMatch: Boolean(it.isExactMatch || matchedProd),
+        matchAction: it.matchAction || (matchedProd ? 'use_existing' : 'manual'),
+        esConjunto: Boolean(it.esConjunto || matchedProd?.tipo_producto === 'CONJUNTO'),
+        desglose_componentes: it.componentesDesglosados || [],
+        tracking_taller: {
+          yaPedido: true,
+          fabricado: ep === 'fabricada' || ep === 'entregada',
+          listoEnTienda: ep === 'fabricada' || ep === 'apartada' || ep === 'entregada',
+          entregado: ep === 'entregada'
+        }
       });
     }
 
-    // 3. Documento del Pedido
-    const pedidoDoc = {
-      numeroNota: String(orderData.folio || "SIN_FOLIO"),
+    // 3. Upsert del pedido evitando duplicar folios cuando se presiona "Actualizar en BD"
+    const folioStr = String(orderData.folio || "SIN_FOLIO").trim();
+    const allDelivered = itemsFormatted.length > 0 && itemsFormatted.every(i => i.estado_prenda === 'entregada');
+
+    let targetPedidoId: string | undefined = orderData.firestoreId || (orderData.syncedToDb && orderData.id && !String(orderData.id).startsWith('local') ? String(orderData.id) : undefined);
+    if (!targetPedidoId && folioStr !== 'SIN_FOLIO') {
+      const dupSnap = await getDocs(
+        query(collection(db, "pedidos"), where("numeroNota", "==", folioStr))
+      );
+      const capMatch = dupSnap.docs.find(d => d.data().origenCaptura === 'App Capturista Imperia' || d.data().serie === 'CAPTURISTA');
+      if (capMatch) targetPedidoId = capMatch.id;
+    }
+
+    const pedidoDoc: Record<string, any> = {
+      numeroNota: folioStr,
+      folioUnico: `CAP-${folioStr}`,
+      serie: 'CAPTURISTA',
       clienteId: clienteId,
-      clienteNombre: orderData.cliente || "Cliente Mostrador",
-      telefono: orderData.telefono || "",
-      fechaPedido: serverTimestamp(),
+      clienteNombre: clientName || "Cliente Mostrador",
+      telefono: clientPhone,
       fechaEntregaTexto: orderData.fecha_entrega || "",
       metodoPago: orderData.metodo_pago || "NO_ESPECIFICADO",
-      tipo_pedido: orderData.items?.some((i: any) => i.ped_apa_ent === 'B') ? 'bordado' : 'tienda',
+      tipo_pedido: itemsFormatted.some(i => i.estado_prenda === 'en_bordado') ? 'bordado' : 'tienda',
       items: itemsFormatted,
       total: Number(orderData.total) || 0,
       montoPagado: Number(orderData.anticipo) || 0,
       saldoPendiente: Number(orderData.resta) || 0,
       pagado: Number(orderData.resta) <= 0.01,
-      estado_produccion: 'Pendiente',
+      estado: allDelivered ? 'Completado' : 'Pendiente',
+      estado_produccion: allDelivered ? 'Entregado' : 'Pendiente',
       origenCaptura: 'App Capturista Imperia',
       motorAnalisis: orderData.motor || 'IA_MULTIMODAL',
-      createdAt: serverTimestamp()
+      updatedAt: serverTimestamp()
     };
 
-    const docRef = await addDoc(collection(db, "pedidos"), pedidoDoc);
+    if (targetPedidoId) {
+      await updateDoc(doc(db, "pedidos", targetPedidoId), pedidoDoc);
+    } else {
+      const created = await addDoc(collection(db, "pedidos"), {
+        ...pedidoDoc,
+        fechaPedido: serverTimestamp(),
+        fecha: serverTimestamp(),
+        createdAt: serverTimestamp(),
+        archivado: false
+      });
+      targetPedidoId = created.id;
+    }
+
+    // Sincronizar ordenes_taller por prenda
+    for (let idx = 0; idx < itemsFormatted.length; idx++) {
+      const it = itemsFormatted[idx];
+      const tallerId = `${targetPedidoId}_${it.itemId}`.replace(/[^a-zA-Z0-9_\-]/g, '_');
+      const tallerRef = doc(db, "ordenes_taller", tallerId);
+      if (it.estado_prenda === 'por_fabricar' || it.estado_prenda === 'en_bordado') {
+        await setDoc(tallerRef, {
+          id: tallerId,
+          pedidoId: targetPedidoId,
+          itemId: it.itemId,
+          numeroNota: folioStr,
+          folioUnico: `CAP-${folioStr}`,
+          serie: 'CAPTURISTA',
+          clienteId,
+          clienteNombre: clientName || "Cliente Mostrador",
+          productId: it.productId,
+          sku: it.sku,
+          codigo_producto: it.codigo_producto,
+          codigo_barras: it.codigo_barras,
+          nombre_producto: it.nombre,
+          tipo_prenda: it.tipo_prenda,
+          modelo: it.modelo,
+          genero: it.genero,
+          talla: it.talla,
+          tipo_tela: it.tipo_tela,
+          color_tela: it.color_tela,
+          cantidad: it.cantidad,
+          estado_prenda: it.estado_prenda,
+          fechaEntregaTexto: orderData.fecha_entrega || '',
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      } else {
+        await deleteDoc(tallerRef).catch(() => {});
+      }
+    }
+
     return {
-      pedidoId: docRef.id,
-      clienteId: clienteId,
+      pedidoId: targetPedidoId,
+      clienteId,
       success: true,
-      message: `Pedido #${orderData.folio} subido con éxito a Software Imperia (ID: ${docRef.id})`
+      message: `Pedido #${folioStr} guardado sin duplicados (ID: ${targetPedidoId})`
     };
   } catch (err: any) {
     console.error("Error al sincronizar con Software Imperia:", err);
@@ -144,34 +309,49 @@ export async function syncOrderToSoftwareImperia(orderData: any): Promise<SyncRe
 
 export async function fetchOrdersFromSoftwareImperia(): Promise<NoteData[]> {
   try {
-    const q = query(collection(db, "pedidos"), orderBy("createdAt", "desc"), limit(100));
+    await ensureAnonymousAuth();
+    const q = query(collection(db, "pedidos"), orderBy("createdAt", "desc"), limit(150));
     let snapshot;
     try {
       snapshot = await getDocs(q);
     } catch {
-      // Si el índice orderBy aún no está listo, hacer fetch directo de la colección
       snapshot = await getDocs(collection(db, "pedidos"));
     }
 
     const notes: NoteData[] = [];
     snapshot.forEach(docSnap => {
       const d = docSnap.data();
-      const items: NoteItem[] = (d.items || []).map((it: any, idx: number) => ({
-        id: it.productId || `item-${docSnap.id}-${idx}`,
-        ped_apa_ent: (it.estadoPartida || 'P') as ItemStatus,
-        cant: Number(it.cantidad) || 1,
-        clave: it.sku || undefined,
-        concepto: it.nombre || `${it.prenda || 'Prenda'} ${it.talla || ''}`.trim(),
-        prenda: it.prenda || 'Prenda',
-        corte: it.corte || '',
-        genero: it.genero || 'Dama',
-        talla: it.talla || '',
-        talla_filipina: it.talla_filipina,
-        talla_pantalon: it.talla_pantalon,
-        notas: it.notas || '',
-        p_unit: Number(it.precioUnitario) || 0,
-        importe: Number(it.importe) || 0
-      }));
+      const items: NoteItem[] = (d.items || []).map((it: any, idx: number) => {
+        const ep = statusCodeToEstadoPrenda(it.estado_prenda || it.estadoPartida || (d.estado === 'Completado' ? 'E' : 'P'));
+        const code = estadoPrendaToStatusCode(ep);
+        return {
+          id: it.itemId || it.productId || `item-${docSnap.id}-${idx}`,
+          ped_apa_ent: code,
+          estado_prenda: ep,
+          cant: Number(it.cantidad) || 1,
+          clave: it.sku || undefined,
+          codigo_producto: it.codigo_producto || undefined,
+          codigo_barras: it.codigo_barras || undefined,
+          concepto: it.nombre || `${it.prenda || 'Prenda'} ${it.talla || ''}`.trim(),
+          prenda: it.tipo_prenda || it.prenda || 'Prenda',
+          corte: it.modelo || it.corte || '',
+          genero: it.genero || 'Dama',
+          talla: it.talla || '',
+          tipo_tela: it.tipo_tela || '',
+          color_tela: it.color_tela || '',
+          talla_filipina: it.talla_filipina,
+          talla_pantalon: it.talla_pantalon,
+          notas: it.notas || '',
+          p_unit: Number(it.precioUnitario) || 0,
+          importe: Number(it.importe) || 0,
+          matchedProductId: it.productId && it.productId !== 'prod_manual' ? it.productId : undefined,
+          matchedProductName: it.nombre || undefined,
+          isExactMatch: Boolean(it.productId && it.productId !== 'prod_manual'),
+          matchAction: it.productId && it.productId !== 'prod_manual' ? 'use_existing' : undefined,
+          esConjunto: Boolean(it.esConjunto),
+          componentesDesglosados: it.desglose_componentes || []
+        };
+      });
 
       const sumImportes = items.reduce((acc, it) => acc + (Number(it.importe) || 0), 0);
       const total = Number(d.total) || sumImportes;
@@ -204,7 +384,7 @@ export async function fetchOrdersFromSoftwareImperia(): Promise<NoteData[]> {
         total,
         motor: d.motorAnalisis || 'IA_MULTIMODAL',
         syncedToDb: true,
-        archivada: Boolean(d.archivada),
+        archivada: Boolean(d.archivada || d.archivado),
         validacion_financiera: {
           cuadre_ok: Math.abs(diferencia) < 0.05,
           diferencia,
