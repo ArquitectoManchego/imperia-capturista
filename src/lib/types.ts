@@ -10,6 +10,7 @@ export interface KitComponent {
   tallaClave?: 'talla_filipina' | 'talla_pantalon' | 'talla_gorro' | 'unitalla';
   tallaAsignada?: string; // Talla calculada para producción (ej. 'M')
   cantidad?: number;
+  estado_prenda?: EstadoPrenda; // 'por_fabricar' | 'apartada' | 'fabricada' | 'en_bordado' | 'entregada'
 }
 
 export interface CatalogProduct {

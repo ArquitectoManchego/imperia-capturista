@@ -158,11 +158,61 @@ export function findBestProductMatch(
   };
 }
 
+// Función auxiliar para extraer tallas individuales de un texto como "F: M  P: M", "F: 34 P: 36", "F: CH / P: M"
+export function parseTallasConjunto(
+  tallaStr: string = '',
+  tallaFil?: string,
+  tallaPant?: string
+): { filipina: string; pantalon: string } {
+  let fil = (tallaFil || '').trim();
+  let pant = (tallaPant || '').trim();
+
+  if (fil && pant) {
+    return { filipina: fil.toUpperCase(), pantalon: pant.toUpperCase() };
+  }
+
+  const str = (tallaStr || '').trim();
+  if (!str) {
+    return { filipina: fil || 'M', pantalon: pant || 'M' };
+  }
+
+  const matchFil = str.match(/(?:F(?:IL|ILIPINA)?)\s*[:\-\.]?\s*([a-zA-Z0-9~]+(?:\s+[a-zA-Z0-9~]+)*?)(?=\s+(?:P(?:ANT|ANTALON)?\s*[:\-\.]|$)|[,;/]|$)/i);
+  const matchPant = str.match(/(?:P(?:ANT|ANTALON)?)\s*[:\-\.]?\s*([a-zA-Z0-9~]+(?:\s+[a-zA-Z0-9~]+)*?)(?=\s+(?:F(?:IL|ILIPINA)?\s*[:\-\.]|$)|[,;/]|$)/i);
+
+  if (matchFil && matchFil[1]) fil = matchFil[1].trim();
+  if (matchPant && matchPant[1]) pant = matchPant[1].trim();
+
+  if (!fil && !pant && str.includes('/')) {
+    const parts = str.split('/');
+    if (parts.length >= 2) {
+      fil = parts[0].trim();
+      pant = parts[1].trim();
+    }
+  }
+
+  if (!fil && !pant) {
+    fil = str;
+    pant = str;
+  } else if (!fil && pant) {
+    fil = pant;
+  } else if (fil && !pant) {
+    pant = fil;
+  }
+
+  return {
+    filipina: (fil || 'M').toUpperCase(),
+    pantalon: (pant || 'M').toUpperCase()
+  };
+}
+
 // Desglosa los componentes individuales (piezas de taller/inventario) de un conjunto comercial
 export function desglosarComponentesConjunto(
   item: NoteItem,
   product?: CatalogProduct
 ): KitComponent[] {
+  const parsed = parseTallasConjunto(item.talla, item.talla_filipina, item.talla_pantalon);
+  const defaultEstado = item.estado_prenda || (item.ped_apa_ent === 'A' ? 'apartada' : 'por_fabricar');
+
   // Si no se proporcionó producto o no tiene componentes, buscar en el catálogo
   if (!product || !product.componentes || product.componentes.length === 0) {
     const targetName = item.matchedProductName || item.suggestedProductName || item.concepto || item.prenda || '';
@@ -185,8 +235,9 @@ export function desglosarComponentesConjunto(
             productNombre: isCab ? 'FILIPINA QUIRURGICA UV ENFRA CABALLERO' : 'FILIPINA QUIRURGICA UV ENFRA DAMA',
             genero: isCab ? 'Caballero' : 'Dama',
             tallaClave: 'talla_filipina',
-            tallaAsignada: item.talla_filipina || item.talla || 'S',
-            cantidad: Number(item.cant) || 1
+            tallaAsignada: parsed.filipina,
+            cantidad: Number(item.cant) || 1,
+            estado_prenda: defaultEstado
           },
           {
             rol: 'pantalon',
@@ -195,8 +246,9 @@ export function desglosarComponentesConjunto(
             productNombre: 'PANTALON QUIRURGICO UV ENFRA (UNISEX)',
             genero: 'Unisex',
             tallaClave: 'talla_pantalon',
-            tallaAsignada: item.talla_pantalon || item.talla || 'S',
-            cantidad: Number(item.cant) || 1
+            tallaAsignada: parsed.pantalon,
+            cantidad: Number(item.cant) || 1,
+            estado_prenda: defaultEstado
           },
           {
             rol: 'gorro',
@@ -206,7 +258,8 @@ export function desglosarComponentesConjunto(
             genero: 'Unisex',
             tallaClave: 'unitalla',
             tallaAsignada: 'Unitalla',
-            cantidad: Number(item.cant) || 1
+            cantidad: Number(item.cant) || 1,
+            estado_prenda: defaultEstado
           }
         ];
       }
@@ -220,8 +273,9 @@ export function desglosarComponentesConjunto(
             productNombre: isCab ? 'FILIPINA CLINICA CABALLERO' : 'FILIPINA CLINICA UV ENFRA DAMA',
             genero: isCab ? 'Caballero' : 'Dama',
             tallaClave: 'talla_filipina',
-            tallaAsignada: item.talla_filipina || item.talla || 'S',
-            cantidad: Number(item.cant) || 1
+            tallaAsignada: parsed.filipina,
+            cantidad: Number(item.cant) || 1,
+            estado_prenda: defaultEstado
           },
           {
             rol: 'pantalon',
@@ -230,8 +284,9 @@ export function desglosarComponentesConjunto(
             productNombre: 'PANTALON MIXTO BLANCO (UNISEX)',
             genero: 'Unisex',
             tallaClave: 'talla_pantalon',
-            tallaAsignada: item.talla_pantalon || item.talla || 'S',
-            cantidad: Number(item.cant) || 1
+            tallaAsignada: parsed.pantalon,
+            cantidad: Number(item.cant) || 1,
+            estado_prenda: defaultEstado
           }
         ];
       }
@@ -240,22 +295,29 @@ export function desglosarComponentesConjunto(
     }
   }
 
-  return (product.componentes || []).map(comp => {
-    let tallaAsignada = '';
-    if (comp.rol === 'filipina') {
-      tallaAsignada = item.talla_filipina || item.talla || 'S';
-    } else if (comp.rol === 'pantalon') {
-      tallaAsignada = item.talla_pantalon || item.talla || 'S';
-    } else if (comp.rol === 'gorro') {
-      tallaAsignada = 'Unitalla';
-    } else {
-      tallaAsignada = item.talla || 'Unitalla';
+  const existingComps = item.componentesDesglosados || [];
+
+  return (product.componentes || []).map((comp, idx) => {
+    const existingComp = existingComps.find(ec => ec.rol === comp.rol) || existingComps[idx];
+    let tallaAsignada = existingComp?.tallaAsignada;
+
+    if (!tallaAsignada) {
+      if (comp.rol === 'filipina') {
+        tallaAsignada = item.talla_filipina || parsed.filipina || 'M';
+      } else if (comp.rol === 'pantalon') {
+        tallaAsignada = item.talla_pantalon || parsed.pantalon || 'M';
+      } else if (comp.rol === 'gorro') {
+        tallaAsignada = 'Unitalla';
+      } else {
+        tallaAsignada = item.talla || 'Unitalla';
+      }
     }
 
     return {
       ...comp,
-      tallaAsignada: (tallaAsignada || 'S').trim().toUpperCase(),
-      cantidad: (comp.cantidad || 1) * (Number(item.cant) || 1)
+      tallaAsignada: (tallaAsignada || 'M').trim().toUpperCase(),
+      cantidad: (comp.cantidad || 1) * (Number(item.cant) || 1),
+      estado_prenda: existingComp?.estado_prenda || comp.estado_prenda || defaultEstado
     };
   });
 }
@@ -265,6 +327,10 @@ export function enrichItemWithCatalogMatch(
   item: NoteItem,
   catalog: CatalogProduct[] = INITIAL_PRODUCTS_CATALOG
 ): NoteItem {
+  const parsedTallas = parseTallasConjunto(item.talla, item.talla_filipina, item.talla_pantalon);
+  const baseTallaFil = item.talla_filipina || parsedTallas.filipina;
+  const baseTallaPant = item.talla_pantalon || parsedTallas.pantalon;
+
   // Si ya tiene una acción manual del usuario o coincidencia previa respetarla
   if (item.matchAction === 'use_existing' && item.matchedProductId) {
     const existingProd = catalog.find(p => p.id === item.matchedProductId);
@@ -272,6 +338,8 @@ export function enrichItemWithCatalogMatch(
     const componentes = esConj ? desglosarComponentesConjunto(item, existingProd) : item.componentesDesglosados;
     return {
       ...item,
+      talla_filipina: esConj ? baseTallaFil : item.talla_filipina,
+      talla_pantalon: esConj ? baseTallaPant : item.talla_pantalon,
       esConjunto: esConj,
       componentesDesglosados: componentes
     };
@@ -280,6 +348,8 @@ export function enrichItemWithCatalogMatch(
     const esConj = normalizeConcept(item.concepto).includes('conjunto') || Boolean(item.esConjunto);
     return {
       ...item,
+      talla_filipina: esConj ? baseTallaFil : item.talla_filipina,
+      talla_pantalon: esConj ? baseTallaPant : item.talla_pantalon,
       esConjunto: esConj,
       componentesDesglosados: esConj ? desglosarComponentesConjunto(item) : item.componentesDesglosados
     };
@@ -291,6 +361,8 @@ export function enrichItemWithCatalogMatch(
     const esConj = match.bestProduct.tipo_producto === 'CONJUNTO' || (match.bestProduct.componentes && match.bestProduct.componentes.length > 0) || normalizeConcept(item.concepto).includes('conjunto');
     return {
       ...item,
+      talla_filipina: esConj ? baseTallaFil : item.talla_filipina,
+      talla_pantalon: esConj ? baseTallaPant : item.talla_pantalon,
       matchedProductId: match.bestProduct.id,
       matchedProductName: match.bestProduct.nombre,
       suggestedProductId: match.bestProduct.id,
@@ -307,6 +379,8 @@ export function enrichItemWithCatalogMatch(
     const esConj = match.bestProduct.tipo_producto === 'CONJUNTO' || (match.bestProduct.componentes && match.bestProduct.componentes.length > 0) || normalizeConcept(item.concepto).includes('conjunto');
     return {
       ...item,
+      talla_filipina: esConj ? baseTallaFil : item.talla_filipina,
+      talla_pantalon: esConj ? baseTallaPant : item.talla_pantalon,
       suggestedProductId: match.bestProduct.id,
       suggestedProductName: match.bestProduct.nombre,
       matchedProductId: undefined,
@@ -322,6 +396,8 @@ export function enrichItemWithCatalogMatch(
   const esConj = normalizeConcept(item.concepto).includes('conjunto');
   return {
     ...item,
+    talla_filipina: esConj ? baseTallaFil : item.talla_filipina,
+    talla_pantalon: esConj ? baseTallaPant : item.talla_pantalon,
     similarityScore: 0,
     isExactMatch: false,
     matchAction: undefined,

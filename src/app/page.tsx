@@ -33,9 +33,11 @@ import {
   Check,
   Layers,
   PackageCheck,
-  ArrowRight
+  ArrowRight,
+  MessageSquare,
+  Copy
 } from 'lucide-react';
-import { NoteData, NoteItem, ItemStatus, PaymentMethod, EngineType } from '@/lib/types';
+import { NoteData, NoteItem, ItemStatus, EstadoPrenda, PaymentMethod, EngineType } from '@/lib/types';
 import { SAMPLE_NOTES } from '@/lib/sample-data';
 import { 
   syncOrderToSoftwareImperia, 
@@ -51,7 +53,8 @@ import {
   findBestProductMatch,
   enrichItemWithCatalogMatch,
   enrichNoteWithCatalogMatches,
-  desglosarComponentesConjunto
+  desglosarComponentesConjunto,
+  parseTallasConjunto
 } from '@/lib/catalog';
 
 // Mapeo verificado fotográficamente entre folios y fotografías reales escaneadas
@@ -169,6 +172,9 @@ export default function CapturistaApp() {
   // Modals
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
   const [showSuperiorModal, setShowSuperiorModal] = useState<boolean>(false);
+  const [showCostureraModal, setShowCostureraModal] = useState<boolean>(false);
+  const [copiedCostureraMsg, setCopiedCostureraMsg] = useState<boolean>(false);
+  const [costureraFormat, setCostureraFormat] = useState<'detallado' | 'compacto'>('detallado');
   const [apiKeyInput, setApiKeyInput] = useState<string>('');
   const [benchmarkData, setBenchmarkData] = useState<any>(null);
 
@@ -836,6 +842,112 @@ export default function CapturistaApp() {
     };
     setCurrentNote(updatedNote);
     setNotesList(prev => prev.map(n => n.folio === currentNote.folio ? updatedNote : n));
+  };
+
+  // Modificar talla individual de una pieza dentro de un kit (Filipina, Pantalón, Gorro)
+  const handleUpdateComponentTalla = (itemIdx: number, compIdx: number, newTalla: string) => {
+    const updatedItems = [...currentNote.items];
+    const targetItem = { ...updatedItems[itemIdx] };
+    if (!targetItem.componentesDesglosados) return;
+    const comps = [...targetItem.componentesDesglosados];
+    comps[compIdx] = { ...comps[compIdx], tallaAsignada: newTalla.toUpperCase() };
+    targetItem.componentesDesglosados = comps;
+
+    const fil = comps.find(c => c.rol === 'filipina')?.tallaAsignada;
+    const pant = comps.find(c => c.rol === 'pantalon')?.tallaAsignada;
+    if (fil) targetItem.talla_filipina = fil;
+    if (pant) targetItem.talla_pantalon = pant;
+    if (fil || pant) {
+      targetItem.talla = `F: ${targetItem.talla_filipina || 'M'}  P: ${targetItem.talla_pantalon || 'M'}`;
+    }
+
+    updatedItems[itemIdx] = targetItem;
+    const updatedNote = { ...currentNote, items: updatedItems };
+    setCurrentNote(updatedNote);
+    setNotesList(prev => prev.map(n => n.folio === currentNote.folio ? updatedNote : n));
+  };
+
+  // Modificar estado individual de una pieza dentro de un kit (Apartada / Por fabricar)
+  const handleUpdateComponentEstado = (itemIdx: number, compIdx: number, newEstado: EstadoPrenda) => {
+    const updatedItems = [...currentNote.items];
+    const targetItem = { ...updatedItems[itemIdx] };
+    if (!targetItem.componentesDesglosados) return;
+    const comps = [...targetItem.componentesDesglosados];
+    comps[compIdx] = { ...comps[compIdx], estado_prenda: newEstado };
+    targetItem.componentesDesglosados = comps;
+
+    const allApartadas = comps.every(c => c.estado_prenda === 'apartada');
+    if (allApartadas) {
+      targetItem.ped_apa_ent = 'A';
+      targetItem.estado_prenda = 'apartada';
+    } else {
+      targetItem.ped_apa_ent = 'P';
+      targetItem.estado_prenda = 'por_fabricar';
+    }
+
+    updatedItems[itemIdx] = targetItem;
+    const updatedNote = { ...currentNote, items: updatedItems };
+    setCurrentNote(updatedNote);
+    setNotesList(prev => prev.map(n => n.folio === currentNote.folio ? updatedNote : n));
+  };
+
+  // Generador de texto para WhatsApp para la costurera
+  const generateCostureraWhatsAppText = (note: NoteData, mode: 'detallado' | 'compacto' = 'detallado'): string => {
+    const primerApellido = (note.cliente || 'Cliente').trim();
+    const folioStr = note.folio || 'S/N';
+    const fechaEnt = note.fecha_entrega ? `Entrega: ${note.fecha_entrega}` : '';
+
+    if (mode === 'compacto') {
+      const lineas: string[] = [];
+      note.items.forEach(it => {
+        const fil = it.talla_filipina || parseTallasConjunto(it.talla).filipina;
+        const pant = it.talla_pantalon || parseTallasConjunto(it.talla).pantalon;
+        const tipoPrenda = it.prenda || it.concepto;
+        const gen = it.genero || 'Dama';
+        if (it.esConjunto) {
+          lineas.push(`${folioStr} - ${primerApellido}, ${tipoPrenda}, ${gen} F:(${fil}) P:(${pant})`);
+        } else {
+          lineas.push(`${folioStr} - ${primerApellido}, ${tipoPrenda}, ${gen} Talla:(${it.talla || 'M'})`);
+        }
+      });
+      return lineas.join('\n');
+    }
+
+    const lineasFabricar: string[] = [];
+    const lineasEnTienda: string[] = [];
+
+    note.items.forEach(it => {
+      if (it.esConjunto && it.componentesDesglosados && it.componentesDesglosados.length > 0) {
+        it.componentesDesglosados.forEach(comp => {
+          const estado = comp.estado_prenda || it.estado_prenda || (it.ped_apa_ent === 'A' ? 'apartada' : 'por_fabricar');
+          if (estado === 'por_fabricar' || estado === 'en_bordado') {
+            lineasFabricar.push(`• ${comp.productNombre} (${comp.genero || it.genero || 'Dama'}) - Talla: *${comp.tallaAsignada || 'M'}* [Fabricar]`);
+          } else if (estado === 'apartada') {
+            lineasEnTienda.push(`• ~${comp.productNombre} (${comp.genero || it.genero || 'Dama'}) - Talla ${comp.tallaAsignada || 'M'}~ (EN EXISTENCIA / TIENDA - NO COSER)`);
+          }
+        });
+      } else {
+        const estado = it.estado_prenda || (it.ped_apa_ent === 'A' ? 'apartada' : 'por_fabricar');
+        if (estado === 'por_fabricar' || estado === 'en_bordado') {
+          lineasFabricar.push(`• ${it.prenda || it.concepto} (${it.genero || 'Dama'}) - Talla: *${it.talla || 'M'}* [Fabricar]`);
+        } else if (estado === 'apartada') {
+          lineasEnTienda.push(`• ~${it.prenda || it.concepto} - Talla ${it.talla || 'M'}~ (EN TIENDA - NO COSER)`);
+        }
+      }
+    });
+
+    let msg = `🧵 *PEDIDO TALLER / COSTURERA - IMPERIA UNIFORMES*
+Nota: *#${folioStr}* - *${primerApellido}*
+${fechaEnt ? `📅 *${fechaEnt}*\n` : ''}
+*Prendas para confección:*
+${lineasFabricar.length > 0 ? lineasFabricar.join('\n') : '• Sin prendas pendientes de confección'}`;
+
+    if (lineasEnTienda.length > 0) {
+      msg += `\n\n*Prendas en existencia (omitir confección):*\n${lineasEnTienda.join('\n')}`;
+    }
+
+    msg += `\n\n_Generado automáticamente desde WebApp Capturista IA_`;
+    return msg;
   };
 
   const handleAddItem = () => {
@@ -1965,18 +2077,15 @@ export default function CapturistaApp() {
                                     {it.componentesDesglosados.map((comp, cIdx) => (
                                       <div 
                                         key={cIdx}
-                                        className="flex items-center space-x-2 bg-white/95 border border-indigo-200 rounded-lg px-2.5 py-1 shadow-2xs hover:border-indigo-300 transition"
+                                        className="flex items-center space-x-2 bg-white/95 border border-indigo-200 rounded-lg px-2.5 py-1.5 shadow-2xs hover:border-indigo-300 transition"
                                       >
                                         <span className="text-base select-none">
                                           {comp.rol === 'filipina' ? '🥼' : comp.rol === 'pantalon' ? '👖' : comp.rol === 'gorro' ? '🧢' : '🧵'}
                                         </span>
                                         <div className="flex flex-col">
-                                          <span className="text-[11px] font-bold text-slate-800 leading-tight">
-                                            {comp.productNombre}
-                                          </span>
-                                          <div className="flex items-center space-x-1.5 text-[10px] mt-0.5">
-                                            <span className="font-mono font-extrabold px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 border border-indigo-200">
-                                              Talla: {comp.tallaAsignada || 'S'}
+                                          <div className="flex items-center space-x-1.5">
+                                            <span className="text-[11px] font-bold text-slate-800 leading-tight">
+                                              {comp.productNombre}
                                             </span>
                                             {comp.genero && (
                                               <span className={`text-[9px] font-semibold px-1 rounded ${
@@ -1985,6 +2094,43 @@ export default function CapturistaApp() {
                                                 {comp.genero}
                                               </span>
                                             )}
+                                          </div>
+                                          <div className="flex items-center space-x-2 text-[10px] mt-1">
+                                            {/* Selector / Input de Talla Editable */}
+                                            <div className="flex items-center space-x-1 bg-indigo-50 border border-indigo-200 rounded px-1.5 py-0.5">
+                                              <span className="font-bold text-indigo-700 text-[10px]">Talla:</span>
+                                              {comp.rol === 'gorro' ? (
+                                                <span className="font-mono font-extrabold text-indigo-900 text-[10px]">Unitalla</span>
+                                              ) : (
+                                                <input 
+                                                  type="text"
+                                                  value={comp.tallaAsignada || 'M'}
+                                                  onChange={(e) => handleUpdateComponentTalla(idx, cIdx, e.target.value)}
+                                                  className="w-16 font-mono font-black text-center text-[10px] uppercase bg-white border border-indigo-300 rounded text-indigo-950 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                                                  title="Modificar talla de esta prenda para la costurera / almacén"
+                                                  data-testid={`taller-desktop-${idx}-${cIdx}-talla-input`}
+                                                />
+                                              )}
+                                            </div>
+
+                                            {/* Chip toggle de Estado Taller: P (Por coser) vs A (En Tienda) */}
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                const nextEstado: EstadoPrenda = (comp.estado_prenda || it.estado_prenda) === 'apartada' ? 'por_fabricar' : 'apartada';
+                                                handleUpdateComponentEstado(idx, cIdx, nextEstado);
+                                              }}
+                                              className={`px-1.5 py-0.5 rounded font-bold text-[9px] border transition flex items-center space-x-1 ${
+                                                (comp.estado_prenda || it.estado_prenda) === 'apartada'
+                                                  ? 'bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200'
+                                                  : 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
+                                              }`}
+                                              title={(comp.estado_prenda || it.estado_prenda) === 'apartada' ? 'Prenda ya en existencia en tienda (no coser)' : 'Prenda por confeccionar en taller'}
+                                              data-testid={`taller-desktop-${idx}-${cIdx}-estado-btn`}
+                                            >
+                                              <span>{(comp.estado_prenda || it.estado_prenda) === 'apartada' ? '🟢 En Tienda' : '🟡 Por Fabricar (P)'}</span>
+                                            </button>
+
                                             <span className="text-[9px] text-slate-400 font-mono">
                                               x{comp.cantidad || 1}
                                             </span>
@@ -2180,21 +2326,55 @@ export default function CapturistaApp() {
                               </div>
                               <div className="space-y-1 pt-0.5">
                                 {it.componentesDesglosados.map((comp, cIdx) => (
-                                  <div key={cIdx} className="flex items-center justify-between bg-white px-2 py-1.5 rounded-lg border border-indigo-100 text-xs shadow-2xs">
-                                    <div className="flex items-center space-x-1.5 overflow-hidden">
-                                      <span className="text-sm select-none">
-                                        {comp.rol === 'filipina' ? '🥼' : comp.rol === 'pantalon' ? '👖' : comp.rol === 'gorro' ? '🧢' : '🧵'}
-                                      </span>
-                                      <div className="flex flex-col truncate">
-                                        <span className="font-bold text-slate-800 text-[11px] truncate">{comp.productNombre}</span>
-                                        {comp.genero && (
-                                          <span className="text-[9px] text-slate-400">{comp.genero}</span>
+                                  <div key={cIdx} className="flex flex-col bg-white p-2 rounded-lg border border-indigo-100 text-xs shadow-2xs space-y-1.5">
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center space-x-1.5 overflow-hidden">
+                                        <span className="text-sm select-none">
+                                          {comp.rol === 'filipina' ? '🥼' : comp.rol === 'pantalon' ? '👖' : comp.rol === 'gorro' ? '🧢' : '🧵'}
+                                        </span>
+                                        <div className="flex flex-col truncate">
+                                          <span className="font-bold text-slate-800 text-[11px] truncate">{comp.productNombre}</span>
+                                          {comp.genero && (
+                                            <span className="text-[9px] text-slate-400">{comp.genero}</span>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <span className="text-[9px] text-slate-400 font-mono">x{comp.cantidad || 1}</span>
+                                    </div>
+
+                                    <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                                      <div className="flex items-center space-x-1 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200">
+                                        <span className="text-[10px] text-indigo-700 font-bold">Talla:</span>
+                                        {comp.rol === 'gorro' ? (
+                                          <span className="font-mono font-black text-[10px] text-indigo-900">Unitalla</span>
+                                        ) : (
+                                          <input 
+                                            type="text"
+                                            value={comp.tallaAsignada || 'M'}
+                                            onChange={(e) => handleUpdateComponentTalla(idx, cIdx, e.target.value)}
+                                            className="w-14 font-mono font-black text-center text-[10px] uppercase bg-white border border-indigo-300 rounded p-0.5 text-indigo-950 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                                            title="Modificar talla de esta prenda"
+                                            data-testid={`taller-mobile-${idx}-${cIdx}-talla-input`}
+                                          />
                                         )}
                                       </div>
+
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const nextEstado: EstadoPrenda = (comp.estado_prenda || it.estado_prenda) === 'apartada' ? 'por_fabricar' : 'apartada';
+                                          handleUpdateComponentEstado(idx, cIdx, nextEstado);
+                                        }}
+                                        className={`text-[9px] px-2 py-0.5 rounded font-bold border transition ${
+                                          (comp.estado_prenda || it.estado_prenda) === 'apartada'
+                                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                                            : 'bg-amber-100 text-amber-800 border-amber-300'
+                                        }`}
+                                        data-testid={`taller-mobile-${idx}-${cIdx}-estado-btn`}
+                                      >
+                                        {(comp.estado_prenda || it.estado_prenda) === 'apartada' ? '🟢 En Tienda' : '🟡 Por Coser (P)'}
+                                      </button>
                                     </div>
-                                    <span className="font-mono font-extrabold text-[10px] bg-indigo-100 text-indigo-900 px-1.5 py-0.5 rounded flex-shrink-0 ml-1 border border-indigo-200">
-                                      Talla: {comp.tallaAsignada || 'S'}
-                                    </span>
                                   </div>
                                 ))}
                               </div>
@@ -2326,14 +2506,25 @@ export default function CapturistaApp() {
 
                   {/* BOTONES DE ACCIÓN PRINCIPALES */}
                   <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                    <div className="flex space-x-2">
+                    <div className="flex flex-wrap gap-2">
                       <button 
                         onClick={handleExportCSV}
                         className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-xs font-semibold flex items-center space-x-1 transition text-slate-700"
                         title="Descargar tabla en formato Excel / CSV"
+                        data-testid="mesa-exportar-csv-btn"
                       >
                         <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
                         <span>Exportar CSV</span>
+                      </button>
+
+                      <button
+                        onClick={() => setShowCostureraModal(true)}
+                        className="px-3 py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-xs font-bold flex items-center space-x-1.5 transition text-emerald-800 shadow-xs"
+                        title="Generar y copiar pedido de confección para la costurera por WhatsApp"
+                        data-testid="mesa-costurera-whatsapp-btn"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>WhatsApp Costurera</span>
                       </button>
                     </div>
 
@@ -2753,6 +2944,111 @@ export default function CapturistaApp() {
               >
                 Guardar y Cerrar
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: GENERADOR DE PEDIDO WHATSAPP PARA COSTURERA / TALLER */}
+      {showCostureraModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-5 space-y-4 shadow-2xl border border-slate-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center space-x-2">
+                <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700">
+                  <MessageSquare className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">Pedido para Costurera / Taller</h3>
+                  <p className="text-[11px] text-slate-500">Nota #{currentNote.folio} • {currentNote.cliente || 'Cliente Mostrador'}</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowCostureraModal(false)}
+                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition"
+                data-testid="costurera-modal-close-btn"
+                aria-label="Cerrar modal de WhatsApp"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Selector de Formato */}
+            <div className="flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
+              <span className="font-bold text-slate-700 text-[11px]">Formato:</span>
+              <div className="flex space-x-1">
+                <button
+                  type="button"
+                  onClick={() => setCostureraFormat('detallado')}
+                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition ${
+                    costureraFormat === 'detallado' 
+                      ? 'bg-emerald-600 text-white shadow-xs' 
+                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                  }`}
+                  data-testid="costurera-format-detallado-btn"
+                >
+                  ✂️ Desglosado por Prenda
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCostureraFormat('compacto')}
+                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition ${
+                    costureraFormat === 'compacto' 
+                      ? 'bg-emerald-600 text-white shadow-xs' 
+                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                  }`}
+                  data-testid="costurera-format-compacto-btn"
+                >
+                  📋 Formato Compacto
+                </button>
+              </div>
+            </div>
+
+            {/* Vista previa del mensaje */}
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-slate-500 uppercase">Mensaje para WhatsApp:</label>
+              <textarea
+                readOnly
+                rows={9}
+                value={generateCostureraWhatsAppText(currentNote, costureraFormat)}
+                className="w-full font-mono text-xs p-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-800 leading-relaxed focus:outline-none"
+              />
+            </div>
+
+            {/* Botones de acción */}
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+              <span className="text-[11px] text-slate-400">
+                {copiedCostureraMsg ? '✓ Mensaje copiado al portapapeles' : 'Listo para enviar'}
+              </span>
+              <div className="flex space-x-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const text = generateCostureraWhatsAppText(currentNote, costureraFormat);
+                    navigator.clipboard.writeText(text);
+                    setCopiedCostureraMsg(true);
+                    setTimeout(() => setCopiedCostureraMsg(false), 2500);
+                  }}
+                  className="px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-700 flex items-center space-x-1.5 transition"
+                  data-testid="costurera-copy-msg-btn"
+                >
+                  {copiedCostureraMsg ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-600" />}
+                  <span>{copiedCostureraMsg ? 'Copiado!' : 'Copiar'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const text = generateCostureraWhatsAppText(currentNote, costureraFormat);
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                  }}
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center space-x-1.5 transition shadow"
+                  data-testid="costurera-open-whatsapp-btn"
+                >
+                  <MessageSquare className="w-4 h-4 text-white" />
+                  <span>Abrir en WhatsApp</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

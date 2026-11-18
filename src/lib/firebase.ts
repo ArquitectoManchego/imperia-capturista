@@ -287,39 +287,81 @@ function generateDeterministicBarcode(seedStr: string): string {
       targetPedidoId = created.id;
     }
 
-    // Sincronizar ordenes_taller por prenda
+    // Sincronizar ordenes_taller por prenda (desglosando piezas individuales si es un conjunto/kit)
     for (let idx = 0; idx < itemsFormatted.length; idx++) {
       const it = itemsFormatted[idx];
-      const tallerId = `${targetPedidoId}_${it.itemId}`.replace(/[^a-zA-Z0-9_\-]/g, '_');
-      const tallerRef = doc(db, "ordenes_taller", tallerId);
-      if (it.estado_prenda === 'por_fabricar' || it.estado_prenda === 'en_bordado') {
-        await setDoc(tallerRef, {
-          id: tallerId,
-          pedidoId: targetPedidoId,
-          itemId: it.itemId,
-          numeroNota: folioStr,
-          folioUnico: `CAP-${folioStr}`,
-          serie: 'CAPTURISTA',
-          clienteId,
-          clienteNombre: clientName || "Cliente Mostrador",
-          productId: it.productId,
-          sku: it.sku,
-          codigo_producto: it.codigo_producto,
-          codigo_barras: it.codigo_barras,
-          nombre_producto: it.nombre,
-          tipo_prenda: it.tipo_prenda,
-          modelo: it.modelo,
-          genero: it.genero,
-          talla: it.talla,
-          tipo_tela: it.tipo_tela,
-          color_tela: it.color_tela,
-          cantidad: it.cantidad,
-          estado_prenda: it.estado_prenda,
-          fechaEntregaTexto: orderData.fecha_entrega || '',
-          updatedAt: serverTimestamp()
-        }, { merge: true });
+
+      if (it.esConjunto && it.desglose_componentes && it.desglose_componentes.length > 0) {
+        // Para taller y costurera: desglose de prendas individuales (Filipina, Pantalón, Gorro)
+        for (let cIdx = 0; cIdx < it.desglose_componentes.length; cIdx++) {
+          const comp = it.desglose_componentes[cIdx];
+          const compEstado = comp.estado_prenda || it.estado_prenda;
+          const tallerCompId = `${targetPedidoId}_${it.itemId}_${comp.rol || cIdx}`.replace(/[^a-zA-Z0-9_\-]/g, '_');
+          const tallerRef = doc(db, "ordenes_taller", tallerCompId);
+
+          if (compEstado === 'por_fabricar' || compEstado === 'en_bordado') {
+            await setDoc(tallerRef, {
+              id: tallerCompId,
+              pedidoId: targetPedidoId,
+              itemId: `${it.itemId}_${comp.rol || cIdx}`,
+              conjuntoOrigen: it.nombre,
+              numeroNota: folioStr,
+              folioUnico: `CAP-${folioStr}`,
+              serie: 'CAPTURISTA',
+              clienteId,
+              clienteNombre: clientName || "Cliente Mostrador",
+              productId: comp.productId || it.productId,
+              sku: it.sku,
+              codigo_producto: it.codigo_producto,
+              codigo_barras: it.codigo_barras,
+              nombre_producto: comp.productNombre || it.nombre,
+              tipo_prenda: comp.prenda || it.tipo_prenda,
+              modelo: it.modelo,
+              genero: comp.genero || it.genero,
+              talla: comp.tallaAsignada || 'M',
+              tipo_tela: it.tipo_tela,
+              color_tela: it.color_tela,
+              cantidad: comp.cantidad || it.cantidad,
+              estado_prenda: compEstado,
+              fechaEntregaTexto: orderData.fecha_entrega || '',
+              updatedAt: serverTimestamp()
+            }, { merge: true });
+          } else {
+            await deleteDoc(tallerRef).catch(() => {});
+          }
+        }
       } else {
-        await deleteDoc(tallerRef).catch(() => {});
+        const tallerId = `${targetPedidoId}_${it.itemId}`.replace(/[^a-zA-Z0-9_\-]/g, '_');
+        const tallerRef = doc(db, "ordenes_taller", tallerId);
+        if (it.estado_prenda === 'por_fabricar' || it.estado_prenda === 'en_bordado') {
+          await setDoc(tallerRef, {
+            id: tallerId,
+            pedidoId: targetPedidoId,
+            itemId: it.itemId,
+            numeroNota: folioStr,
+            folioUnico: `CAP-${folioStr}`,
+            serie: 'CAPTURISTA',
+            clienteId,
+            clienteNombre: clientName || "Cliente Mostrador",
+            productId: it.productId,
+            sku: it.sku,
+            codigo_producto: it.codigo_producto,
+            codigo_barras: it.codigo_barras,
+            nombre_producto: it.nombre,
+            tipo_prenda: it.tipo_prenda,
+            modelo: it.modelo,
+            genero: it.genero,
+            talla: it.talla,
+            tipo_tela: it.tipo_tela,
+            color_tela: it.color_tela,
+            cantidad: it.cantidad,
+            estado_prenda: it.estado_prenda,
+            fechaEntregaTexto: orderData.fecha_entrega || '',
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+        } else {
+          await deleteDoc(tallerRef).catch(() => {});
+        }
       }
     }
 
