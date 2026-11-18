@@ -127,33 +127,65 @@ export async function syncOrderToSoftwareImperia(orderData: any): Promise<SyncRe
         matchedProd = existingProducts.find(p => normStr(p.nombre) === normConcept);
       }
 
+function generateDeterministicBarcode(seedStr: string): string {
+  let hash = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    hash = (hash * 31 + seedStr.charCodeAt(i)) & 0xffffffff;
+  }
+  const positive = Math.abs(hash) % 10000;
+  const code12 = `20000100${String(positive).padStart(4, '0')}`;
+  let sum = 0;
+  for (let i = 0; i < 12; i++) {
+    const digit = parseInt(code12[i], 10);
+    sum += (i % 2 === 0) ? digit : digit * 3;
+  }
+  const check = (10 - (sum % 10)) % 10;
+  return `${code12}${check}`;
+}
+
       if (it.matchAction === 'create_new' && !matchedProd) {
         try {
           const newName = (it.concepto || 'Nuevo Producto').trim();
-          const skuBase = `PRAGO-${newName.slice(0, 8).toUpperCase().replace(/[^A-Z0-9]/g, '')}`;
-          const prenda = (it.prenda || 'PRENDA').toUpperCase();
+          const isConjunto = it.esConjunto || newName.toUpperCase().includes('CONJUNTO') || (it.prenda && it.prenda.toUpperCase().includes('CONJUNTO'));
+          const prenda = (it.prenda || (isConjunto ? 'CONJUNTO' : 'PRENDA')).toUpperCase();
+          const cleanName = newName.toUpperCase().replace(/[^A-Z0-9]/g, '');
+          const skuBase = isConjunto ? `CONJ-${cleanName.slice(0, 10)}` : `PRAGO-${cleanName.slice(0, 10)}`;
+          const codProd = `PRG-${skuBase.slice(0, 10)}`;
+          const barcode = generateDeterministicBarcode(newName + Date.now().toString());
+          const tallasStd = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '28', '30', '32', '34', '36', '38', '40', '42', '44'];
+          if (it.talla && !tallasStd.includes(it.talla)) {
+            tallasStd.push(it.talla);
+          }
+
           const newProductDoc = {
-            codigo_producto: `PRG-${skuBase.slice(0, 8)}`,
+            codigo_producto: codProd,
             sku_base: skuBase,
             sku: skuBase,
-            codigo_barras: '',
-            tipo_producto: 'PRENDA_SIMPLE',
+            codigo_barras: barcode,
+            barcode: barcode,
+            tipo_producto: isConjunto ? 'CONJUNTO' : 'PRENDA_SIMPLE',
             nombre: newName,
             nombre_producto: newName,
             prenda,
             tipo_prenda: prenda,
-            modelo: it.corte || 'Estándar',
-            variante: `Universal • Unisex`,
+            modelo: it.corte || (isConjunto ? 'Conjunto Clínico' : 'Estándar'),
+            variante: `${it.tipo_tela || 'Tergal'} • ${it.color_tela || 'Institucional'} • ${it.genero || 'Unisex'}`,
             genero: it.genero || 'Unisex',
-            tallas_disponibles: [it.talla || 'M'],
+            tallas_disponibles: tallasStd,
             tipo_tela: it.tipo_tela || 'Tergal',
-            color_tela: it.color_tela || 'Institucional',
+            color_tela: it.color_tela || 'Blanco',
+            telas_disponibles: [it.tipo_tela || 'Tergal'],
+            colores_disponibles: [it.color_tela || 'Blanco'],
             precio: Number(it.p_unit) || 0,
-            ramo: 'GENERAL',
-            escuela: '',
+            ramo: 'MEDICINA',
+            escuela: newName.toUpperCase().includes('UO') ? 'UO' : (newName.toUpperCase().includes('UV') ? 'UV' : ''),
             descripcion: `Concepto generado desde Capturista IA (Nota #${orderData.folio})`,
             marca: 'PRAGO',
+            fabricante: 'PRAGO',
+            proveedor: 'PRAGO',
             esPropio: true,
+            activo: true,
+            modo_fabricacion: 'HIBRIDO',
             origen: 'Capturista IA WebApp',
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()

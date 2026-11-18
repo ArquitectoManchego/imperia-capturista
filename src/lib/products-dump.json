@@ -8,73 +8,340 @@
     "sku_base": "CONJ-COM-UV-DAM",
     "ramo": "MEDICINA",
     "escuela": "CVC",
+    "esPropio": true,
     "descripcion": "Kit comunitario UV enfermería dama: Filipina comunitaria y Pantalón",
     "componentes": [
       {
-        "productNombre": "FILIPINA COMUNITARIA UV ENFRA DAMA",
-        "tallaClave": "talla_filipina",
-        "genero": "Dama",
+        "rol": "filipina",
         "prenda": "FILIPINA",
+        "genero": "Dama",
         "productId": "dm0LCOgRUvYbloRwDdQ4",
-        "rol": "filipina"
+        "productNombre": "FILIPINA COMUNITARIA UV ENFRA DAMA",
+        "tallaClave": "talla_filipina"
       },
       {
-        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "rol": "pantalon",
         "prenda": "PANTALON",
-        "tallaClave": "talla_pantalon",
-        "productNombre": "PANTALON MIXTO",
         "genero": "Unisex",
-        "rol": "pantalon"
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "productNombre": "PANTALON MIXTO",
+        "tallaClave": "talla_pantalon"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco / Azul Marino • Dama",
+    "costo": 320,
+    "nombre_producto": "CONJUNTO COMUNITARIO UV ENFRA DAMA",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Comunitario UV",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 95000000,
+      "_seconds": 1794010268
+    },
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco / Azul Marino"
+    ],
+    "genero": "Dama",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-COM-UVD",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Blanco / Azul Marino",
+    "sku": "CONJ-COM-UV-DAM",
+    "barcode": "2000010000012",
+    "codigo_barras": "2000010000012",
+    "updatedAt": "2026-11-18T20:08:34.032Z",
+    "activo": true
+  },
+  {
+    "id": "0SaEqM1r9LL7QOI2RyYV",
+    "nombre": "CONJUNTO CLINICO UO ENFRA CABALLERO",
+    "nombre_producto": "CONJUNTO CLINICO UO ENFRA CABALLERO",
+    "prenda": "CONJUNTO",
+    "tipo_prenda": "CONJUNTO",
+    "genero": "Caballero",
+    "tipo_tela": "Tergal",
+    "color_tela": "Blanco",
+    "precio": 765,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "origen": "Capturista IA WebApp",
+    "createdAt": "2026-11-18T22:05:16.718Z",
+    "descripcion": "Kit clínico UO enfermería caballero de 2 piezas: Filipina clínica UO y Pantalón blanco mixto",
+    "sku_base": "CONJ-CLIN-UO-CAB",
+    "modo_fabricacion": "HIBRIDO",
+    "ramo": "MEDICINA",
+    "variante": "Tergal • Blanco • Caballero",
+    "costo": 310,
+    "escuela": "UO",
+    "modelo": "Conjunto Clínico UO",
+    "componentes": [
+      {
+        "rol": "filipina",
+        "prenda": "FILIPINA",
+        "genero": "Caballero",
+        "productNombre": "FILIPINA CLINICA UO ENFRA CABALLERO",
+        "tallaClave": "talla_filipina"
+      },
+      {
+        "rol": "pantalon",
+        "prenda": "PANTALON",
+        "genero": "Unisex",
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "productNombre": "PANTALON MIXTO",
+        "tallaClave": "talla_pantalon"
+      }
+    ],
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "tipo_producto": "CONJUNTO",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44",
+      "F:34 P:32"
+    ],
+    "codigo_producto": "PRG-CJ-CLI-UOC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "sku": "CONJ-CLIN-UO-CAB",
+    "barcode": "2000010004768",
+    "codigo_barras": "2000010004768",
+    "activo": true,
+    "updatedAt": "2026-11-18T22:14:34.589Z"
   },
   {
     "id": "5Y7lI6CaQwxnLuFn9w7W",
     "nombre": "FILIPINA CLINICA UV ENFRA DAMA",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 425,
-    "sku_base": "FILCLINUVENFRADAM",
     "ramo": "MEDICINA",
-    "escuela": "CVC",
+    "prenda": "FILIPINA",
+    "sku_base": "FILCLINUVENFRADAM",
     "descripcion": "",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/zCEYceb.jpeg",
+    "precio": 425,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Dama",
+    "costo": 165,
+    "nombre_producto": "FILIPINA CLINICA UV ENFRA DAMA",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Clínica UV",
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "30",
+      "38",
+      "44",
+      "40",
+      "32",
+      "34",
+      "26",
+      "28",
+      "36",
+      "42",
+      "24"
+    ],
+    "codigo_producto": "PRG-FL-CLI-UVD",
+    "color_tela": "Blanco",
+    "sku": "FILCLINUVENFRADAM",
+    "barcode": "2000010000029",
+    "codigo_barras": "2000010000029",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "5h8pM1qeVkL0lFyI8w2P",
     "nombre": "PLAYERA DIARIO CVC",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 379,
-    "sku_base": "POLOCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "sku_base": "POLOCVC",
     "descripcion": "PLAYERA POLO DE UNIFORME ESCOLAR PARA EL COLEGIO CVC",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/CYvmTGh.jpeg",
+    "precio": 379,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Piqué Algodón/Poliéster",
+    "variante": "Piqué Algodón/Poliéster • Blanco • Unisex",
+    "costo": 145,
+    "nombre_producto": "PLAYERA DIARIO CVC",
+    "tipo_prenda": "PLAYERA_POLO",
+    "modelo": "Diario CVC",
+    "telas_disponibles": [
+      "Piqué Algodón/Poliéster"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "10",
+      "12",
+      "8",
+      "14",
+      "16",
+      "6",
+      "4",
+      "2",
+      "18"
+    ],
+    "codigo_producto": "PRG-CV-POLO",
+    "color_tela": "Blanco",
+    "sku": "POLOCVC",
+    "prenda": "PLAYERA_POLO",
+    "barcode": "2000010000142",
+    "codigo_barras": "2000010000142",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "6h3Dk3yIth1LD5awyfDG",
     "nombre": "FILIPINA REYNA AMPARO DEL CASTILLO",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 425,
-    "sku_base": "FILREYAMPC",
     "ramo": "MEDICINA",
-    "escuela": "",
+    "prenda": "FILIPINA",
+    "sku_base": "FILREYAMPC",
     "descripcion": "",
-    "componentes": []
+    "imagenUrl": "https://i.imgur.com/qKbfuGk.jpeg",
+    "precio": 425,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Dama",
+    "costo": 175,
+    "escuela": "AMPARO DEL CASTILLO",
+    "nombre_producto": "FILIPINA REYNA AMPARO DEL CASTILLO",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Reyna Amparo del Castillo",
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "234",
+      "42",
+      "40",
+      "44",
+      "36",
+      "26",
+      "28",
+      "24",
+      "30",
+      "38"
+    ],
+    "codigo_producto": "PRG-FL-REY-AMP",
+    "color_tela": "Blanco",
+    "sku": "FILREYAMPC",
+    "barcode": "2000010000241",
+    "codigo_barras": "2000010000241",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "7zLe6KaA8uJKNlZ2Rwu3",
     "nombre": "FILIPINA QUIRURGICA UV ENFRA CABALLERO",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 525,
-    "sku_base": "FILQXUVENFRACAB",
     "ramo": "MEDICINA",
-    "escuela": "CVC",
+    "prenda": "FILIPINA",
+    "sku_base": "FILQXUVENFRACAB",
     "descripcion": "",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/gRLwW2J.jpeg",
+    "precio": 525,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Quirúrgico • Caballero",
+    "costo": 195,
+    "nombre_producto": "FILIPINA QUIRURGICA UV ENFRA CABALLERO",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Quirúrgica UV",
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Quirúrgico"
+    ],
+    "genero": "Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "XL",
+      "XS",
+      "XXXL",
+      "M",
+      "S",
+      "L",
+      "XXL",
+      "4XL"
+    ],
+    "codigo_producto": "PRG-FL-QX-UVC",
+    "color_tela": "Azul Quirúrgico",
+    "sku": "FILQXUVENFRACAB",
+    "barcode": "2000010000357",
+    "codigo_barras": "2000010000357",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "8zt5EcfKl6bYAy4cYaHX",
@@ -85,109 +352,485 @@
     "sku_base": "CONJ-COM-UV-CAB",
     "ramo": "MEDICINA",
     "escuela": "CVC",
+    "esPropio": true,
     "descripcion": "Kit comunitario UV enfermería caballero: Filipina comunitaria y Pantalón casual marino",
     "componentes": [
       {
-        "productNombre": "FILIPINA COMUNITARIA UV ENFRA CABALLERO",
-        "productId": "sUR720oRwUEVVr4FEIut",
         "rol": "filipina",
         "prenda": "FILIPINA",
         "genero": "Caballero",
+        "productId": "sUR720oRwUEVVr4FEIut",
+        "productNombre": "FILIPINA COMUNITARIA UV ENFRA CABALLERO",
         "tallaClave": "talla_filipina"
       },
       {
-        "productNombre": "PANTALON CASUAL CABALLERO",
-        "prenda": "PANTALON",
-        "productId": "vdiEzOOubqsaeo7OGeE1",
-        "genero": "Caballero",
         "rol": "pantalon",
+        "prenda": "PANTALON",
+        "genero": "Caballero",
+        "productId": "vdiEzOOubqsaeo7OGeE1",
+        "productNombre": "PANTALON CASUAL CABALLERO",
         "tallaClave": "talla_pantalon"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco / Azul Marino • Caballero",
+    "costo": 340,
+    "nombre_producto": "CONJUNTO COMUNITARIO UV ENFRA CABALLERO",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Comunitario UV",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 939000000,
+      "_seconds": 1794010267
+    },
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco / Azul Marino"
+    ],
+    "genero": "Caballero",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-COM-UVC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Blanco / Azul Marino",
+    "sku": "CONJ-COM-UV-CAB",
+    "barcode": "2000010000449",
+    "codigo_barras": "2000010000449",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "B49JGRLBNf4a6Oc625k3",
-    "nombre": "Mandil de Arte Manga Larga",
-    "prenda": "MANDIL",
-    "tipo_producto": "PRODUCTO",
-    "precio": 0,
-    "sku_base": "MANLAR",
     "ramo": "ESCOLAR",
-    "escuela": "NIC",
+    "prenda": "MANDIL",
     "descripcion": "",
-    "componentes": []
+    "escuela": "NIC",
+    "nombre": "Mandil de Arte Manga Larga",
+    "sku_base": "MANLAR",
+    "imagenUrl": "https://i.imgur.com/EOuDWLW.jpeg",
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Antifluidos / Tergal",
+    "variante": "Antifluidos / Tergal • Multicolor NIC • Unisex",
+    "costo": 110,
+    "nombre_producto": "Mandil de Arte Manga Larga",
+    "tipo_prenda": "MANDIL",
+    "modelo": "Arte NIC Manga Larga",
+    "precio": 280,
+    "telas_disponibles": [
+      "Antifluidos / Tergal"
+    ],
+    "colores_disponibles": [
+      "Multicolor NIC"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "XXL",
+      "M",
+      "L",
+      "S",
+      "XL",
+      "XS",
+      "XXXL"
+    ],
+    "codigo_producto": "PRG-NIC-MAL",
+    "color_tela": "Multicolor NIC",
+    "sku": "MANLAR",
+    "barcode": "2000010000456",
+    "codigo_barras": "2000010000456",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "B6TT7WGmQihTfq2mJZ4o",
-    "nombre": "Mandil de Arte",
-    "prenda": "MANDIL",
-    "tipo_producto": "PRODUCTO",
-    "precio": 0,
-    "sku_base": "MAN",
     "ramo": "ESCOLAR",
-    "escuela": "",
+    "prenda": "MANDIL",
     "descripcion": "",
-    "componentes": []
+    "nombre": "Mandil de Arte",
+    "sku_base": "MAN",
+    "imagenUrl": "https://i.imgur.com/xc22cP3.jpeg",
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Antifluidos / Tergal",
+    "variante": "Antifluidos / Tergal • Multicolor NIC • Unisex",
+    "costo": 95,
+    "escuela": "NIC",
+    "nombre_producto": "Mandil de Arte",
+    "tipo_prenda": "MANDIL",
+    "modelo": "Arte NIC Sin Mangas",
+    "precio": 250,
+    "telas_disponibles": [
+      "Antifluidos / Tergal"
+    ],
+    "colores_disponibles": [
+      "Multicolor NIC"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "XXL",
+      "L",
+      "XXXL",
+      "XL",
+      "M",
+      "S",
+      "XS"
+    ],
+    "codigo_producto": "PRG-NIC-MAN",
+    "color_tela": "Multicolor NIC",
+    "sku": "MAN",
+    "barcode": "2000010000531",
+    "codigo_barras": "2000010000531",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
+  },
+  {
+    "id": "CG1kGFP0Hjls9yntGySO",
+    "nombre": "Cofia lisa M",
+    "precio": 180,
+    "sku_base": "IMP-COFIALI",
+    "ramo": "GENERAL",
+    "escuela": "",
+    "descripcion": "Concepto generado desde Capturista IA (Nota #7902)",
+    "esPropio": true,
+    "origen": "Capturista IA WebApp",
+    "variante": "Tergal / Lino • Blanco • Dama",
+    "nombre_producto": "Cofia lisa M",
+    "tipo_prenda": "COFIA",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 282000000,
+      "_seconds": 1795019750
+    },
+    "telas_disponibles": [
+      "Tergal / Lino"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "IMP-COFIALI",
+    "barcode": "2000010000616",
+    "codigo_barras": "2000010000616",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Tergal / Lino",
+    "costo": 65,
+    "modelo": "Cofia Lisa Reglamentaria",
+    "tipo_producto": "ACCESORIO",
+    "tallas_disponibles": [],
+    "codigo_producto": "PRG-COF-LISA",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "COFIA",
+    "activo": true
   },
   {
     "id": "CeXBOWV7uKVT4Wmy6o4i",
     "nombre": "PANTALON QUIRURGICO AMPARO DEL CASTILLO LIC",
-    "prenda": "PANTALON",
-    "tipo_producto": "PRODUCTO",
-    "precio": 525,
-    "sku_base": "PANTQXAMPCLIC",
     "ramo": "MEDICINA",
-    "escuela": "",
+    "prenda": "PANTALON",
+    "sku_base": "PANTQXAMPCLIC",
     "descripcion": "",
-    "componentes": []
+    "imagenUrl": "https://i.imgur.com/TZ8YooA.jpeg",
+    "precio": 525,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Marino • Unisex",
+    "costo": 185,
+    "escuela": "AMPARO DEL CASTILLO",
+    "nombre_producto": "PANTALON QUIRURGICO AMPARO DEL CASTILLO LIC",
+    "tipo_prenda": "PANTALON",
+    "modelo": "Quirúrgico Amparo Lic",
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "XL",
+      "L",
+      "XXS",
+      "M",
+      "XXXL",
+      "S",
+      "XXL",
+      "4XL",
+      "XS"
+    ],
+    "codigo_producto": "PRG-PT-QX-AMP",
+    "color_tela": "Azul Marino",
+    "sku": "PANTQXAMPCLIC",
+    "barcode": "2000010000623",
+    "codigo_barras": "2000010000623",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "Chk7s0TsnM3gpUX2Yul4",
     "nombre": "PANTS CVC",
-    "prenda": "PANTALON",
-    "tipo_producto": "PRODUCTO",
-    "precio": 395,
-    "sku_base": "PANTCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "sku_base": "PANTCVC",
     "descripcion": "PANTALON ROMPEVIENTOS COLEGIO CVC",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/RyisHyi.jpeg",
+    "precio": 395,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Rompevientos / Microfibra",
+    "variante": "Rompevientos / Microfibra • Azul Marino • Unisex",
+    "costo": 155,
+    "nombre_producto": "PANTS CVC",
+    "tipo_prenda": "PANTS",
+    "modelo": "Pants CVC",
+    "telas_disponibles": [
+      "Rompevientos / Microfibra"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "12",
+      "10",
+      "8",
+      "6",
+      "14",
+      "18",
+      "16",
+      "4",
+      "2"
+    ],
+    "codigo_producto": "PRG-CV-PANT",
+    "color_tela": "Azul Marino",
+    "sku": "PANTCVC",
+    "prenda": "PANTS",
+    "barcode": "2000010000722",
+    "codigo_barras": "2000010000722",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
   },
   {
     "id": "G9xRUeZO5HMHESnDRVha",
     "nombre": "PLAYERA DEPORTES CVC",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 290,
-    "sku_base": "PLADEPCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "prenda": "PLAYERA",
+    "sku_base": "PLADEPCVC",
     "descripcion": "PLAYERA DE DEPORTES DEL COLEGIO CVC",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/UVxecTJ.jpeg",
+    "precio": 290,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Microfibra Deportiva",
+    "variante": "Microfibra Deportiva • Blanco / Verde • Unisex",
+    "costo": 110,
+    "nombre_producto": "PLAYERA DEPORTES CVC",
+    "tipo_prenda": "PLAYERA",
+    "modelo": "Deportes CVC",
+    "telas_disponibles": [
+      "Microfibra Deportiva"
+    ],
+    "colores_disponibles": [
+      "Blanco / Verde"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "6",
+      "8",
+      "4",
+      "18",
+      "10",
+      "16",
+      "2",
+      "12",
+      "14"
+    ],
+    "codigo_producto": "PRG-CV-PDEP",
+    "color_tela": "Blanco / Verde",
+    "sku": "PLADEPCVC",
+    "barcode": "2000010000821",
+    "codigo_barras": "2000010000821",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "activo": true
+  },
+  {
+    "id": "GvYgoLyGXC8SKUX84Gua",
+    "nombre": "Kit 3 bordados UO enfermeria",
+    "precio": 150,
+    "sku_base": "IMP-KIT3BO",
+    "ramo": "GENERAL",
+    "escuela": "",
+    "descripcion": "Concepto generado desde Capturista IA (Nota #7931)",
+    "esPropio": true,
+    "origen": "Capturista IA WebApp",
+    "variante": "N/A • Institucional • Unisex",
+    "nombre_producto": "Kit 3 bordados UO enfermeria",
+    "tipo_prenda": "SERVICIO",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 186000000,
+      "_seconds": 1795019622
+    },
+    "telas_disponibles": [],
+    "colores_disponibles": [
+      "Institucional"
+    ],
+    "genero": "Unisex",
+    "color_tela": "Institucional",
+    "sku": "IMP-KIT3BO",
+    "barcode": "2000010000920",
+    "codigo_barras": "2000010000920",
+    "updatedAt": "2026-11-18T20:08:34.033Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "N/A",
+    "costo": 45,
+    "modelo": "Kit 3 Bordados UO Enfermería",
+    "tipo_producto": "SERVICIO",
+    "tallas_disponibles": [],
+    "codigo_producto": "PRG-SRV-BORD3",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "SERVICIO",
+    "activo": true
   },
   {
     "id": "KdyTV3WlXOHUYwbNu4tj",
     "nombre": "SHORT DEPORTES CVC",
-    "prenda": "SHORT",
-    "tipo_producto": "PRODUCTO",
-    "precio": 249,
-    "sku_base": "SHORDEPCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "prenda": "SHORT",
+    "sku_base": "SHORDEPCVC",
     "descripcion": "SHORT DE DEPORTES DEL COLEGIO CVC",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/HUsMnhO.jpeg",
+    "precio": 249,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Microfibra Deportiva",
+    "variante": "Microfibra Deportiva • Azul Marino • Unisex",
+    "costo": 95,
+    "nombre_producto": "SHORT DEPORTES CVC",
+    "tipo_prenda": "SHORT",
+    "modelo": "Short Deportes CVC",
+    "telas_disponibles": [
+      "Microfibra Deportiva"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "2",
+      "14",
+      "6",
+      "10",
+      "4",
+      "18",
+      "8",
+      "16",
+      "12"
+    ],
+    "codigo_producto": "PRG-CV-SHDE",
+    "color_tela": "Azul Marino",
+    "sku": "SHORDEPCVC",
+    "barcode": "2000010000937",
+    "codigo_barras": "2000010000937",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "M7Iust0snw3w5snAJP9K",
     "nombre": "FILIPINA CLINICA UV ENFRA CABALLERO",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 425,
-    "sku_base": "FILCLINUVENFRACAB",
     "ramo": "MEDICINA",
-    "escuela": "CVC",
+    "prenda": "FILIPINA",
+    "sku_base": "FILCLINUVENFRACAB",
     "descripcion": "",
-    "componentes": []
+    "escuela": "CVC",
+    "precio": 425,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Caballero",
+    "costo": 165,
+    "nombre_producto": "FILIPINA CLINICA UV ENFRA CABALLERO",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Clínica UV",
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "38",
+      "36",
+      "28",
+      "30",
+      "44",
+      "34",
+      "32",
+      "40",
+      "42"
+    ],
+    "codigo_producto": "PRG-FL-CLI-UVC",
+    "color_tela": "Blanco",
+    "sku": "FILCLINUVENFRACAB",
+    "barcode": "2000010001033",
+    "codigo_barras": "2000010001033",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "PnxqZM3NPgKCfL6L53K8",
@@ -198,33 +841,80 @@
     "sku_base": "CONJ-QX-UV-DAM",
     "ramo": "MEDICINA",
     "escuela": "CVC",
+    "esPropio": true,
     "descripcion": "Kit quirúrgico UV enfermería dama de 3 piezas: Filipina, Pantalón y Gorro",
     "componentes": [
       {
-        "prenda": "FILIPINA",
-        "productNombre": "FILIPINA QUIRURGICA UV ENFRA DAMA",
         "rol": "filipina",
+        "prenda": "FILIPINA",
+        "genero": "Dama",
         "productId": "gjbuz1MnmCgsJJqUmD0W",
-        "tallaClave": "talla_filipina",
-        "genero": "Dama"
+        "productNombre": "FILIPINA QUIRURGICA UV ENFRA DAMA",
+        "tallaClave": "talla_filipina"
       },
       {
-        "genero": "Unisex",
         "rol": "pantalon",
-        "productNombre": "PANTALON QUIRURGICO UV ENFRA",
-        "productId": "lARbAaGsOFaskYWY7xT1",
         "prenda": "PANTALON",
+        "genero": "Unisex",
+        "productId": "lARbAaGsOFaskYWY7xT1",
+        "productNombre": "PANTALON QUIRURGICO UV ENFRA",
         "tallaClave": "talla_pantalon"
       },
       {
         "rol": "gorro",
-        "productId": "pmq3FhPxqocMmI0z4prn",
+        "prenda": "GORRO",
         "genero": "Unisex",
+        "productId": "pmq3FhPxqocMmI0z4prn",
         "productNombre": "GORRO QUIRURGICO",
-        "tallaClave": "unitalla",
-        "prenda": "GORRO"
+        "tallaClave": "unitalla"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Quirúrgico • Dama",
+    "costo": 350,
+    "nombre_producto": "CONJUNTO QUIRURGICO UV ENFRA DAMA",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Quirúrgico UV",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 174000000,
+      "_seconds": 1794010267
+    },
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Quirúrgico"
+    ],
+    "genero": "Dama",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-QX-UVD",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Azul Quirúrgico",
+    "sku": "CONJ-QX-UV-DAM",
+    "barcode": "2000010001132",
+    "codigo_barras": "2000010001132",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "RjgZRzOLJmFVMOEklBAH",
@@ -235,25 +925,72 @@
     "sku_base": "CONJ-QX-GEN-CAB",
     "ramo": "MEDICINA",
     "escuela": "",
+    "esPropio": true,
     "descripcion": "Conjunto quirúrgico caballero modelo abierto por tela y color: Filipina caballero y Pantalón unisex",
     "componentes": [
       {
+        "rol": "filipina",
+        "prenda": "FILIPINA",
         "genero": "Caballero",
         "productId": "7zLe6KaA8uJKNlZ2Rwu3",
         "productNombre": "FILIPINA QUIRURGICA CABALLERO",
-        "rol": "filipina",
-        "tallaClave": "talla_filipina",
-        "prenda": "FILIPINA"
+        "tallaClave": "talla_filipina"
       },
       {
-        "prenda": "PANTALON",
-        "productId": "lARbAaGsOFaskYWY7xT1",
         "rol": "pantalon",
-        "tallaClave": "talla_pantalon",
+        "prenda": "PANTALON",
+        "genero": "Unisex",
+        "productId": "lARbAaGsOFaskYWY7xT1",
         "productNombre": "PANTALON QUIRURGICO UNISEX",
-        "genero": "Unisex"
+        "tallaClave": "talla_pantalon"
       }
-    ]
+    ],
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Marino • Caballero",
+    "costo": 340,
+    "nombre_producto": "CONJUNTO QUIRURGICO GENERAL CABALLERO",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Quirúrgico General",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 634000000,
+      "_seconds": 1794010268
+    },
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Caballero",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-QX-GC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Azul Marino",
+    "sku": "CONJ-QX-GEN-CAB",
+    "barcode": "2000010001149",
+    "codigo_barras": "2000010001149",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "U5POIlbKMvSl1WLjckOf",
@@ -264,73 +1001,281 @@
     "sku_base": "CONJ-CLIN-UV-CAB",
     "ramo": "MEDICINA",
     "escuela": "CVC",
+    "esPropio": true,
     "descripcion": "Kit clínico UV enfermería caballero de 2 piezas: Filipina clínica y Pantalón blanco mixto",
     "componentes": [
       {
-        "genero": "Caballero",
         "rol": "filipina",
-        "tallaClave": "talla_filipina",
-        "productNombre": "FILIPINA CLINICA UV ENFRA CABALLERO",
+        "prenda": "FILIPINA",
+        "genero": "Caballero",
         "productId": "M7Iust0snw3w5snAJP9K",
-        "prenda": "FILIPINA"
+        "productNombre": "FILIPINA CLINICA UV ENFRA CABALLERO",
+        "tallaClave": "talla_filipina"
       },
       {
-        "productNombre": "PANTALON MIXTO",
-        "productId": "zA41O2lCVNtb0XmZiZiI",
-        "genero": "Unisex",
-        "tallaClave": "talla_pantalon",
         "rol": "pantalon",
-        "prenda": "PANTALON"
+        "prenda": "PANTALON",
+        "genero": "Unisex",
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "productNombre": "PANTALON MIXTO",
+        "tallaClave": "talla_pantalon"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Caballero",
+    "costo": 320,
+    "nombre_producto": "CONJUNTO CLINICO UV ENFRA CABALLERO",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Clínico UV",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 773000000,
+      "_seconds": 1794010267
+    },
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Caballero",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-CLI-UVC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Blanco",
+    "sku": "CONJ-CLIN-UV-CAB",
+    "barcode": "2000010001156",
+    "codigo_barras": "2000010001156",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "Uuq1ku3Ez8F0oK3PivIF",
     "nombre": "SHORT DIARIO CVC",
-    "prenda": "SHORT",
-    "tipo_producto": "PRODUCTO",
-    "precio": 359,
-    "sku_base": "SHORDIACVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "prenda": "SHORT",
+    "sku_base": "SHORDIACVC",
     "descripcion": "SHORT DE UNIFORME DIARIO DEL COLEGIO CVC",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/UaVtAAQ.jpeg",
+    "precio": 359,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Azul Marino • Unisex",
+    "costo": 135,
+    "nombre_producto": "SHORT DIARIO CVC",
+    "tipo_prenda": "SHORT",
+    "modelo": "Short Diario CVC",
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "16",
+      "6",
+      "8",
+      "10",
+      "14",
+      "18",
+      "2",
+      "12",
+      "4"
+    ],
+    "codigo_producto": "PRG-CV-SHDI",
+    "color_tela": "Azul Marino",
+    "sku": "SHORDIACVC",
+    "barcode": "2000010001163",
+    "codigo_barras": "2000010001163",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "WWNUSeNQAl3PD6t1Q9nh",
     "nombre": "CHAMARRA CVC",
-    "prenda": "CHAMARRA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 395,
-    "sku_base": "CHAMCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "prenda": "CHAMARRA",
+    "sku_base": "CHAMCVC",
     "descripcion": "CHAMARRA ROMPEVIENTOS PARA COLEGIO CVC",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/L6uZNGe.jpeg",
+    "precio": 395,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Rompevientos / Microfibra",
+    "variante": "Rompevientos / Microfibra • Azul Marino • Unisex",
+    "costo": 165,
+    "nombre_producto": "CHAMARRA CVC",
+    "tipo_prenda": "CHAMARRA",
+    "modelo": "Chamarra CVC",
+    "telas_disponibles": [
+      "Rompevientos / Microfibra"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "12-14",
+      "8-10",
+      "6-8",
+      "4-6",
+      "18-20",
+      "16-18",
+      "10-12",
+      "14-16",
+      "2-4"
+    ],
+    "codigo_producto": "PRG-CV-CHAM",
+    "color_tela": "Azul Marino",
+    "sku": "CHAMCVC",
+    "barcode": "2000010001262",
+    "codigo_barras": "2000010001262",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "Wjg5GOMnYX7pTMCZVGiG",
     "nombre": "PLAYERA POLO PREMIUM DAMA",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 0,
-    "sku_base": "POLEURPREMDAM",
     "ramo": "GENERAL",
-    "escuela": "",
+    "sku_base": "POLEURPREMDAM",
     "descripcion": "PLAYERA POLO 50/50 ALGODON POLIESTER DAMA",
-    "componentes": []
+    "escuela": "",
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Piqué 50/50 Algodón Poliéster",
+    "variante": "Piqué 50/50 Algodón Poliéster • Blanco • Dama",
+    "costo": 125,
+    "nombre_producto": "PLAYERA POLO PREMIUM DAMA",
+    "tipo_prenda": "PLAYERA_POLO",
+    "modelo": "Polo Premium",
+    "precio": 295,
+    "telas_disponibles": [
+      "Piqué 50/50 Algodón Poliéster"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "BLANCO",
+      "REY",
+      "JASPE",
+      "NEGRO",
+      "LIMON",
+      "BANDERA",
+      "MARINO",
+      "CANARIO",
+      "TURQUESA",
+      "CHERRY",
+      "ROJO",
+      "CARBON",
+      "HELICONIA"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "CH",
+      "L",
+      "M",
+      "XL",
+      "XXL"
+    ],
+    "codigo_producto": "PRG-PO-PREM-D",
+    "color_tela": "Blanco",
+    "sku": "POLEURPREMDAM",
+    "prenda": "PLAYERA_POLO",
+    "barcode": "2000010001361",
+    "codigo_barras": "2000010001361",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "XPdGtb1M6qwHSbv6JoeD",
     "nombre": "PLAYERA POLO PREMIUM CABALLERO",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 0,
-    "sku_base": "POLEURPRMCAB",
     "ramo": "GENERAL",
-    "escuela": "",
+    "sku_base": "POLEURPRMCAB",
     "descripcion": "PLAYERA POLO CABALLERO 50/50 ALGODON Y POLIESTER",
-    "componentes": []
+    "escuela": "",
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Piqué 50/50 Algodón Poliéster",
+    "variante": "Piqué 50/50 Algodón Poliéster • Blanco • Caballero",
+    "costo": 125,
+    "nombre_producto": "PLAYERA POLO PREMIUM CABALLERO",
+    "tipo_prenda": "PLAYERA_POLO",
+    "modelo": "Polo Premium",
+    "precio": 295,
+    "telas_disponibles": [
+      "Piqué 50/50 Algodón Poliéster"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "CHERRY",
+      "ROJO",
+      "BLANCO",
+      "HELICONIA",
+      "MARINO",
+      "BANDERA",
+      "NEGRO",
+      "VINO",
+      "TURQUESA",
+      "JASPE",
+      "REY",
+      "LIMON",
+      "CARBON",
+      "CANARIO"
+    ],
+    "genero": "Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "XL",
+      "L",
+      "S",
+      "XXL"
+    ],
+    "codigo_producto": "PRG-PO-PREM-C",
+    "color_tela": "Blanco",
+    "sku": "POLEURPRMCAB",
+    "prenda": "PLAYERA_POLO",
+    "barcode": "2000010001545",
+    "codigo_barras": "2000010001545",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "am5L3BaNGRm2soTjZ2rM",
@@ -341,73 +1286,269 @@
     "sku_base": "CONJ-CLIN-CAB-CIERRE",
     "ramo": "MEDICINA",
     "escuela": "",
+    "esPropio": true,
     "descripcion": "Kit clínico caballero blanco con cierre al frente y pantalón blanco",
     "componentes": [
       {
+        "rol": "filipina",
         "prenda": "FILIPINA",
-        "productNombre": "FILIPINA CLINICA BLANCA CON CIERRE",
-        "productId": "M7Iust0snw3w5snAJP9K",
-        "tallaClave": "talla_filipina",
         "genero": "Caballero",
-        "rol": "filipina"
+        "productId": "M7Iust0snw3w5snAJP9K",
+        "productNombre": "FILIPINA CLINICA BLANCA CON CIERRE",
+        "tallaClave": "talla_filipina"
       },
       {
-        "genero": "Unisex",
+        "rol": "pantalon",
         "prenda": "PANTALON",
+        "genero": "Unisex",
         "productId": "zA41O2lCVNtb0XmZiZiI",
-        "tallaClave": "talla_pantalon",
         "productNombre": "PANTALON MIXTO",
-        "rol": "pantalon"
+        "tallaClave": "talla_pantalon"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Caballero",
+    "costo": 330,
+    "nombre_producto": "CONJUNTO CLINICO CABALLERO BLANCO CON CIERRE",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Clínico Cierre",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 370000000,
+      "_seconds": 1794010268
+    },
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Caballero",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-CLI-CC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Blanco",
+    "sku": "CONJ-CLIN-CAB-CIERRE",
+    "barcode": "2000010001736",
+    "codigo_barras": "2000010001736",
+    "updatedAt": "2026-11-18T20:08:34.034Z",
+    "activo": true
   },
   {
     "id": "dm0LCOgRUvYbloRwDdQ4",
     "nombre": "FILIPINA COMUNITARIA UV ENFRA DAMA",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 425,
-    "sku_base": "FILCOMUVENFRADAM",
     "ramo": "MEDICINA",
-    "escuela": "CVC",
+    "prenda": "FILIPINA",
+    "sku_base": "FILCOMUVENFRADAM",
     "descripcion": "FILIPINA COMUNITARIA PARA LA UV FAC. DE ENFERMERIA",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/YlViRx6.jpeg",
+    "precio": 425,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Dama",
+    "costo": 165,
+    "nombre_producto": "FILIPINA COMUNITARIA UV ENFRA DAMA",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Comunitaria UV",
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "36",
+      "40",
+      "42",
+      "24",
+      "38",
+      "34",
+      "28",
+      "32",
+      "26",
+      "30",
+      "44",
+      "46"
+    ],
+    "codigo_producto": "PRG-FL-COM-UVD",
+    "color_tela": "Blanco",
+    "sku": "FILCOMUVENFRADAM",
+    "barcode": "2000010001743",
+    "codigo_barras": "2000010001743",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
   },
   {
     "id": "gjbuz1MnmCgsJJqUmD0W",
     "nombre": "FILIPINA QUIRURGICA UV ENFRA DAMA",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 525,
-    "sku_base": "FILQXUVENFRADAM",
     "ramo": "MEDICINA",
-    "escuela": "CVC",
+    "prenda": "FILIPINA",
+    "sku_base": "FILQXUVENFRADAM",
     "descripcion": "",
-    "componentes": []
+    "escuela": "CVC",
+    "precio": 525,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Quirúrgico • Dama",
+    "costo": 195,
+    "nombre_producto": "FILIPINA QUIRURGICA UV ENFRA DAMA",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Quirúrgica UV",
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Quirúrgico"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "L",
+      "M",
+      "XXL",
+      "XXXL",
+      "S",
+      "XL",
+      "4XL",
+      "XS",
+      "XXS"
+    ],
+    "codigo_producto": "PRG-FL-QX-UVD",
+    "color_tela": "Azul Quirúrgico",
+    "sku": "FILQXUVENFRADAM",
+    "barcode": "2000010001989",
+    "codigo_barras": "2000010001989",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
   },
   {
     "id": "kuwiXETbXDanLaq56fyB",
     "nombre": "FALDA SHORT DIARIO CVC",
-    "prenda": "FALDA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 379,
-    "sku_base": "FALDIACVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "prenda": "FALDA",
+    "sku_base": "FALDIACVC",
     "descripcion": "FALDA SHORT DE UNIFORME DIARIO DEL COLEGIO CVC",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/fAXvzwu.jpeg",
+    "precio": 379,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Tergal Escocés",
+    "variante": "Tergal Escocés • Verde / Marino Cuadros • Dama",
+    "costo": 145,
+    "nombre_producto": "FALDA SHORT DIARIO CVC",
+    "tipo_prenda": "FALDA",
+    "modelo": "Falda Short Diario CVC",
+    "telas_disponibles": [
+      "Tergal Escocés"
+    ],
+    "colores_disponibles": [
+      "Verde / Marino Cuadros"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "18",
+      "14",
+      "M",
+      "L",
+      "16",
+      "2",
+      "S",
+      "XL",
+      "10",
+      "6",
+      "8",
+      "4",
+      "12"
+    ],
+    "codigo_producto": "PRG-CV-FALD",
+    "color_tela": "Verde / Marino Cuadros",
+    "sku": "FALDIACVC",
+    "barcode": "2000010002085",
+    "codigo_barras": "2000010002085",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
   },
   {
     "id": "lARbAaGsOFaskYWY7xT1",
     "nombre": "PANTALON QUIRURGICO UV ENFRA",
-    "prenda": "PANTALON",
-    "tipo_producto": "PRODUCTO",
-    "precio": 525,
-    "sku_base": "PANTQXUVENFRA",
     "ramo": "MEDICINA",
-    "escuela": "CVC",
+    "prenda": "PANTALON",
     "descripcion": "",
-    "componentes": []
+    "sku_base": "PANTQXUVENFRA",
+    "escuela": "CVC",
+    "precio": 525,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Quirúrgico • Unisex",
+    "costo": 185,
+    "nombre_producto": "PANTALON QUIRURGICO UV ENFRA",
+    "tipo_prenda": "PANTALON",
+    "modelo": "Quirúrgico UV",
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Quirúrgico"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "4XL",
+      "XXL",
+      "L",
+      "XXS",
+      "S",
+      "XL",
+      "XS",
+      "M",
+      "XXXL"
+    ],
+    "codigo_producto": "PRG-PT-QX-UV",
+    "color_tela": "Azul Quirúrgico",
+    "sku": "PANTQXUVENFRA",
+    "barcode": "2000010002221",
+    "codigo_barras": "2000010002221",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
   },
   {
     "id": "mSUMNTJ2Bh9P4ntJ4OlC",
@@ -418,193 +1559,2076 @@
     "sku_base": "CONJ-QX-GEN-DAM",
     "ramo": "MEDICINA",
     "escuela": "",
+    "esPropio": true,
     "descripcion": "Conjunto quirúrgico dama modelo abierto por tela y color: Filipina dama y Pantalón unisex",
     "componentes": [
       {
         "rol": "filipina",
-        "productId": "gjbuz1MnmCgsJJqUmD0W",
         "prenda": "FILIPINA",
-        "productNombre": "FILIPINA QUIRURGICA DAMA",
         "genero": "Dama",
+        "productId": "gjbuz1MnmCgsJJqUmD0W",
+        "productNombre": "FILIPINA QUIRURGICA DAMA",
         "tallaClave": "talla_filipina"
       },
       {
-        "genero": "Unisex",
-        "tallaClave": "talla_pantalon",
         "rol": "pantalon",
+        "prenda": "PANTALON",
+        "genero": "Unisex",
         "productId": "lARbAaGsOFaskYWY7xT1",
         "productNombre": "PANTALON QUIRURGICO UNISEX",
-        "prenda": "PANTALON"
+        "tallaClave": "talla_pantalon"
       }
-    ]
+    ],
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Marino • Dama",
+    "costo": 340,
+    "nombre_producto": "CONJUNTO QUIRURGICO GENERAL DAMA",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Quirúrgico General",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 469000000,
+      "_seconds": 1794010268
+    },
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Dama",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-QX-GD",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Azul Marino",
+    "sku": "CONJ-QX-GEN-DAM",
+    "barcode": "2000010002320",
+    "codigo_barras": "2000010002320",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
   },
   {
-    "id": "placeholder-product",
-    "nombre": "Producto de Ejemplo",
-    "prenda": "Prenda",
-    "tipo_producto": "PRODUCTO",
-    "precio": 0,
-    "sku_base": "EJEMPLO-001",
-    "ramo": "Ejemplo",
+    "id": "paq_Btn28BpPLRnnu9RtBzZZ",
+    "descripcion": "Paquete de graduación: Vestido reglamentario, Cofia, Lampara LED, Capa",
+    "sku_base": "PAQ-GRAD-BTN28B",
+    "variante": "Tergal / Paquete • Blanco • Dama",
     "escuela": "",
-    "descripcion": "Este es un producto base de ejemplo.",
-    "componentes": []
+    "nombre_producto": "Paq. Graduacion Enfermeria Dama",
+    "tipo_prenda": "CONJUNTO",
+    "nombre": "Paq. Graduacion Enfermeria Dama",
+    "componentes": [
+      {
+        "rol": "vestido_reglamentario",
+        "prenda": "Vestido reglamentario",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Vestido reglamentario",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "cofia",
+        "prenda": "Cofia",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Cofia",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "lampara_led",
+        "prenda": "Lampara LED",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Lampara LED",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "capa",
+        "prenda": "Capa",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Capa",
+        "tallaClave": "sobre_medida"
+      }
+    ],
+    "marca": "PRAGO",
+    "precio": 2644,
+    "telas_disponibles": [
+      "Tergal / Paquete"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "PAQ-GRAD-BTN28B",
+    "barcode": "2000010004713",
+    "codigo_barras": "2000010004713",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal / Paquete",
+    "ramo": "GRADUACION",
+    "costo": 1190,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Paquete Graduación",
+    "tipo_producto": "PAQUETE",
+    "tallas_disponibles": [
+      "Sobre medida",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "codigo_producto": "PRG-PQ-BTN28",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CONJUNTO",
+    "activo": true
+  },
+  {
+    "id": "paq_OPl6NlcLiAWyS0LDYig2",
+    "descripcion": "Paquete de graduación: Vestido graduacion enfra al cuerpo con bordado",
+    "sku_base": "PAQ-GRAD-OPL6NL",
+    "variante": "Tergal / Paquete • Blanco • Dama",
+    "escuela": "",
+    "nombre_producto": "Paq. Vestido al cuerpo  bordado 9 pers",
+    "tipo_prenda": "CONJUNTO",
+    "nombre": "Paq. Vestido al cuerpo  bordado 9 pers",
+    "componentes": [
+      {
+        "rol": "vestido_graduacion_enfra_al_cuerpo_con_bordado",
+        "prenda": "Vestido graduacion enfra al cuerpo con bordado",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Vestido graduacion enfra al cuerpo con bordado",
+        "tallaClave": "sobre_medida"
+      }
+    ],
+    "marca": "PRAGO",
+    "precio": 937,
+    "telas_disponibles": [
+      "Tergal / Paquete"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "PAQ-GRAD-OPL6NL",
+    "barcode": "2000010004720",
+    "codigo_barras": "2000010004720",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal / Paquete",
+    "ramo": "GRADUACION",
+    "costo": 422,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Paquete Graduación",
+    "tipo_producto": "PAQUETE",
+    "tallas_disponibles": [
+      "Sobre medida",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "codigo_producto": "PRG-PQ-OPL6N",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CONJUNTO",
+    "activo": true
+  },
+  {
+    "id": "paq_YMDtc2fhAthxTgp5Ila9",
+    "descripcion": "Paquete de graduación: Vestido Reglamentario",
+    "sku_base": "PAQ-GRAD-YMDTC2",
+    "variante": "Tergal / Paquete • Blanco • Dama",
+    "escuela": "",
+    "nombre_producto": "Paq. Vestido reglamentario",
+    "tipo_prenda": "CONJUNTO",
+    "nombre": "Paq. Vestido reglamentario",
+    "componentes": [
+      {
+        "rol": "vestido_reglamentario",
+        "prenda": "Vestido Reglamentario",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Vestido Reglamentario",
+        "tallaClave": "sobre_medida"
+      }
+    ],
+    "marca": "PRAGO",
+    "precio": 890,
+    "telas_disponibles": [
+      "Tergal / Paquete"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "PAQ-GRAD-YMDTC2",
+    "barcode": "2000010004737",
+    "codigo_barras": "2000010004737",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal / Paquete",
+    "ramo": "GRADUACION",
+    "costo": 401,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Paquete Graduación",
+    "tipo_producto": "PAQUETE",
+    "tallas_disponibles": [
+      "Sobre medida",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "codigo_producto": "PRG-PQ-YMDTC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CONJUNTO",
+    "activo": true
+  },
+  {
+    "id": "paq_cPmMIaMvig9t5DsfFiKP",
+    "descripcion": "Paquete de graduación: Camisa, Pantalon, Saco, Lampara LED, Corbata",
+    "sku_base": "PAQ-GRAD-CPMMIA",
+    "variante": "Tergal / Paquete • Blanco • Caballero",
+    "escuela": "",
+    "nombre_producto": "Paq. Graduacion Enfermeria >25 Caballero",
+    "tipo_prenda": "CONJUNTO",
+    "nombre": "Paq. Graduacion Enfermeria >25 Caballero",
+    "componentes": [
+      {
+        "rol": "camisa",
+        "prenda": "Camisa",
+        "genero": "Caballero",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Camisa",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "pantalon",
+        "prenda": "Pantalon",
+        "genero": "Caballero",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Pantalon",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "saco",
+        "prenda": "Saco",
+        "genero": "Caballero",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Saco",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "lampara_led",
+        "prenda": "Lampara LED",
+        "genero": "Caballero",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Lampara LED",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "corbata",
+        "prenda": "Corbata",
+        "genero": "Caballero",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Corbata",
+        "tallaClave": "sobre_medida"
+      }
+    ],
+    "marca": "PRAGO",
+    "precio": 2290,
+    "telas_disponibles": [
+      "Tergal / Paquete"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Caballero",
+    "color_tela": "Blanco",
+    "sku": "PAQ-GRAD-CPMMIA",
+    "barcode": "2000010004744",
+    "codigo_barras": "2000010004744",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal / Paquete",
+    "ramo": "GRADUACION",
+    "costo": 1031,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Paquete Graduación",
+    "tipo_producto": "PAQUETE",
+    "tallas_disponibles": [
+      "Sobre medida",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "codigo_producto": "PRG-PQ-CPMMI",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CONJUNTO",
+    "activo": true
+  },
+  {
+    "id": "paq_ja5uO0zLdxhS9X3ChdbI",
+    "descripcion": "Paquete de graduación: Vestido x medida, Cofia, Lampara LED, Capa",
+    "sku_base": "PAQ-GRAD-JA5UO0",
+    "variante": "Tergal / Paquete • Blanco • Dama",
+    "escuela": "",
+    "nombre_producto": "Paq. Graduacion enfermeria >25 Dama",
+    "tipo_prenda": "CONJUNTO",
+    "nombre": "Paq. Graduacion enfermeria >25 Dama",
+    "componentes": [
+      {
+        "rol": "vestido_x_medida",
+        "prenda": "Vestido x medida",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Vestido x medida",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "cofia",
+        "prenda": "Cofia",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Cofia",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "lampara_led",
+        "prenda": "Lampara LED",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Lampara LED",
+        "tallaClave": "sobre_medida"
+      },
+      {
+        "rol": "capa",
+        "prenda": "Capa",
+        "genero": "Dama",
+        "productId": "prago-vestido-graduacion",
+        "productNombre": "Capa",
+        "tallaClave": "sobre_medida"
+      }
+    ],
+    "marca": "PRAGO",
+    "precio": 2340,
+    "telas_disponibles": [
+      "Tergal / Paquete"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "PAQ-GRAD-JA5UO0",
+    "barcode": "2000010004751",
+    "codigo_barras": "2000010004751",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal / Paquete",
+    "ramo": "GRADUACION",
+    "costo": 1053,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Paquete Graduación",
+    "tipo_producto": "PAQUETE",
+    "tallas_disponibles": [
+      "Sobre medida",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "codigo_producto": "PRG-PQ-JA5UO",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CONJUNTO",
+    "activo": true
   },
   {
     "id": "pmq3FhPxqocMmI0z4prn",
     "nombre": "GORRO QUIRURGICO",
-    "prenda": "GORRO",
-    "tipo_producto": "PRODUCTO",
-    "precio": 0,
-    "sku_base": "GORQX",
     "ramo": "MEDICINA",
-    "escuela": "AMPARO DEL CASTILLO",
+    "prenda": "GORRO",
+    "sku_base": "GORQX",
     "descripcion": "",
-    "componentes": []
+    "escuela": "AMPARO DEL CASTILLO",
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Marino • Unisex",
+    "costo": 55,
+    "nombre_producto": "GORRO QUIRURGICO",
+    "tipo_prenda": "GORRO",
+    "modelo": "Quirúrgico",
+    "precio": 150,
+    "telas_disponibles": [
+      "Antifluidos",
+      "ANTIFLUIDOS",
+      "SEMIREPELENTE"
+    ],
+    "colores_disponibles": [
+      "Azul Marino",
+      "MARINO"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "ACCESORIO",
+    "tallas_disponibles": [
+      "Unitalla"
+    ],
+    "codigo_producto": "PRG-GR-QX",
+    "color_tela": "Azul Marino",
+    "sku": "GORQX",
+    "barcode": "2000010002337",
+    "codigo_barras": "2000010002337",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
+  },
+  {
+    "id": "prago-barbie",
+    "descripcion": "Filipina quirúrgica tipo scrub sin cierre, cuello en V, 2 bolsas rectangulares de parche, sin vivos, jareta ajustable en espalda.",
+    "sku_base": "PRAGO-FL-BARBIE",
+    "variante": "Antifluido Stretch Médico • Azul Quirúrgico • Dama",
+    "escuela": "",
+    "nombre_producto": "Filipina Quirúrgica Barbie PRAGO",
+    "tipo_prenda": "FILIPINA",
+    "ficha_tecnica": {
+      "espalda": "Jareta ajustable",
+      "cierre": "Sin Cierre (Scrub)",
+      "mangas": "Manga Corta anatómica",
+      "vivos": "Sin vivos",
+      "cinturon": "Jareta de ajuste",
+      "metrosBase": 1.25,
+      "cuello": "Cuello V",
+      "bolsas": "2 Bolsas rectangulares"
+    },
+    "nombre": "Filipina Quirúrgica Barbie PRAGO",
+    "marca": "PRAGO",
+    "precio": 350,
+    "telas_disponibles": [
+      "Antifluido Stretch Médico",
+      "Antifluido Stretch"
+    ],
+    "colores_disponibles": [
+      "Azul Quirúrgico",
+      "Azul Marino",
+      "Blanco Clínico",
+      "Rosa Pastel"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Azul Quirúrgico",
+    "sku": "PRAGO-FL-BARBIE",
+    "barcode": "2000010004195",
+    "codigo_barras": "2000010004195",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluido Stretch Médico",
+    "ramo": "MEDICINA",
+    "costo": 135,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 37000000
+    },
+    "modelo": "Barbie",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "S",
+      "XS"
+    ],
+    "codigo_producto": "PRG-FL-BAR",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "FILIPINA",
+    "activo": true
+  },
+  {
+    "id": "prago-bata-clinica",
+    "descripcion": "Bata médica manga larga en gabardina o tergal español blanco.",
+    "sku_base": "PRAGO-BATA-CLIN",
+    "variante": "Gabardina / Tergal Español • Blanco • Unisex",
+    "escuela": "",
+    "nombre_producto": "Bata Médica / Laboratorio PRAGO",
+    "tipo_prenda": "BATA",
+    "nombre": "Bata Médica / Laboratorio PRAGO",
+    "marca": "PRAGO",
+    "precio": 385,
+    "telas_disponibles": [
+      "Gabardina / Tergal Español",
+      "Gabardina"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Unisex",
+    "color_tela": "Blanco",
+    "sku": "PRAGO-BATA-CLIN",
+    "barcode": "2000010004379",
+    "codigo_barras": "2000010004379",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Gabardina / Tergal Español",
+    "ramo": "MEDICINA",
+    "costo": 155,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 37000000
+    },
+    "modelo": "Clínica Manga Larga",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "codigo_producto": "PRG-BAT-CLI",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "BATA",
+    "activo": true
+  },
+  {
+    "id": "prago-blusa-dama",
+    "descripcion": "Blusa ejecutiva / médica de dama sobre medida en antifluidos u oxford.",
+    "sku_base": "PRAGO-BLUSA-DAMA",
+    "variante": "Antifluidos / Oxford • Blanco • Dama",
+    "escuela": "",
+    "nombre_producto": "Blusa Médica / Ejecutiva Dama PRAGO",
+    "tipo_prenda": "BLUSA",
+    "nombre": "Blusa Médica / Ejecutiva Dama PRAGO",
+    "marca": "PRAGO",
+    "precio": 395,
+    "telas_disponibles": [
+      "Antifluidos / Oxford",
+      "Antifluidos",
+      "Oxford"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "Azul Rey"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "PRAGO-BLUSA-DAMA",
+    "barcode": "2000010004416",
+    "codigo_barras": "2000010004416",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Antifluidos / Oxford",
+    "ramo": "EMPRESARIAL",
+    "costo": 155,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 37000000
+    },
+    "modelo": "Ejecutiva / Clínica",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-BL-DAM",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "BLUSA",
+    "activo": true
+  },
+  {
+    "id": "prago-camisa-caballero",
+    "descripcion": "Camisa ejecutiva o de ceremonia para caballero sobre medida o por talla.",
+    "sku_base": "PRAGO-CAMISA-CAB",
+    "variante": "Oxford / Popelina • Blanco • Caballero",
+    "escuela": "",
+    "nombre_producto": "Camisa de Vestir / Ejecutiva Caballero PRAGO",
+    "tipo_prenda": "CAMISA",
+    "nombre": "Camisa de Vestir / Ejecutiva Caballero PRAGO",
+    "marca": "PRAGO",
+    "precio": 420,
+    "telas_disponibles": [
+      "Oxford / Popelina",
+      "Oxford"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Caballero",
+    "color_tela": "Blanco",
+    "sku": "PRAGO-CAMISA-CAB",
+    "barcode": "2000010004614",
+    "codigo_barras": "2000010004614",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Oxford / Popelina",
+    "ramo": "GRADUACION",
+    "costo": 170,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Ejecutiva Manga Larga",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "L"
+    ],
+    "codigo_producto": "PRG-CAM-CAB",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CAMISA",
+    "activo": true
+  },
+  {
+    "id": "prago-capa-enfermeria",
+    "descripcion": "Capa de gala azul marino con forro tinto y broche metálico para graduación de enfermería.",
+    "sku_base": "PRAGO-CAPA-ENF",
+    "variante": "Paño / Tergal Institucional • Azul Marino • Dama",
+    "escuela": "",
+    "nombre_producto": "Capa Ceremonial de Enfermería PRAGO",
+    "tipo_prenda": "CAPA",
+    "nombre": "Capa Ceremonial de Enfermería PRAGO",
+    "marca": "PRAGO",
+    "precio": 690,
+    "telas_disponibles": [
+      "Paño / Tergal Institucional",
+      "Paño / Tergal"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Azul Marino",
+    "sku": "PRAGO-CAPA-ENF",
+    "barcode": "2000010004584",
+    "codigo_barras": "2000010004584",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Paño / Tergal Institucional",
+    "ramo": "GRADUACION",
+    "costo": 290,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Gala Ceremonial Forrada",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "L"
+    ],
+    "codigo_producto": "PRG-CAP-ENF",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CAPA",
+    "activo": true
+  },
+  {
+    "id": "prago-chaleco",
+    "descripcion": "Chaleco institucional con bolsas utilitarias en tergal.",
+    "sku_base": "PRAGO-CHALECO",
+    "variante": "Tergal • Vino • Unisex",
+    "escuela": "",
+    "nombre_producto": "Chaleco Campañero / Ejecutivo PRAGO",
+    "tipo_prenda": "CHALECO",
+    "nombre": "Chaleco Campañero / Ejecutivo PRAGO",
+    "marca": "PRAGO",
+    "precio": 450,
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Vino"
+    ],
+    "esPropio": true,
+    "genero": "Unisex",
+    "color_tela": "Vino",
+    "sku": "PRAGO-CHALECO",
+    "barcode": "2000010004522",
+    "codigo_barras": "2000010004522",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal",
+    "ramo": "EMPRESARIAL",
+    "costo": 185,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Campañero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "44"
+    ],
+    "codigo_producto": "PRG-CHA-CMP",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CHALECO",
+    "activo": true
+  },
+  {
+    "id": "prago-conj-cvc",
+    "descripcion": "Conjunto escolar CVC de 2 piezas: Chamarra CVC y Pants CVC.",
+    "sku_base": "CONJ-CH-PANTS-CVC",
+    "variante": "Rompevientos / Microfibra • Azul Marino • Unisex",
+    "escuela": "CVC",
+    "nombre_producto": "CONJUNTO CHAMARRA Y PANTS CVC",
+    "tipo_prenda": "CONJUNTO",
+    "nombre": "CONJUNTO CHAMARRA Y PANTS CVC",
+    "componentes": [
+      {
+        "rol": "chamarra",
+        "prenda": "CHAMARRA",
+        "genero": "Unisex",
+        "productId": "WWNUSeNQAl3PD6t1Q9nh",
+        "productNombre": "CHAMARRA CVC",
+        "tallaClave": "talla"
+      },
+      {
+        "rol": "pants",
+        "prenda": "PANTS",
+        "genero": "Unisex",
+        "productId": "Chk7s0TsnM3gpUX2Yul4",
+        "productNombre": "PANTS CVC",
+        "tallaClave": "talla"
+      }
+    ],
+    "marca": "PRAGO",
+    "precio": 790,
+    "telas_disponibles": [
+      "Rompevientos / Microfibra"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "esPropio": true,
+    "genero": "Unisex",
+    "color_tela": "Azul Marino",
+    "sku": "CONJ-CH-PANTS-CVC",
+    "barcode": "2000010004454",
+    "codigo_barras": "2000010004454",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Rompevientos / Microfibra",
+    "ramo": "ESCOLAR",
+    "costo": 320,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Conjunto Deportivo CVC",
+    "tipo_producto": "CONJUNTO",
+    "tallas_disponibles": [
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "14",
+      "16",
+      "18"
+    ],
+    "codigo_producto": "PRG-CJ-CVC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CONJUNTO",
+    "activo": true
+  },
+  {
+    "id": "prago-corbata",
+    "descripcion": "Corbata institucional lisa o con emblema bordado.",
+    "sku_base": "PRAGO-CORBATA",
+    "variante": "Poliéster / Seda • Vino • Caballero",
+    "escuela": "",
+    "nombre_producto": "Corbata Institucional PRAGO",
+    "tipo_prenda": "CORBATA",
+    "nombre": "Corbata Institucional PRAGO",
+    "marca": "PRAGO",
+    "precio": 180,
+    "telas_disponibles": [
+      "Poliéster / Seda",
+      "Seda"
+    ],
+    "colores_disponibles": [
+      "Vino"
+    ],
+    "esPropio": true,
+    "genero": "Caballero",
+    "color_tela": "Vino",
+    "sku": "PRAGO-CORBATA",
+    "barcode": "2000010004676",
+    "codigo_barras": "2000010004676",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Poliéster / Seda",
+    "ramo": "GRADUACION",
+    "costo": 65,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Seda Institucional",
+    "tipo_producto": "ACCESORIO",
+    "tallas_disponibles": [
+      "Unitalla"
+    ],
+    "codigo_producto": "PRG-ACC-CORB",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "CORBATA",
+    "activo": true
+  },
+  {
+    "id": "prago-gorra-trucker",
+    "descripcion": "Gorra tipo trucker personalizable con sublimado o DTF.",
+    "sku_base": "PRAGO-GORRA-TRUCKER",
+    "variante": "Poliéster / Malla • Verde • Unisex",
+    "escuela": "",
+    "nombre_producto": "Gorra Trucker Personalizada PRAGO",
+    "tipo_prenda": "GORRA",
+    "nombre": "Gorra Trucker Personalizada PRAGO",
+    "marca": "PRAGO",
+    "precio": 150,
+    "telas_disponibles": [
+      "Poliéster / Malla"
+    ],
+    "colores_disponibles": [
+      "Verde"
+    ],
+    "esPropio": true,
+    "genero": "Unisex",
+    "color_tela": "Verde",
+    "sku": "PRAGO-GORRA-TRUCKER",
+    "barcode": "2000010004508",
+    "codigo_barras": "2000010004508",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Poliéster / Malla",
+    "ramo": "PERSONALIZADO",
+    "costo": 55,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Trucker Sublimada",
+    "tipo_producto": "ACCESORIO",
+    "tallas_disponibles": [
+      "Unitalla"
+    ],
+    "codigo_producto": "PRG-GOR-TRK",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "GORRA",
+    "activo": true
+  },
+  {
+    "id": "prago-lampara-led",
+    "descripcion": "Lámpara LED conmemorativa para ceremonia de paso de la luz de enfermería.",
+    "sku_base": "PRAGO-LAMPARA-LED",
+    "variante": "Resina / Vidrio • Blanco / Plata • Unisex",
+    "escuela": "",
+    "nombre_producto": "Lámpara LED Ceremonial Graduación PRAGO",
+    "tipo_prenda": "ACCESORIO",
+    "nombre": "Lámpara LED Ceremonial Graduación PRAGO",
+    "marca": "PRAGO",
+    "precio": 280,
+    "telas_disponibles": [
+      "Resina / Vidrio"
+    ],
+    "colores_disponibles": [
+      "Blanco / Plata",
+      "Plata"
+    ],
+    "esPropio": true,
+    "genero": "Unisex",
+    "color_tela": "Blanco / Plata",
+    "sku": "PRAGO-LAMPARA-LED",
+    "barcode": "2000010004560",
+    "codigo_barras": "2000010004560",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Resina / Vidrio",
+    "ramo": "GRADUACION",
+    "costo": 110,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Ceremonia Paso de la Luz",
+    "tipo_producto": "ACCESORIO",
+    "tallas_disponibles": [
+      "Unitalla"
+    ],
+    "codigo_producto": "PRG-ACC-LAMP",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "ACCESORIO",
+    "activo": true
+  },
+  {
+    "id": "prago-liz",
+    "descripcion": "Filipina ejecutiva con cuello polo, cierre frontal, 2 bolsas rectangulares, vivos opcionales y cinturón en V en espalda.",
+    "sku_base": "PRAGO-FL-LIZ",
+    "variante": "Tergal Catalán Premium • Azul Marino • Dama",
+    "escuela": "",
+    "nombre_producto": "Filipina Liz PRAGO",
+    "tipo_prenda": "FILIPINA",
+    "ficha_tecnica": {
+      "espalda": "Cinturón en V",
+      "cierre": "Con Cierre Frontal",
+      "mangas": "Manga Corta",
+      "vivos": "Opcional",
+      "cinturon": "Cinturón en V en espalda",
+      "metrosBase": 1.3,
+      "cuello": "Cuello Polo",
+      "bolsas": "2 Bolsas rectangulares"
+    },
+    "nombre": "Filipina Liz PRAGO",
+    "marca": "PRAGO",
+    "precio": 395,
+    "telas_disponibles": [
+      "Tergal Catalán Premium",
+      "Tergal Catalán"
+    ],
+    "colores_disponibles": [
+      "Azul Marino",
+      "Blanco Clínico",
+      "Vino / Tinto"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Azul Marino",
+    "sku": "PRAGO-FL-LIZ",
+    "barcode": "2000010004249",
+    "codigo_barras": "2000010004249",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal Catalán Premium",
+    "ramo": "MEDICINA",
+    "costo": 155,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 37000000
+    },
+    "modelo": "Liz",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "L",
+      "S"
+    ],
+    "codigo_producto": "PRG-FL-LIZ",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "FILIPINA",
+    "activo": true
+  },
+  {
+    "id": "prago-maria-luisa",
+    "descripcion": "Diseño insignia PRAGO: Cuello Vanity, cierre frontal reforzado, manga corta con vivos en mangas y bolsas curvas de parche, cinturón en espalda con cola de pato.",
+    "sku_base": "PRAGO-FL-MLUISA",
+    "variante": "Microfibra Soft Antifluido • Blanco Clínico • Dama",
+    "escuela": "",
+    "nombre_producto": "Filipina María Luisa PRAGO",
+    "tipo_prenda": "FILIPINA",
+    "ficha_tecnica": {
+      "espalda": "Cinturón con cola de pato",
+      "cierre": "Con Cierre Frontal Reforzado",
+      "mangas": "Manga Corta",
+      "vivos": "Vivos en mangas y bolsas",
+      "cinturon": "Cinturón en espalda",
+      "metrosBase": 1.35,
+      "cuello": "Vanity",
+      "bolsas": "2 Bolsas de parche curvas"
+    },
+    "nombre": "Filipina María Luisa PRAGO",
+    "marca": "PRAGO",
+    "precio": 420,
+    "telas_disponibles": [
+      "Microfibra Soft Antifluido",
+      "Microfibra Soft",
+      "Lino"
+    ],
+    "colores_disponibles": [
+      "Blanco Clínico",
+      "Azul Marino",
+      "Vino / Tinto",
+      "Negro Azabache",
+      "Salmón / Melón"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco Clínico",
+    "sku": "PRAGO-FL-MLUISA",
+    "barcode": "2000010004133",
+    "codigo_barras": "2000010004133",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Microfibra Soft Antifluido",
+    "ramo": "MEDICINA",
+    "costo": 165,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 37000000
+    },
+    "modelo": "María Luisa",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "S",
+      "L",
+      "34"
+    ],
+    "codigo_producto": "PRG-FL-MLU",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "FILIPINA",
+    "activo": true
+  },
+  {
+    "id": "prago-reyna",
+    "descripcion": "Filipina de gala PRAGO: manga 3/4, cuello polo con cierre frontal reforzado, 2 bolsas curvas de parche y doble cinturón (frente y espalda).",
+    "sku_base": "PRAGO-FL-REYNA",
+    "variante": "Microfibra Soft Antifluido • Blanco Clínico • Dama",
+    "escuela": "",
+    "nombre_producto": "Filipina Reyna PRAGO",
+    "tipo_prenda": "FILIPINA",
+    "ficha_tecnica": {
+      "espalda": "Doble cinturón frente y espalda",
+      "cierre": "Con Cierre Frontal Reforzado",
+      "mangas": "Manga 3/4",
+      "vivos": "Opcional",
+      "cinturon": "Doble Cinturón",
+      "metrosBase": 1.5,
+      "cuello": "Cuello Polo",
+      "bolsas": "2 Bolsas curvas"
+    },
+    "nombre": "Filipina Reyna PRAGO",
+    "marca": "PRAGO",
+    "precio": 440,
+    "telas_disponibles": [
+      "Microfibra Soft Antifluido",
+      "Microfibra Soft"
+    ],
+    "colores_disponibles": [
+      "Blanco Clínico",
+      "Azul Marino",
+      "Gris Oxford"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco Clínico",
+    "sku": "PRAGO-FL-REYNA",
+    "barcode": "2000010004287",
+    "codigo_barras": "2000010004287",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Microfibra Soft Antifluido",
+    "ramo": "MEDICINA",
+    "costo": 175,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 37000000
+    },
+    "modelo": "Reyna",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "S",
+      "L"
+    ],
+    "codigo_producto": "PRG-FL-REY",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "FILIPINA",
+    "activo": true
+  },
+  {
+    "id": "prago-saco-caballero",
+    "descripcion": "Saco sastre confeccionado sobre medida para ceremonia de graduación o ejecutivo.",
+    "sku_base": "PRAGO-SACO-CAB",
+    "variante": "Casimir / Tergal Sastre • Azul Marino • Caballero",
+    "escuela": "",
+    "nombre_producto": "Saco de Vestir / Ceremonia Caballero PRAGO",
+    "tipo_prenda": "SACO",
+    "nombre": "Saco de Vestir / Ceremonia Caballero PRAGO",
+    "marca": "PRAGO",
+    "precio": 1450,
+    "telas_disponibles": [
+      "Casimir / Tergal Sastre",
+      "Tergal Sastre"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "esPropio": true,
+    "genero": "Caballero",
+    "color_tela": "Azul Marino",
+    "sku": "PRAGO-SACO-CAB",
+    "barcode": "2000010004645",
+    "codigo_barras": "2000010004645",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Casimir / Tergal Sastre",
+    "ramo": "GRADUACION",
+    "costo": 620,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Sastre Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "40",
+      "42"
+    ],
+    "codigo_producto": "PRG-SAC-CAB",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "SACO",
+    "activo": true
+  },
+  {
+    "id": "prago-srv-ajuste",
+    "descripcion": "Cambio de cierre, ajuste de bastilla o entalle de prenda.",
+    "sku_base": "IMP-SERV-AJUSTE",
+    "variante": "N/A • N/A • Unisex",
+    "escuela": "",
+    "nombre_producto": "Servicio de Ajuste / Compostura Sastrería",
+    "tipo_prenda": "SERVICIO",
+    "nombre": "Servicio de Ajuste / Compostura Sastrería",
+    "marca": "PRAGO",
+    "precio": 120,
+    "telas_disponibles": [],
+    "colores_disponibles": [],
+    "esPropio": true,
+    "genero": "Unisex",
+    "color_tela": "N/A",
+    "sku": "IMP-SERV-AJUSTE",
+    "barcode": "2000010004690",
+    "codigo_barras": "2000010004690",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "N/A",
+    "ramo": "GENERAL",
+    "costo": 40,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Ajuste / Cierre / Bastilla",
+    "tipo_producto": "SERVICIO",
+    "tallas_disponibles": [
+      "Unitalla"
+    ],
+    "codigo_producto": "PRG-SRV-AJUS",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "SERVICIO",
+    "activo": true
+  },
+  {
+    "id": "prago-srv-bordado",
+    "descripcion": "Servicio de bordado de escudo, nombre o logotipo institucional.",
+    "sku_base": "IMP-SERV-BORDADO",
+    "variante": "N/A • Multicolor • Unisex",
+    "escuela": "",
+    "nombre_producto": "Servicio de Bordado Personalizado",
+    "tipo_prenda": "SERVICIO",
+    "nombre": "Servicio de Bordado Personalizado",
+    "marca": "PRAGO",
+    "precio": 80,
+    "telas_disponibles": [],
+    "colores_disponibles": [
+      "Multicolor"
+    ],
+    "esPropio": true,
+    "genero": "Unisex",
+    "color_tela": "Multicolor",
+    "sku": "IMP-SERV-BORDADO",
+    "barcode": "2000010004546",
+    "codigo_barras": "2000010004546",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "N/A",
+    "ramo": "GENERAL",
+    "costo": 20,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Bordado Computarizado",
+    "tipo_producto": "SERVICIO",
+    "tallas_disponibles": [
+      "Unitalla"
+    ],
+    "codigo_producto": "PRG-SRV-BORD",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "SERVICIO",
+    "activo": true
+  },
+  {
+    "id": "prago-tapachula",
+    "descripcion": "Filipina clínica modelo Tapachula confeccionada en lino o tergal institucional.",
+    "sku_base": "PRAGO-FL-TAPACHULA",
+    "variante": "Lino / Tergal • Blanco • Dama",
+    "escuela": "",
+    "nombre_producto": "Filipina Tapachula PRAGO",
+    "tipo_prenda": "FILIPINA",
+    "nombre": "Filipina Tapachula PRAGO",
+    "marca": "PRAGO",
+    "precio": 425,
+    "telas_disponibles": [
+      "Lino / Tergal",
+      "Tergal",
+      "Lino"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "Melón"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "PRAGO-FL-TAPACHULA",
+    "barcode": "2000010004324",
+    "codigo_barras": "2000010004324",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Lino / Tergal",
+    "ramo": "MEDICINA",
+    "costo": 165,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 37000000
+    },
+    "modelo": "Tapachula",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "34",
+      "36",
+      "28",
+      "30"
+    ],
+    "codigo_producto": "PRG-FL-TAP",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "FILIPINA",
+    "activo": true
+  },
+  {
+    "id": "prago-vestido-graduacion",
+    "descripcion": "Vestido reglamentario de graduación de enfermería confeccionado sobre medida.",
+    "sku_base": "PRAGO-VESTIDO-GRAD",
+    "variante": "Tergal / Lino Institucional • Blanco • Dama",
+    "escuela": "",
+    "nombre_producto": "Vestido Reglamentario Graduación Enfermería PRAGO",
+    "tipo_prenda": "VESTIDO",
+    "nombre": "Vestido Reglamentario Graduación Enfermería PRAGO",
+    "marca": "PRAGO",
+    "precio": 890,
+    "telas_disponibles": [
+      "Tergal / Lino Institucional",
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "esPropio": true,
+    "genero": "Dama",
+    "color_tela": "Blanco",
+    "sku": "PRAGO-VESTIDO-GRAD",
+    "barcode": "2000010004461",
+    "codigo_barras": "2000010004461",
+    "updatedAt": "2026-11-18T20:08:34.038Z",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal / Lino Institucional",
+    "ramo": "GRADUACION",
+    "costo": 360,
+    "creadoEl": {
+      "_seconds": 1795032514,
+      "_nanoseconds": 38000000
+    },
+    "modelo": "Reglamentario Graduación",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "S",
+      "M",
+      "L"
+    ],
+    "codigo_producto": "PRG-VES-GRAD",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "prenda": "VESTIDO",
+    "activo": true
   },
   {
     "id": "prod_chamarra_yazbek_dtf",
-    "nombre": "Chamarra / Sudadera Yazbek Personalizada DTF",
-    "prenda": "CHAMARRA",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Chamarra sudadera Yazbek de alta calidad personalizada con impresión DTF duradera al frente o espalda. Opciones: con gorro y cangurera, con cierre o cuello redondo sin gorro. Colores principales: Negro y Rojo.",
     "precio": 485,
     "sku_base": "CHAM-YAZ-DTF",
     "ramo": "PERSONALIZADO",
+    "costo": 245,
+    "prenda": "CHAMARRA",
+    "nombre": "Chamarra / Sudadera Yazbek Personalizada DTF",
+    "tags": [
+      "yazbek",
+      "chamarra",
+      "sudadera",
+      "dtf",
+      "gorro",
+      "cangurera",
+      "cierre"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_chamarra_dtf.jpg",
+    "imagenUrl": "/catalog_images/prago_chamarra_dtf.jpg",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Felpa 50/50 Algodón Poliéster",
+    "variante": "Felpa 50/50 Algodón Poliéster • Negro • Unisex",
     "escuela": "",
-    "descripcion": "Chamarra sudadera Yazbek de alta calidad personalizada con impresión DTF duradera al frente o espalda. Opciones: con gorro y cangurera, con cierre o cuello redondo sin gorro. Colores principales: Negro y Rojo.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 104000000,
+      "_seconds": 1793588510
+    },
+    "nombre_producto": "Chamarra / Sudadera Yazbek Personalizada DTF",
+    "tipo_prenda": "CHAMARRA",
+    "modelo": "Sudadera Yazbek DTF",
+    "actualizadoEl": {
+      "_nanoseconds": 104000000,
+      "_seconds": 1793588510
+    },
+    "telas_disponibles": [
+      "Felpa 50/50 Algodón Poliéster"
+    ],
+    "colores_disponibles": [
+      "Negro",
+      "Rojo"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "G",
+      "M",
+      "CH",
+      "XL"
+    ],
+    "codigo_producto": "PRG-YAZ-DTF",
+    "color_tela": "Negro",
+    "sku": "CHAM-YAZ-DTF",
+    "barcode": "2000010002382",
+    "codigo_barras": "2000010002382",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
   },
   {
     "id": "prod_noordwijk_olympic_games",
-    "nombre": "Playera Olympic Games - Colegio Noordwijk (Abril)",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 220,
+    "descripcion": "Playera oficial de cuello redondo en colores vibrantes para toda la escuela (alumnos y maestros). Cada grupo escolar lleva un color distintivo y el maestro titular lleva el mismo color del grupo para el evento Olympic Games de abril.",
     "sku_base": "PLA-NOORD-OLYMPIC",
     "ramo": "ESCOLAR",
+    "costo": 95,
     "escuela": "COLEGIO NOORDWIJK",
-    "descripcion": "Playera oficial de cuello redondo en colores vibrantes para toda la escuela (alumnos y maestros). Cada grupo escolar lleva un color distintivo y el maestro titular lleva el mismo color del grupo para el evento Olympic Games de abril.",
-    "componentes": []
+    "nombre": "Playera Olympic Games - Colegio Noordwijk (Abril)",
+    "tags": [
+      "noordwijk",
+      "olympic games",
+      "abril",
+      "escolar",
+      "colores por grupo"
+    ],
+    "precio": 220,
+    "prenda": "PLAYERA",
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_noordwijk_olympic.jpg",
+    "imagenUrl": "/catalog_images/prago_noordwijk_olympic.jpg",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Algodón 100%",
+    "variante": "Algodón 100% • Multicolor por Grupo • Unisex",
+    "creadoEl": {
+      "_nanoseconds": 716000000,
+      "_seconds": 1793588511
+    },
+    "nombre_producto": "Playera Olympic Games - Colegio Noordwijk (Abril)",
+    "tipo_prenda": "PLAYERA",
+    "modelo": "Olympic Games Noordwijk",
+    "actualizadoEl": {
+      "_nanoseconds": 716000000,
+      "_seconds": 1793588511
+    },
+    "telas_disponibles": [
+      "Algodón 100%"
+    ],
+    "colores_disponibles": [
+      "Multicolor por Grupo"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "8",
+      "6",
+      "M",
+      "4",
+      "G"
+    ],
+    "codigo_producto": "PRG-NOO-OLY",
+    "color_tela": "Multicolor por Grupo",
+    "sku": "PLA-NOORD-OLYMPIC",
+    "barcode": "2000010002504",
+    "codigo_barras": "2000010002504",
+    "updatedAt": "2026-11-18T20:08:34.035Z",
+    "activo": true
   },
   {
     "id": "prod_pantalon_franela_escocesa",
-    "nombre": "Pantalón de Franela Escocesa a Cuadros",
-    "prenda": "PANTALON",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Pantalón cómodo de franela suave con patrones escoceses a cuadros de diferentes colores para temporada navideña, año nuevo o descanso.",
     "precio": 295,
     "sku_base": "PANT-FRAN-ESC",
     "ramo": "TEMPORADA",
+    "costo": 140,
+    "prenda": "PANTALON",
+    "nombre": "Pantalón de Franela Escocesa a Cuadros",
+    "tags": [
+      "navidad",
+      "pantalón",
+      "franela escocesa",
+      "cuadros"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_pantalon_franela.jpg",
+    "imagenUrl": "/catalog_images/prago_pantalon_franela.jpg",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Franela Algodón",
+    "variante": "Franela Algodón • Cuadros Rojo/Negro • Unisex",
     "escuela": "",
-    "descripcion": "Pantalón cómodo de franela suave con patrones escoceses a cuadros de diferentes colores para temporada navideña, año nuevo o descanso.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 764000000,
+      "_seconds": 1793588509
+    },
+    "nombre_producto": "Pantalón de Franela Escocesa a Cuadros",
+    "tipo_prenda": "PANTALON",
+    "modelo": "Franela Escocesa",
+    "actualizadoEl": {
+      "_nanoseconds": 764000000,
+      "_seconds": 1793588509
+    },
+    "telas_disponibles": [
+      "Franela Algodón",
+      "Franela"
+    ],
+    "colores_disponibles": [
+      "Cuadros Rojo/Negro",
+      "Cuadros Verde/Azul"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "CH",
+      "G",
+      "M"
+    ],
+    "codigo_producto": "PRG-PT-FRAN",
+    "color_tela": "Cuadros Rojo/Negro",
+    "sku": "PANT-FRAN-ESC",
+    "barcode": "2000010002634",
+    "codigo_barras": "2000010002634",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "prod_pijama_navidena_escocesa",
-    "nombre": "Set Pijama Navideña Personalizada (Franela Escocesa)",
-    "prenda": "PIJAMA",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Pijama navideña y de año nuevo. Parte superior: playera cuello redondo manga corta o larga con personalización DTF, bordado o vinil textil. Parte inferior: pantalón de franela en cuadros escoceses de varios colores.",
     "precio": 495,
     "sku_base": "PIJ-NAV-ESC",
     "ramo": "TEMPORADA",
+    "costo": 240,
+    "prenda": "PIJAMA",
+    "nombre": "Set Pijama Navideña Personalizada (Franela Escocesa)",
+    "tags": [
+      "navidad",
+      "año nuevo",
+      "pijamas",
+      "franela escocesa",
+      "dtf",
+      "familiar"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1543257580-7269da773bf5?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_pijama_navidena.jpg",
+    "imagenUrl": "/catalog_images/prago_pijama_navidena.jpg",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Franela Escocesa / Algodón",
+    "variante": "Franela Escocesa / Algodón • Rojo/Negro • Unisex",
     "escuela": "",
-    "descripcion": "Pijama navideña y de año nuevo. Parte superior: playera cuello redondo manga corta o larga con personalización DTF, bordado o vinil textil. Parte inferior: pantalón de franela en cuadros escoceses de varios colores.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 403000000,
+      "_seconds": 1793588509
+    },
+    "nombre_producto": "Set Pijama Navideña Personalizada (Franela Escocesa)",
+    "tipo_prenda": "PIJAMA",
+    "modelo": "Pijama Navideña Escocesa",
+    "actualizadoEl": {
+      "_nanoseconds": 403000000,
+      "_seconds": 1793588509
+    },
+    "telas_disponibles": [
+      "Franela Escocesa / Algodón"
+    ],
+    "colores_disponibles": [
+      "Rojo/Negro",
+      "Verde/Azul"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "CONJUNTO",
+    "tallas_disponibles": [
+      "CH",
+      "G",
+      "M",
+      "XL",
+      "10",
+      "12",
+      "4",
+      "6",
+      "8"
+    ],
+    "codigo_producto": "PRG-PIJ-NAV",
+    "color_tela": "Rojo/Negro",
+    "sku": "PIJ-NAV-ESC",
+    "barcode": "2000010002696",
+    "codigo_barras": "2000010002696",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "prod_playera_dia_de_la_madre",
-    "nombre": "Playera Personalizada Día de la Madre",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Playera corte dama y unisex con diseños tiernos y elegantes para el Día de la Madre. Personalizada en técnica DTF, sublimación o bordado.",
     "precio": 245,
     "sku_base": "PLA-PERS-MADRE",
     "ramo": "PERSONALIZADO",
+    "costo": 105,
+    "prenda": "PLAYERA",
+    "nombre": "Playera Personalizada Día de la Madre",
+    "tags": [
+      "día de la madre",
+      "playera",
+      "personalizada",
+      "dtf",
+      "bordado",
+      "mamá"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_playera_madre.jpg",
+    "imagenUrl": "/catalog_images/prago_playera_madre.jpg",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Algodón Peinado",
+    "variante": "Algodón Peinado • Blanco • Dama",
     "escuela": "",
-    "descripcion": "Playera corte dama y unisex con diseños tiernos y elegantes para el Día de la Madre. Personalizada en técnica DTF, sublimación o bordado.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 796000000,
+      "_seconds": 1793588510
+    },
+    "nombre_producto": "Playera Personalizada Día de la Madre",
+    "tipo_prenda": "PLAYERA",
+    "modelo": "Personalizada Día de la Madre",
+    "actualizadoEl": {
+      "_nanoseconds": 796000000,
+      "_seconds": 1793588510
+    },
+    "telas_disponibles": [
+      "Algodón Peinado"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "Negro",
+      "Rosa Pastel"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "CH"
+    ],
+    "codigo_producto": "PRG-PL-MADRE",
+    "color_tela": "Blanco",
+    "sku": "PLA-PERS-MADRE",
+    "barcode": "2000010002825",
+    "codigo_barras": "2000010002825",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "prod_playera_dia_del_padre",
-    "nombre": "Playera Personalizada Día del Padre",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Playera personalizada para el Día del Padre con diseños alusivos, personalizable con nombres o frases especiales. Técnicas: Impresión DTF de alta definición, sublimación o bordado.",
     "precio": 245,
     "sku_base": "PLA-PERS-PADRE",
     "ramo": "PERSONALIZADO",
+    "costo": 105,
+    "prenda": "PLAYERA",
+    "nombre": "Playera Personalizada Día del Padre",
+    "tags": [
+      "día del padre",
+      "playera",
+      "personalizada",
+      "dtf",
+      "sublimación",
+      "bordado"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_playera_padre.jpg",
+    "imagenUrl": "/catalog_images/prago_playera_padre.jpg",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Algodón Peinado",
+    "variante": "Algodón Peinado • Negro • Caballero",
     "escuela": "",
-    "descripcion": "Playera personalizada para el Día del Padre con diseños alusivos, personalizable con nombres o frases especiales. Técnicas: Impresión DTF de alta definición, sublimación o bordado.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 392000000,
+      "_seconds": 1793588510
+    },
+    "nombre_producto": "Playera Personalizada Día del Padre",
+    "tipo_prenda": "PLAYERA",
+    "modelo": "Personalizada Día del Padre",
+    "actualizadoEl": {
+      "_nanoseconds": 392000000,
+      "_seconds": 1793588510
+    },
+    "telas_disponibles": [
+      "Algodón Peinado"
+    ],
+    "colores_disponibles": [
+      "Negro",
+      "Marino",
+      "Blanco"
+    ],
+    "genero": "Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "CH",
+      "G"
+    ],
+    "codigo_producto": "PRG-PL-PADRE",
+    "color_tela": "Negro",
+    "sku": "PLA-PERS-PADRE",
+    "barcode": "2000010002870",
+    "codigo_barras": "2000010002870",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "prod_playera_independencia_fiestas_patrias",
-    "nombre": "Playera Fiestas Patrias (15 y 16 de Septiembre)",
-    "prenda": "PLAYERA",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Playeras patrióticas mexicanas con diseños alusivos a la Independencia, Viva México y cultura nacional. Estampadas en DTF o vinil textil.",
     "precio": 235,
     "sku_base": "PLA-PERS-PATRIA",
     "ramo": "PERSONALIZADO",
+    "costo": 100,
+    "prenda": "PLAYERA",
+    "nombre": "Playera Fiestas Patrias (15 y 16 de Septiembre)",
+    "tags": [
+      "16 de septiembre",
+      "independencia",
+      "viva mexico",
+      "fiestas patrias",
+      "dtf"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_playera_patria.jpg",
+    "imagenUrl": "/catalog_images/prago_playera_patria.jpg",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Algodón Peinado",
+    "variante": "Algodón Peinado • Blanco • Unisex",
     "escuela": "",
-    "descripcion": "Playeras patrióticas mexicanas con diseños alusivos a la Independencia, Viva México y cultura nacional. Estampadas en DTF o vinil textil.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 75000000,
+      "_seconds": 1793588511
+    },
+    "nombre_producto": "Playera Fiestas Patrias (15 y 16 de Septiembre)",
+    "tipo_prenda": "PLAYERA",
+    "modelo": "Fiestas Patrias",
+    "actualizadoEl": {
+      "_nanoseconds": 75000000,
+      "_seconds": 1793588511
+    },
+    "telas_disponibles": [
+      "Algodón Peinado"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "Negro",
+      "Rojo",
+      "Verde Bandera"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M"
+    ],
+    "codigo_producto": "PRG-PL-PATRIA",
+    "color_tela": "Blanco",
+    "sku": "PLA-PERS-PATRIA",
+    "barcode": "2000010002931",
+    "codigo_barras": "2000010002931",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "prod_polo_restaurante_bordada",
-    "nombre": "Playera Polo Uniforme Restaurante con Bordado (9-10 cm)",
-    "prenda": "POLO",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Playera tipo polo fresca y resistente diseñada especialmente para personal de restaurantes, meseros, hostesses y capitanes. Incluye logotipo bordado de 9 a 10 cm en el pecho.",
     "precio": 295,
     "sku_base": "POLO-REST-BORD",
     "ramo": "RESTAURANTE",
+    "costo": 135,
+    "nombre": "Playera Polo Uniforme Restaurante con Bordado (9-10 cm)",
+    "tags": [
+      "restaurante",
+      "alimentos y bebidas",
+      "polo",
+      "bordado 10cm",
+      "meseros"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_polo_restaurante.jpg",
+    "imagenUrl": "/catalog_images/prago_polo_restaurante.jpg",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Piqué 50/50",
+    "variante": "Piqué 50/50 • Negro • Unisex",
     "escuela": "",
-    "descripcion": "Playera tipo polo fresca y resistente diseñada especialmente para personal de restaurantes, meseros, hostesses y capitanes. Incluye logotipo bordado de 9 a 10 cm en el pecho.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 385000000,
+      "_seconds": 1793588512
+    },
+    "nombre_producto": "Playera Polo Uniforme Restaurante con Bordado (9-10 cm)",
+    "tipo_prenda": "PLAYERA_POLO",
+    "modelo": "Restaurante Bordada",
+    "actualizadoEl": {
+      "_nanoseconds": 385000000,
+      "_seconds": 1793588512
+    },
+    "telas_disponibles": [
+      "Piqué 50/50"
+    ],
+    "colores_disponibles": [
+      "Negro",
+      "Vino"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "CH",
+      "G",
+      "M"
+    ],
+    "codigo_producto": "PRG-PO-REST",
+    "color_tela": "Negro",
+    "sku": "POLO-REST-BORD",
+    "prenda": "PLAYERA_POLO",
+    "barcode": "2000010002986",
+    "codigo_barras": "2000010002986",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "prod_polo_uniforme_empresarial_bordada",
-    "nombre": "Playera Polo Uniforme Empresarial con Bordado (9-10 cm)",
-    "prenda": "POLO",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Playera tipo polo de alta durabilidad para empresas y corporativos. Incluye bordado institucional de 9 a 10 cm en el pecho (frente izquierdo). Presentación en corte caballero y silueta dama.",
     "precio": 295,
     "sku_base": "POLO-EMP-BORD",
     "ramo": "EMPRESARIAL",
+    "costo": 135,
+    "nombre": "Playera Polo Uniforme Empresarial con Bordado (9-10 cm)",
+    "tags": [
+      "empresarial",
+      "uniformes",
+      "polo",
+      "bordado 10cm",
+      "corporativo"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1625910513413-7e452a832624?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_polo_empresarial.jpg",
+    "imagenUrl": "/catalog_images/prago_polo_empresarial.jpg",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Piqué 50/50",
+    "variante": "Piqué 50/50 • Azul Marino • Unisex",
     "escuela": "",
-    "descripcion": "Playera tipo polo de alta durabilidad para empresas y corporativos. Incluye bordado institucional de 9 a 10 cm en el pecho (frente izquierdo). Presentación en corte caballero y silueta dama.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 96000000,
+      "_seconds": 1793588512
+    },
+    "nombre_producto": "Playera Polo Uniforme Empresarial con Bordado (9-10 cm)",
+    "tipo_prenda": "PLAYERA_POLO",
+    "modelo": "Empresarial Bordada",
+    "actualizadoEl": {
+      "_nanoseconds": 96000000,
+      "_seconds": 1793588512
+    },
+    "telas_disponibles": [
+      "Piqué 50/50"
+    ],
+    "colores_disponibles": [
+      "Azul Marino",
+      "Blanco",
+      "Negro"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "M",
+      "CH",
+      "G",
+      "XL"
+    ],
+    "codigo_producto": "PRG-PO-EMPR",
+    "color_tela": "Azul Marino",
+    "sku": "POLO-EMP-BORD",
+    "prenda": "PLAYERA_POLO",
+    "barcode": "2000010003068",
+    "codigo_barras": "2000010003068",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "prod_trajes_escolares_eventos",
-    "nombre": "Trajes y Vestuarios Escolares Personalizados (Por Evento)",
-    "prenda": "TRAJE",
-    "tipo_producto": "PRODUCTO",
+    "descripcion": "Fabricación y confección de trajes escolares a la medida cotizados por evento escolar: Día de Muertos (Catrines y Catrinas), Navidad y Pastorelas (Duendes, Renos, Ángeles), Semana Internacional de las Naciones Unidas (trajes típicos de diferentes países) y festivales escolares en general.",
     "precio": 385,
     "sku_base": "TRAJE-ESC-EVENTO",
     "ramo": "ESCOLAR",
+    "costo": 175,
+    "prenda": "TRAJE",
+    "nombre": "Trajes y Vestuarios Escolares Personalizados (Por Evento)",
+    "tags": [
+      "escuelas",
+      "trajes tipicos",
+      "dia de muertos",
+      "pastorelas",
+      "semana internacional",
+      "festivales"
+    ],
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "imagenSecundaria": "https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=500&auto=format&fit=crop&q=60",
+    "imagenPrincipal": "/catalog_images/prago_trajes_escolares.jpg",
+    "imagenUrl": "/catalog_images/prago_trajes_escolares.jpg",
+    "modo_fabricacion": "MTO",
+    "tipo_tela": "Tergal / Popelina",
+    "variante": "Tergal / Popelina • Multicolor • Infantil",
     "escuela": "",
-    "descripcion": "Fabricación y confección de trajes escolares a la medida cotizados por evento escolar: Día de Muertos (Catrines y Catrinas), Navidad y Pastorelas (Duendes, Renos, Ángeles), Semana Internacional de las Naciones Unidas (trajes típicos de diferentes países) y festivales escolares en general.",
-    "componentes": []
+    "creadoEl": {
+      "_nanoseconds": 421000000,
+      "_seconds": 1793588511
+    },
+    "nombre_producto": "Trajes y Vestuarios Escolares Personalizados (Por Evento)",
+    "tipo_prenda": "TRAJE",
+    "modelo": "Vestuario Escolar Evento",
+    "actualizadoEl": {
+      "_nanoseconds": 421000000,
+      "_seconds": 1793588511
+    },
+    "telas_disponibles": [
+      "Tergal / Popelina"
+    ],
+    "colores_disponibles": [
+      "Multicolor"
+    ],
+    "genero": "Infantil",
+    "tipo_producto": "CONJUNTO",
+    "tallas_disponibles": [
+      "8"
+    ],
+    "codigo_producto": "PRG-TR-EVENTO",
+    "color_tela": "Multicolor",
+    "sku": "TRAJE-ESC-EVENTO",
+    "barcode": "2000010003150",
+    "codigo_barras": "2000010003150",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "sUR720oRwUEVVr4FEIut",
     "nombre": "FILIPINA COMUNITARIA UV ENFRA CABALLERO",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 425,
-    "sku_base": "FILCOMUVENFRACAB",
     "ramo": "MEDICINA",
-    "escuela": "CVC",
+    "prenda": "FILIPINA",
+    "sku_base": "FILCOMUVENFRACAB",
     "descripcion": "FILIPINA COMUNITARIA DE LA UV FAC. DE ENFERMERIA DE CABALLERO",
-    "componentes": []
+    "escuela": "CVC",
+    "imagenUrl": "https://i.imgur.com/EvUtbCF.jpeg",
+    "precio": 425,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Caballero",
+    "costo": 165,
+    "nombre_producto": "FILIPINA COMUNITARIA UV ENFRA CABALLERO",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Comunitaria UV",
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "42",
+      "28",
+      "44",
+      "40",
+      "34",
+      "32",
+      "38",
+      "46",
+      "36",
+      "30"
+    ],
+    "codigo_producto": "PRG-FL-COM-UVC",
+    "color_tela": "Blanco",
+    "sku": "FILCOMUVENFRACAB",
+    "barcode": "2000010003235",
+    "codigo_barras": "2000010003235",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "v1doy7SHQdSuw0iYO2lf",
     "nombre": "MANDIL CVC",
-    "prenda": "MANDIL",
-    "tipo_producto": "PRODUCTO",
-    "precio": 0,
-    "sku_base": "MANCVC",
     "ramo": "ESCOLAR",
-    "escuela": "CVC",
+    "prenda": "MANDIL",
+    "sku_base": "MANCVC",
     "descripcion": "",
-    "componentes": []
+    "escuela": "CVC",
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "MTS",
+    "tipo_tela": "Tergal / Antifluido",
+    "variante": "Tergal / Antifluido • Azul Marino • Unisex",
+    "costo": 95,
+    "nombre_producto": "MANDIL CVC",
+    "tipo_prenda": "MANDIL",
+    "modelo": "Mandil CVC",
+    "precio": 250,
+    "telas_disponibles": [
+      "Tergal / Antifluido"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "XL",
+      "S",
+      "M",
+      "XXXL",
+      "L",
+      "XXL",
+      "XS"
+    ],
+    "codigo_producto": "PRG-CV-MAND",
+    "color_tela": "Azul Marino",
+    "sku": "MANCVC",
+    "barcode": "2000010003341",
+    "codigo_barras": "2000010003341",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "vKeVY28R5RRN5U6peR3a",
@@ -615,37 +3639,123 @@
     "sku_base": "CONJ-CLIN-UV-DAM",
     "ramo": "MEDICINA",
     "escuela": "CVC",
+    "esPropio": true,
     "descripcion": "Kit clínico UV enfermería dama de 2 piezas: Filipina clínica y Pantalón blanco mixto",
     "componentes": [
       {
-        "prenda": "FILIPINA",
         "rol": "filipina",
-        "tallaClave": "talla_filipina",
+        "prenda": "FILIPINA",
         "genero": "Dama",
         "productId": "5Y7lI6CaQwxnLuFn9w7W",
-        "productNombre": "FILIPINA CLINICA UV ENFRA DAMA"
+        "productNombre": "FILIPINA CLINICA UV ENFRA DAMA",
+        "tallaClave": "talla_filipina"
       },
       {
-        "genero": "Unisex",
-        "productNombre": "PANTALON MIXTO",
-        "tallaClave": "talla_pantalon",
-        "productId": "zA41O2lCVNtb0XmZiZiI",
         "rol": "pantalon",
-        "prenda": "PANTALON"
+        "prenda": "PANTALON",
+        "genero": "Unisex",
+        "productId": "zA41O2lCVNtb0XmZiZiI",
+        "productNombre": "PANTALON MIXTO",
+        "tallaClave": "talla_pantalon"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Dama",
+    "costo": 320,
+    "nombre_producto": "CONJUNTO CLINICO UV ENFRA DAMA",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Clínico UV",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 605000000,
+      "_seconds": 1794010267
+    },
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco"
+    ],
+    "genero": "Dama",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-CLI-UVD",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Blanco",
+    "sku": "CONJ-CLIN-UV-DAM",
+    "barcode": "2000010003426",
+    "codigo_barras": "2000010003426",
+    "updatedAt": "2026-11-18T20:08:34.036Z",
+    "activo": true
   },
   {
     "id": "vdiEzOOubqsaeo7OGeE1",
-    "nombre": "PANTALON CASUAL CABALLERO",
-    "prenda": "PANTALON",
-    "tipo_producto": "PRODUCTO",
-    "precio": 465,
-    "sku_base": "PANTCASCAB",
     "ramo": "MEDICINA",
-    "escuela": "",
+    "prenda": "PANTALON",
     "descripcion": "",
-    "componentes": []
+    "nombre": "PANTALON CASUAL CABALLERO",
+    "sku_base": "PANTCASCAB",
+    "precio": 465,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Gabardina",
+    "variante": "Gabardina • Blanco • Caballero",
+    "costo": 175,
+    "escuela": "",
+    "nombre_producto": "PANTALON CASUAL CABALLERO",
+    "tipo_prenda": "PANTALON",
+    "modelo": "Casual Caballero",
+    "telas_disponibles": [
+      "Gabardina",
+      "GABARDINA"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "BLANCO",
+      "MARINO"
+    ],
+    "genero": "Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "42",
+      "38",
+      "36",
+      "44",
+      "28",
+      "40",
+      "32",
+      "XXL",
+      "30",
+      "34"
+    ],
+    "codigo_producto": "PRG-PT-CAS-CAB",
+    "color_tela": "Blanco",
+    "sku": "PANTCASCAB",
+    "barcode": "2000010003433",
+    "codigo_barras": "2000010003433",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "activo": true
   },
   {
     "id": "x4pFl3lB1fIluatxy3et",
@@ -656,69 +3766,231 @@
     "sku_base": "CONJ-QX-UV-CAB",
     "ramo": "MEDICINA",
     "escuela": "CVC",
+    "esPropio": true,
     "descripcion": "Kit quirúrgico UV enfermería caballero de 3 piezas: Filipina, Pantalón y Gorro",
     "componentes": [
       {
-        "genero": "Caballero",
-        "productNombre": "FILIPINA QUIRURGICA UV ENFRA CABALLERO",
-        "tallaClave": "talla_filipina",
-        "productId": "7zLe6KaA8uJKNlZ2Rwu3",
+        "rol": "filipina",
         "prenda": "FILIPINA",
-        "rol": "filipina"
+        "genero": "Caballero",
+        "productId": "7zLe6KaA8uJKNlZ2Rwu3",
+        "productNombre": "FILIPINA QUIRURGICA UV ENFRA CABALLERO",
+        "tallaClave": "talla_filipina"
       },
       {
-        "productId": "lARbAaGsOFaskYWY7xT1",
-        "genero": "Unisex",
         "rol": "pantalon",
-        "tallaClave": "talla_pantalon",
         "prenda": "PANTALON",
-        "productNombre": "PANTALON QUIRURGICO UV ENFRA"
+        "genero": "Unisex",
+        "productId": "lARbAaGsOFaskYWY7xT1",
+        "productNombre": "PANTALON QUIRURGICO UV ENFRA",
+        "tallaClave": "talla_pantalon"
       },
       {
-        "genero": "Unisex",
-        "tallaClave": "unitalla",
-        "productNombre": "GORRO QUIRURGICO",
-        "productId": "pmq3FhPxqocMmI0z4prn",
         "rol": "gorro",
-        "prenda": "GORRO"
+        "prenda": "GORRO",
+        "genero": "Unisex",
+        "productId": "pmq3FhPxqocMmI0z4prn",
+        "productNombre": "GORRO QUIRURGICO",
+        "tallaClave": "unitalla"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Quirúrgico • Caballero",
+    "costo": 350,
+    "nombre_producto": "CONJUNTO QUIRURGICO UV ENFRA CABALLERO",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Quirúrgico UV",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 458000000,
+      "_seconds": 1794010267
+    },
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Quirúrgico"
+    ],
+    "genero": "Caballero",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-QX-UVC",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Azul Quirúrgico",
+    "sku": "CONJ-QX-UV-CAB",
+    "barcode": "2000010003631",
+    "codigo_barras": "2000010003631",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "activo": true
   },
   {
     "id": "xJwIHmLMQ95we7s4iVFz",
     "nombre": "FILIPINA JOSE CABALLERO",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 425,
-    "sku_base": "FILJOSCAB",
     "ramo": "MEDICINA",
-    "escuela": "",
+    "prenda": "FILIPINA",
+    "sku_base": "FILJOSCAB",
     "descripcion": "FILIPINA MODELO JOSE PARA CABALLERO, CON COSTURAS VERTICALES",
-    "componentes": []
+    "escuela": "",
+    "precio": 425,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Caballero",
+    "costo": 165,
+    "nombre_producto": "FILIPINA JOSE CABALLERO",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "José",
+    "telas_disponibles": [
+      "Tergal",
+      "TERGAL",
+      "ANTIFLUIDOS"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "BLANCO"
+    ],
+    "genero": "Caballero",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "36",
+      "32",
+      "40",
+      "30",
+      "42",
+      "34",
+      "38",
+      "Unitalla",
+      "46",
+      "44",
+      "28"
+    ],
+    "codigo_producto": "PRG-FL-JOS-CAB",
+    "color_tela": "Blanco",
+    "sku": "FILJOSCAB",
+    "barcode": "2000010003648",
+    "codigo_barras": "2000010003648",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "activo": true
   },
   {
     "id": "zA41O2lCVNtb0XmZiZiI",
-    "nombre": "PANTALON MIXTO",
-    "prenda": "PANTALON",
-    "tipo_producto": "PRODUCTO",
-    "precio": 425,
-    "sku_base": "PANTMIX",
     "ramo": "MEDICINA",
-    "escuela": "",
+    "prenda": "PANTALON",
     "descripcion": "",
-    "componentes": []
+    "nombre": "PANTALON MIXTO",
+    "sku_base": "PANTMIX",
+    "precio": 425,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Tergal",
+    "variante": "Tergal • Blanco • Unisex",
+    "costo": 155,
+    "escuela": "",
+    "nombre_producto": "PANTALON MIXTO",
+    "tipo_prenda": "PANTALON",
+    "modelo": "Mixto",
+    "telas_disponibles": [
+      "Tergal"
+    ],
+    "colores_disponibles": [
+      "Blanco",
+      "BLANCO",
+      "MARINO"
+    ],
+    "genero": "Unisex",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "36",
+      "40",
+      "32",
+      "30",
+      "44",
+      "28",
+      "38",
+      "42",
+      "26",
+      "24",
+      "34"
+    ],
+    "codigo_producto": "PRG-PT-MIX",
+    "color_tela": "Blanco",
+    "sku": "PANTMIX",
+    "barcode": "2000010003785",
+    "codigo_barras": "2000010003785",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "activo": true
   },
   {
     "id": "zapREBgZTgY2Wm03Tsta",
     "nombre": "FILIPINA QUIRURGICA AMPARO DEL CASTILLO LIC",
-    "prenda": "FILIPINA",
-    "tipo_producto": "PRODUCTO",
-    "precio": 525,
-    "sku_base": "FILQXAMPDELCLIC",
     "ramo": "MEDICINA",
-    "escuela": "AMPARO DEL CASTILLO",
+    "prenda": "FILIPINA",
+    "sku_base": "FILQXAMPDELCLIC",
     "descripcion": "",
-    "componentes": []
+    "escuela": "AMPARO DEL CASTILLO",
+    "precio": 525,
+    "marca": "PRAGO",
+    "esPropio": true,
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Marino • Dama",
+    "costo": 195,
+    "nombre_producto": "FILIPINA QUIRURGICA AMPARO DEL CASTILLO LIC",
+    "tipo_prenda": "FILIPINA",
+    "modelo": "Quirúrgica Amparo Lic",
+    "telas_disponibles": [
+      "Antifluidos",
+      "ANTIFLUIDOS"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Dama",
+    "tipo_producto": "PRENDA_SIMPLE",
+    "tallas_disponibles": [
+      "XXXL",
+      "M",
+      "S",
+      "L",
+      "XS",
+      "XXS",
+      "XL",
+      "XXL",
+      "4XL"
+    ],
+    "codigo_producto": "PRG-FL-QX-AMP",
+    "color_tela": "Azul Marino",
+    "sku": "FILQXAMPDELCLIC",
+    "barcode": "2000010004010",
+    "codigo_barras": "2000010004010",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "activo": true
   },
   {
     "id": "zlaHbM7iN41SleCQdrXX",
@@ -729,32 +4001,79 @@
     "sku_base": "CONJ-QX-AMP-LIC",
     "ramo": "MEDICINA",
     "escuela": "AMPARO DEL CASTILLO",
+    "esPropio": true,
     "descripcion": "Kit quirúrgico Amparo del Castillo: Filipina, Pantalón y Gorro",
     "componentes": [
       {
-        "productId": "zapREBgZTgY2Wm03Tsta",
-        "tallaClave": "talla_filipina",
-        "genero": "Dama",
         "rol": "filipina",
         "prenda": "FILIPINA",
-        "productNombre": "FILIPINA QUIRURGICA AMPARO DEL CASTILLO LIC"
+        "genero": "Dama",
+        "productId": "zapREBgZTgY2Wm03Tsta",
+        "productNombre": "FILIPINA QUIRURGICA AMPARO DEL CASTILLO LIC",
+        "tallaClave": "talla_filipina"
       },
       {
         "rol": "pantalon",
+        "prenda": "PANTALON",
         "genero": "Unisex",
         "productId": "CeXBOWV7uKVT4Wmy6o4i",
-        "prenda": "PANTALON",
-        "tallaClave": "talla_pantalon",
-        "productNombre": "PANTALON QUIRURGICO AMPARO DEL CASTILLO LIC"
+        "productNombre": "PANTALON QUIRURGICO AMPARO DEL CASTILLO LIC",
+        "tallaClave": "talla_pantalon"
       },
       {
-        "prenda": "GORRO",
         "rol": "gorro",
+        "prenda": "GORRO",
+        "genero": "Unisex",
         "productId": "pmq3FhPxqocMmI0z4prn",
         "productNombre": "GORRO QUIRURGICO",
-        "tallaClave": "unitalla",
-        "genero": "Unisex"
+        "tallaClave": "unitalla"
       }
-    ]
+    ],
+    "modo_fabricacion": "HIBRIDO",
+    "tipo_tela": "Antifluidos",
+    "variante": "Antifluidos • Azul Marino • Dama",
+    "costo": 380,
+    "nombre_producto": "CONJUNTO QUIRURGICO AMPARO DEL CASTILLO LIC",
+    "tipo_prenda": "CONJUNTO",
+    "modelo": "Conjunto Quirúrgico Amparo Lic",
+    "marca": "PRAGO",
+    "createdAt": {
+      "_nanoseconds": 236000000,
+      "_seconds": 1794010268
+    },
+    "telas_disponibles": [
+      "Antifluidos"
+    ],
+    "colores_disponibles": [
+      "Azul Marino"
+    ],
+    "genero": "Dama",
+    "tallas_disponibles": [
+      "XXS",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "28",
+      "30",
+      "32",
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "codigo_producto": "PRG-CJ-QX-AMP",
+    "proveedor": "PRAGO",
+    "fabricante": "PRAGO",
+    "color_tela": "Azul Marino",
+    "sku": "CONJ-QX-AMP-LIC",
+    "barcode": "2000010004126",
+    "codigo_barras": "2000010004126",
+    "updatedAt": "2026-11-18T20:08:34.037Z",
+    "activo": true
   }
 ]
